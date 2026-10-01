@@ -18,7 +18,7 @@ import {
 } from "@sepps-workshop/design-system/tools/build-tokens";
 ```
 
-Read the foundation's `README.md` before writing a template: it explains every role.
+Until it is on npm, install it with `npm install github:sepps-workshop/sepps-workshop-design-system`. Then read `node_modules/@sepps-workshop/design-system/README.md` before writing a template. **Read when:** starting a port. It explains every role.
 
 ## Step 2 — Map, don't invent
 
@@ -37,17 +37,12 @@ Read the foundation's `README.md` before writing a template: it explains every r
 
 - Never write a hex value in a port. A value you cannot find is a gap in the foundation: fix it there.
 - Red as text is `semantic.danger`. Signalred itself is for fills only, with `semantic_fill.danger.text` on top.
-- Overlays come from `tokens.overlay`. Do not define port-side alpha constants.
-- `overlay.selected_item` and the `diff_*_text` overlays carry `fg` and `fg_muted` only.
+- Overlays come from `tokens.overlay`, with no port-side alpha constants. `overlay.selected_item` and the `diff_*_text` overlays carry `fg` and `fg_muted` only.
 - Controls are outlined with `border.control`, the focus ring is `accent`.
-- The status bar stays on `surface.bg_sunk`; the accent appears as a border, not as its background. The debugging status bar uses the danger fill.
+- VS Code: the status bar stays on `surface.bg_sunk`; the accent appears as a border, not as its background. The debugging status bar uses the danger fill.
 - Never rely on colour alone: pair a state colour with a border, an underline, a position or a font style.
-- Recommend JetBrains Mono, and JetBrainsMono Nerd Font where the port shows icons. Ports cannot ship fonts.
-- One theme per port. No variants.
-
-## Voice
-
-Port READMEs are English, exact where they are technical, relaxed elsewhere, no emoji. Each ends with the "Want to join Sepp's Workshop?" section linking to https://www.seppmed.com/career/.
+- Recommend JetBrains Mono, and JetBrainsMono Nerd Font where the port shows icons. Ports cannot ship fonts. One theme per port, no variants.
+- Port READMEs are English, exact where technical, relaxed elsewhere, no emoji. Each ends with the "Want to join Sepp's Workshop?" section linking to https://www.seppmed.com/career/.
 
 ## Feedback
 
