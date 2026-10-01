@@ -1,0 +1,44 @@
+# Sepp's Workshop Design System
+
+Token foundation for five theme ports (VS Code, Windows Terminal, PowerShell, fish, Starship). One medium-dark theme on sepp.med Darkblue. Source of truth is `tokens.json5`; everything else is generated. No npm dependencies — plain Node.
+
+## Commands
+
+- `npm run build` — regenerate `tokens.json`, `dist/tokens.js`, `colors.css` and `preview/*.html`, and run the gates
+- `npm run check` — fail if any generated file is out of date or a gate fails
+- `npm test` — unit tests for the colour maths, loader, gates, CSS and previews
+
+Run `npm run build` after every change to `tokens.json5`.
+
+## References
+
+@README.md **Read when:** working on the palette, roles, gates, or the contract with the ports.
+
+`docs/superpowers/specs/2026-10-01-design-system-foundation-design.md` **Read when:** you need the reasoning behind a value or a rule.
+
+## Conventions
+
+- `tokens.json5` is the only data file edited by hand.
+- A hex literal is allowed only under `palette_base` and `derived`. Everything else is a `$` reference.
+- Every colour is a brand colour, a 10 % ladder step, or one of the three named values in `derived`. Never add a hue.
+- When a gate fails: move along the same ladder, then swap roles between brand hues.
+- Signalred has no tints. Signalred and Freegreen are signals, not syntax colours.
+- Red as text on a dark surface is `semantic.danger`; red as a fill is Signalred with white text.
+- Overlays darken the canvas. A lighter selection fails gate 2.
+- Docs are English, no emoji. Numbers in docs come from `tokens.json` or the build output.
+
+## Don't
+
+- Don't hand-edit `tokens.json`, `dist/tokens.js`, `colors.css` or `preview/*.html`.
+- Don't lower a gate threshold to make a value pass.
+- Don't copy the 76 MB icon source into the repo; only the renders in `assets/` belong here.
+- Don't add font files. Themes cannot ship fonts; the foundation only recommends one.
+- Don't commit secrets. Don't use `--force`.
+
+## Learnings
+
+When the user corrects a mistake or points out a recurring issue, append a one-line summary to `.claude/learnings.md`. Don't modify CLAUDE.md directly.
+
+## Compact Instructions
+
+When compacting, preserve: list of modified files, current test status, open TODOs, and key decisions made.
