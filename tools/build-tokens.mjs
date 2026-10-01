@@ -211,7 +211,7 @@ const SAME_SURFACE = [
 
 const CODE_SURFACES = ["bg", "bg_sunk", "bg_overlay"];
 const CONTROL_SURFACES = ["bg", "bg_sunk", "bg_soft", "bg_overlay"];
-/** Overlays that sit behind whole lines of code. */
+/** Overlays that sit behind whole lines of code, over the canvas. */
 export const CODE_OVERLAYS = [
   "selection",
   "selection_inactive",
@@ -222,13 +222,51 @@ export const CODE_OVERLAYS = [
   "word_highlight_strong",
   "diff_inserted_line",
   "diff_removed_line",
+  "merge_current_content",
+  "stack_frame",
 ];
 /** Overlays that sit behind list rows and inline spans: fg / fg_muted only. */
 export const LABEL_OVERLAYS = [
   "selected_item",
   "diff_inserted_text",
   "diff_removed_text",
+  "merge_current_header",
 ];
+/** Overlays drawn over every code surface, gated as code on each. */
+export const SURFACE_OVERLAYS = ["hover", "active"];
+/** Overlays nothing is read through: shadow and scrollbar thumbs. */
+export const NON_TEXT_OVERLAYS = [
+  "scrim",
+  "slider",
+  "slider_hover",
+  "slider_active",
+];
+/** Every overlay must be in exactly one of these. */
+const OVERLAY_CLASSES = {
+  code: CODE_OVERLAYS,
+  label: LABEL_OVERLAYS,
+  surface: SURFACE_OVERLAYS,
+  "non-text": NON_TEXT_OVERLAYS,
+};
+/** The terminal draws selected text in its ANSI colour on these. */
+const TERMINAL_SELECTIONS = ["selection", "selection_inactive"];
+/** [overlay, surfaces, minimum OKLab distance from each surface]. */
+const VISIBLE_OVERLAYS = [
+  ["hover", ["bg", "bg_sunk"], 3],
+  ["active", ["bg", "bg_sunk"], 5],
+  ["slider", ["bg", "bg_sunk"], DISTINCT],
+  ["merge_current_header", ["bg"], DISTINCT],
+];
+/** accent_hover is seen only in succession to accent on the same button. */
+const HOVER_STEP = 3;
+
+/** An overlay recipe composited over a named surface. */
+const over = (tokens, name, surface) =>
+  alphaOver(
+    tokens.overlay[name].color,
+    tokens.surface[surface],
+    tokens.overlay[name].alpha,
+  );
 
 /** Pairs that must not look alike. Names are colour targets. */
 const DISTINCT_PAIRS = [
@@ -306,6 +344,13 @@ function textPairs(tokens) {
     add(codeText(tokens), `overlay.${o}`, tokens.overlay[o].hex);
   for (const o of LABEL_OVERLAYS)
     add(labelText(tokens), `overlay.${o}`, tokens.overlay[o].hex);
+  for (const o of SURFACE_OVERLAYS)
+    for (const s of CODE_SURFACES)
+      add(
+        codeText(tokens),
+        `overlay.${o} over surface.${s}`,
+        over(tokens, o, s),
+      );
   return pairs;
 }
 
@@ -515,6 +560,25 @@ export function check(tokens, raw) {
       }
     }
   }
+  for (const name of Object.keys(tokens.overlay)) {
+    const found = Object.keys(OVERLAY_CLASSES).filter((c) =>
+      OVERLAY_CLASSES[c].includes(name),
+    );
+    if (found.length !== 1) {
+      fail.push(
+        `✗ overlay.${name} is in ${found.length ? found.join(" and ") : "no class"}: every overlay needs exactly one of ${Object.keys(OVERLAY_CLASSES).join(", ")} (tools/build-tokens.mjs)`,
+      );
+    }
+  }
+  for (const [cls, list] of Object.entries(OVERLAY_CLASSES)) {
+    for (const name of list) {
+      if (!Object.hasOwn(tokens.overlay, name)) {
+        fail.push(
+          `✗ overlay.${name} is listed in the ${cls} class but not defined`,
+        );
+      }
+    }
+  }
   if (fail.length) return fail;
 
   // 1 + 2. Text contrast on surfaces and overlays.
@@ -530,6 +594,8 @@ export function check(tokens, raw) {
         tokens.surface.bg_terminal,
         AA,
       );
+      for (const o of TERMINAL_SELECTIONS)
+        need(`ansi.${slot}`, color, `overlay.${o}`, tokens.overlay[o].hex, AA);
     }
   }
 
@@ -554,6 +620,14 @@ export function check(tokens, raw) {
         NON_TEXT,
       );
   }
+  for (const s of ["bg", "bg_sunk"])
+    need(
+      "overlay.slider_active",
+      over(tokens, "slider_active", s),
+      `surface.${s}`,
+      tokens.surface[s],
+      NON_TEXT,
+    );
 
   // 5. Text on fills.
   for (const [role, f] of Object.entries(tokens.semantic_fill)) {
@@ -566,6 +640,7 @@ export function check(tokens, raw) {
     );
   }
   need("accent_on", tokens.accent_on, "accent", tokens.accent, AA);
+  need("accent_on", tokens.accent_on, "accent_hover", tokens.accent_hover, AA);
 
   // 6. Distinctness — audited on resolved colours, not slot names.
   // Core slots may share a colour only where syntax_tokens.aliases says so.
@@ -681,6 +756,22 @@ export function check(tokens, raw) {
     "overlay.find_match",
     find_match.hex,
     DISTINCT,
+  );
+  for (const [name, surfaces, min] of VISIBLE_OVERLAYS)
+    for (const s of surfaces)
+      apart(
+        `overlay.${name} over surface.${s}`,
+        over(tokens, name, s),
+        `surface.${s}`,
+        tokens.surface[s],
+        min,
+      );
+  apart(
+    "accent_hover",
+    tokens.accent_hover,
+    "accent",
+    tokens.accent,
+    HOVER_STEP,
   );
 
   return fail;

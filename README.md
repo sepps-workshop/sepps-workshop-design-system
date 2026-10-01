@@ -259,7 +259,7 @@ Recipes for the backgrounds that appear behind text: `{ color, alpha, border? }`
 | `slider_hover`          | `darkblue.40`  | 50 %  | `#566f9e`  |                   | code             |
 | `slider_active`         | `darkblue.40`  | 70 %  | `#7388ae`  |                   | code             |
 | `merge_current_content` | `windblue`     | 10 %  | `#0c3b7e`  |                   | code             |
-| `merge_current_header`  | `windblue`     | 25 %  | `#0a4a8c`  |                   | code             |
+| `merge_current_header`  | `windblue`     | 25 %  | `#0a4a8c`  |                   | `fg`, `fg_muted` |
 | `stack_frame`           | `lightorange`  | 10 %  | `#243c6e`  |                   | code             |
 
 <!-- /tokens -->

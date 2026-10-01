@@ -16,6 +16,8 @@ import {
   json5ToJson,
   CODE_OVERLAYS,
   LABEL_OVERLAYS,
+  SURFACE_OVERLAYS,
+  NON_TEXT_OVERLAYS,
 } from "./build-tokens.mjs";
 
 const SRC = await readFile(new URL("../tokens.json5", import.meta.url), "utf8");
@@ -165,6 +167,11 @@ test("the report covers every surface and overlay the gates name", () => {
   const expected = [
     ...["bg", "bg_sunk", "bg_overlay", "bg_soft"].map((s) => `surface.${s}`),
     ...[...CODE_OVERLAYS, ...LABEL_OVERLAYS].map((o) => `overlay.${o}`),
+    ...SURFACE_OVERLAYS.flatMap((o) =>
+      ["bg", "bg_sunk", "bg_overlay"].map(
+        (s) => `overlay.${o} over surface.${s}`,
+      ),
+    ),
   ];
   assert.deepEqual([...on].sort(), expected.sort());
   assert.ok(
@@ -387,4 +394,93 @@ test("shape: accent_hover must be a colour", () => {
   assertFails((r) => {
     r.accent_hover = "$palette.sunset";
   }, /accent_hover .*not a colour/);
+});
+
+/* ── Workbench overlays ──────────────────────────────────────────── */
+
+test("classes: an overlay in no class is named", () => {
+  assertFails((r) => {
+    r.overlay.glow = { color: "$palette.sunset.100", alpha: 0.1 };
+  }, /overlay\.glow is in no class/);
+});
+
+test("classes: a class naming a missing overlay is reported, not thrown", () => {
+  assertFails((r) => {
+    delete r.overlay.hover;
+  }, /overlay\.hover is listed in the surface class but not defined/);
+});
+
+test("classes: every shipped overlay is in exactly one class", () => {
+  const t = resolveTokens(parseTokens(SRC));
+  const all = [
+    ...CODE_OVERLAYS,
+    ...LABEL_OVERLAYS,
+    ...SURFACE_OVERLAYS,
+    ...NON_TEXT_OVERLAYS,
+  ];
+  assert.deepEqual([...all].sort(), Object.keys(t.overlay).sort());
+  assert.equal(new Set(all).size, all.length);
+});
+
+test("gate 2: the merge content fill keeps code readable", () => {
+  assertFails((r) => {
+    r.overlay.merge_current_content.alpha = 0.3;
+  }, /on overlay\.merge_current_content/);
+});
+
+test("gate 2: the stack frame fill keeps code readable", () => {
+  assertFails((r) => {
+    r.overlay.stack_frame.alpha = 0.25;
+  }, /on overlay\.stack_frame/);
+});
+
+test("gate 2: the merge header keeps fg_muted readable", () => {
+  assertFails((r) => {
+    r.overlay.merge_current_header.alpha = 0.5;
+  }, /text\.fg_muted .* on overlay\.merge_current_header/);
+});
+
+test("gate 2: a lightening hover fails on the sunk surface too", () => {
+  assertFails((r) => {
+    r.overlay.hover = { color: "$palette.windblue.100", alpha: 0.3 };
+  }, /on overlay\.hover over surface\.bg_sunk/);
+});
+
+test("gate 3: ANSI colours stay readable on the terminal selection", () => {
+  assertFails((r) => {
+    r.overlay.selection_inactive = {
+      color: "$palette.middleblue.100",
+      alpha: 0.4,
+    };
+  }, /ansi\.blue .* on overlay\.selection_inactive/);
+});
+
+test("gate 4: the dragged slider reaches 3:1", () => {
+  assertFails((r) => {
+    r.overlay.slider_active.alpha = 0.5;
+  }, /overlay\.slider_active .*needs 3:1/);
+});
+
+test("gate 5: text on the hovered accent must be readable", () => {
+  assertFails((r) => {
+    r.accent_hover = "$palette.darkblue.80";
+  }, /accent_on .* on accent_hover/);
+});
+
+test("gate 9: hover must be visible on the canvas and the sunk surface", () => {
+  assertFails((r) => {
+    r.overlay.hover.alpha = 0.05;
+  }, /overlay\.hover over surface\.bg_sunk .* too alike/);
+});
+
+test("gate 9: the resting slider must be visible", () => {
+  assertFails((r) => {
+    r.overlay.slider.alpha = 0.1;
+  }, /overlay\.slider over surface\.bg .* too alike/);
+});
+
+test("gate 9: accent_hover must differ from the accent", () => {
+  assertFails((r) => {
+    r.accent_hover = "$palette.sunset.90";
+  }, /accent_hover .* accent .* too alike/);
 });
