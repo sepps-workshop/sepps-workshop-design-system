@@ -132,7 +132,8 @@ function resolveRefs(node, root, at) {
  * Raw tree → resolved tokens:
  *   1. palette.<name>.<step> generated from palette_base + ladder
  *   2. every "$a.b.c" reference replaced by its value
- *   3. every overlay given `hex`, composited over surface.bg
+ *   3. every overlay given `hex` (composited over surface.bg) and
+ *      `hexa` (the recipe as #rrggbbaa)
  * Does not mutate `raw`.
  */
 export function resolveTokens(raw) {
@@ -146,10 +147,18 @@ export function resolveTokens(raw) {
   const tokens = resolveRefs(withPalette, withPalette, "");
   for (const o of Object.values(tokens.overlay)) {
     // A malformed recipe gets no hex here; check() reports it by path.
+    const ok = isColour(o.color) && isAlpha(o.alpha);
     o.hex =
-      isColour(o.color) && isColour(tokens.surface.bg) && isAlpha(o.alpha)
+      ok && isColour(tokens.surface.bg)
         ? alphaOver(o.color, tokens.surface.bg, o.alpha)
         : null;
+    // The recipe itself as #rrggbbaa, for ports that can blend.
+    o.hexa = ok
+      ? o.color +
+        Math.round(o.alpha * 255)
+          .toString(16)
+          .padStart(2, "0")
+      : null;
   }
   return tokens;
 }
@@ -166,6 +175,7 @@ export async function loadTokens(path = join(ROOT, "tokens.json5")) {
  */
 export function resolveTarget(tokens, target) {
   if (target === "accent") return tokens.accent;
+  if (target === "accent_hover") return tokens.accent_hover;
   if (Object.hasOwn(tokens.syntax, target)) return tokens.syntax[target];
   if (Object.hasOwn(tokens.text, target)) return tokens.text[target];
   const [group, key, ...extra] = String(target).split(".");
@@ -400,6 +410,7 @@ export function check(tokens, raw) {
   }
   colour("accent", tokens.accent);
   colour("accent_on", tokens.accent_on);
+  colour("accent_hover", tokens.accent_hover);
   for (const [k, f] of Object.entries(tokens.semantic_fill)) {
     colour(`semantic_fill.${k}.fill`, f.fill);
     colour(`semantic_fill.${k}.text`, f.text);

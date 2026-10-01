@@ -178,6 +178,7 @@ export default {
   },
   "accent": "#fbba00",
   "accent_on": "#0d3174",
+  "accent_hover": "#fcc833",
   "semantic": {
     "danger": "#ff897b",
     "success": "#9dd59a",
@@ -606,65 +607,131 @@ export default {
     "selection": {
       "color": "#1b1d1c",
       "alpha": 0.6,
-      "hex": "#15253f"
+      "hex": "#15253f",
+      "hexa": "#1b1d1c99"
     },
     "selection_inactive": {
       "color": "#1b1d1c",
       "alpha": 0.4,
-      "hex": "#132951"
+      "hex": "#132951",
+      "hexa": "#1b1d1c66"
     },
     "line_highlight": {
       "color": "#1b1d1c",
       "alpha": 0.3,
-      "hex": "#112b5a"
+      "hex": "#112b5a",
+      "hexa": "#1b1d1c4d"
     },
     "find_match": {
       "color": "#ec6608",
       "alpha": 0.15,
       "border": "#f29452",
-      "hex": "#2e3964"
+      "hex": "#2e3964",
+      "hexa": "#ec660826"
     },
     "find_match_other": {
       "color": "#ec6608",
       "alpha": 0.08,
       "border": "#8698ba",
-      "hex": "#1f356b"
+      "hex": "#1f356b",
+      "hexa": "#ec660814"
     },
     "word_highlight": {
       "color": "#fbba00",
       "alpha": 0.1,
-      "hex": "#253f68"
+      "hex": "#253f68",
+      "hexa": "#fbba001a"
     },
     "word_highlight_strong": {
       "color": "#fbba00",
       "alpha": 0.1,
       "border": "#fbba00",
-      "hex": "#253f68"
+      "hex": "#253f68",
+      "hexa": "#fbba001a"
     },
     "selected_item": {
       "color": "#fbba00",
       "alpha": 0.18,
-      "hex": "#384a5f"
+      "hex": "#384a5f",
+      "hexa": "#fbba002e"
     },
     "diff_inserted_line": {
       "color": "#3aaa35",
       "alpha": 0.12,
-      "hex": "#12406c"
+      "hex": "#12406c",
+      "hexa": "#3aaa351f"
     },
     "diff_inserted_text": {
       "color": "#3aaa35",
       "alpha": 0.25,
-      "hex": "#184f64"
+      "hex": "#184f64",
+      "hexa": "#3aaa3540"
     },
     "diff_removed_line": {
       "color": "#cd1719",
       "alpha": 0.14,
-      "hex": "#282d67"
+      "hex": "#282d67",
+      "hexa": "#cd171924"
     },
     "diff_removed_text": {
       "color": "#cd1719",
       "alpha": 0.35,
-      "hex": "#502854"
+      "hex": "#502854",
+      "hexa": "#cd171959"
+    },
+    "hover": {
+      "color": "#1b1d1c",
+      "alpha": 0.3,
+      "hex": "#112b5a",
+      "hexa": "#1b1d1c4d"
+    },
+    "active": {
+      "color": "#1b1d1c",
+      "alpha": 0.5,
+      "hex": "#142748",
+      "hexa": "#1b1d1c80"
+    },
+    "scrim": {
+      "color": "#1b1d1c",
+      "alpha": 0.6,
+      "hex": "#15253f",
+      "hexa": "#1b1d1c99"
+    },
+    "slider": {
+      "color": "#9eadc7",
+      "alpha": 0.3,
+      "hex": "#39568d",
+      "hexa": "#9eadc74d"
+    },
+    "slider_hover": {
+      "color": "#9eadc7",
+      "alpha": 0.5,
+      "hex": "#566f9e",
+      "hexa": "#9eadc780"
+    },
+    "slider_active": {
+      "color": "#9eadc7",
+      "alpha": 0.7,
+      "hex": "#7388ae",
+      "hexa": "#9eadc7b3"
+    },
+    "merge_current_content": {
+      "color": "#0093d3",
+      "alpha": 0.1,
+      "hex": "#0c3b7e",
+      "hexa": "#0093d31a"
+    },
+    "merge_current_header": {
+      "color": "#0093d3",
+      "alpha": 0.25,
+      "hex": "#0a4a8c",
+      "hexa": "#0093d340"
+    },
+    "stack_frame": {
+      "color": "#f59e33",
+      "alpha": 0.1,
+      "hex": "#243c6e",
+      "hexa": "#f59e331a"
     }
   },
   "shell_roles": {

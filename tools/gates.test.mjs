@@ -382,3 +382,9 @@ test("--check fails when a generated file has drifted", async () => {
   assert.equal(run.status, 1);
   assert.match(run.stderr, /tokens\.json out of date/);
 });
+
+test("shape: accent_hover must be a colour", () => {
+  assertFails((r) => {
+    r.accent_hover = "$palette.sunset";
+  }, /accent_hover .*not a colour/);
+});

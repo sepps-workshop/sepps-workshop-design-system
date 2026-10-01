@@ -252,6 +252,15 @@ Recipes for the backgrounds that appear behind text: `{ color, alpha, border? }`
 | `diff_inserted_text`    | `freegreen`    | 25 %  | `#184f64`  |                   | `fg`, `fg_muted` |
 | `diff_removed_line`     | `signalred`    | 14 %  | `#282d67`  |                   | code             |
 | `diff_removed_text`     | `signalred`    | 35 %  | `#502854`  |                   | `fg`, `fg_muted` |
+| `hover`                 | `darkblack`    | 30 %  | `#112b5a`  |                   | code             |
+| `active`                | `darkblack`    | 50 %  | `#142748`  |                   | code             |
+| `scrim`                 | `darkblack`    | 60 %  | `#15253f`  |                   | code             |
+| `slider`                | `darkblue.40`  | 30 %  | `#39568d`  |                   | code             |
+| `slider_hover`          | `darkblue.40`  | 50 %  | `#566f9e`  |                   | code             |
+| `slider_active`         | `darkblue.40`  | 70 %  | `#7388ae`  |                   | code             |
+| `merge_current_content` | `windblue`     | 10 %  | `#0c3b7e`  |                   | code             |
+| `merge_current_header`  | `windblue`     | 25 %  | `#0a4a8c`  |                   | code             |
+| `stack_frame`           | `lightorange`  | 10 %  | `#243c6e`  |                   | code             |
 
 <!-- /tokens -->
 

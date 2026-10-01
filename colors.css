@@ -176,6 +176,15 @@
   --sw-overlay-diff-inserted-text: #184f64;
   --sw-overlay-diff-removed-line: #282d67;
   --sw-overlay-diff-removed-text: #502854;
+  --sw-overlay-hover: #112b5a;
+  --sw-overlay-active: #142748;
+  --sw-overlay-scrim: #15253f;
+  --sw-overlay-slider: #39568d;
+  --sw-overlay-slider-hover: #566f9e;
+  --sw-overlay-slider-active: #7388ae;
+  --sw-overlay-merge-current-content: #0c3b7e;
+  --sw-overlay-merge-current-header: #0a4a8c;
+  --sw-overlay-stack-frame: #243c6e;
 
   /* Typography */
   --sw-font-mono: "JetBrains Mono", "JetBrainsMono Nerd Font", "Cascadia Code", Consolas, ui-monospace, monospace;

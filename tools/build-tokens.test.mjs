@@ -92,3 +92,35 @@ test("resolveTarget refuses a target with extra path segments", () => {
     /Unknown colour target/,
   );
 });
+
+test("overlays get a translucent hexa beside the composited hex", () => {
+  const t = resolveTokens(fresh());
+  assert.equal(t.overlay.selection.hexa, "#1b1d1c99");
+  for (const [name, o] of Object.entries(t.overlay)) {
+    assert.match(o.hexa, /^#[0-9a-f]{8}$/, `overlay.${name}.hexa`);
+    assert.equal(o.hexa.slice(0, 7), o.color, `overlay.${name}.hexa colour`);
+  }
+});
+
+test("a malformed recipe gets neither hex nor hexa", () => {
+  const raw = fresh();
+  delete raw.overlay.selection.alpha;
+  const t = resolveTokens(raw);
+  assert.equal(t.overlay.selection.hex, null);
+  assert.equal(t.overlay.selection.hexa, null);
+});
+
+test("the workbench overlays and accent_hover resolve", () => {
+  const t = resolveTokens(fresh());
+  assert.equal(t.overlay.hover.hex, "#112b5a");
+  assert.equal(t.overlay.active.hex, "#142748");
+  assert.equal(t.overlay.scrim.hex, "#15253f");
+  assert.equal(t.overlay.slider.hex, "#39568d");
+  assert.equal(t.overlay.slider_hover.hex, "#566f9e");
+  assert.equal(t.overlay.slider_active.hex, "#7388ae");
+  assert.equal(t.overlay.merge_current_content.hex, "#0c3b7e");
+  assert.equal(t.overlay.merge_current_header.hex, "#0a4a8c");
+  assert.equal(t.overlay.stack_frame.hex, "#243c6e");
+  assert.equal(t.accent_hover, "#fcc833");
+  assert.equal(resolveTarget(t, "accent_hover"), "#fcc833");
+});
