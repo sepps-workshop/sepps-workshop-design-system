@@ -224,14 +224,22 @@ export const CODE_OVERLAYS = [
   "diff_removed_line",
   "merge_current_content",
   "stack_frame",
-];
-/** Overlays that sit behind list rows and inline spans: fg / fg_muted only. */
-export const LABEL_OVERLAYS = [
-  "selected_item",
   "diff_inserted_text",
   "diff_removed_text",
-  "merge_current_header",
 ];
+/** Overlays that sit behind list rows and headers: fg / fg_muted only. */
+export const LABEL_OVERLAYS = [
+  "selected_item",
+  "merge_current_header",
+  "merge_incoming_header",
+];
+/** [span, line]: an editor draws the span on top of the line, behind code. */
+const DIFF_STACKS = [
+  ["diff_inserted_text", "diff_inserted_line"],
+  ["diff_removed_text", "diff_removed_line"],
+];
+/** A changed span is a detail inside a line that is already marked. */
+const SPAN_STEP = 5;
 /** Overlays drawn over every code surface, gated as code on each. */
 export const SURFACE_OVERLAYS = ["hover", "active"];
 /** Overlays nothing is read through: shadow and scrollbar thumbs. */
@@ -261,6 +269,7 @@ const VISIBLE_OVERLAYS = [
 const GATED_BY_NAME = [
   ...TERMINAL_SELECTIONS,
   ...VISIBLE_OVERLAYS.map(([name]) => name),
+  ...DIFF_STACKS.flat(),
   "slider_active",
   "find_match",
 ];
@@ -273,6 +282,13 @@ const over = (tokens, name, surface) =>
     tokens.overlay[name].color,
     tokens.surface[surface],
     tokens.overlay[name].alpha,
+  );
+/** A diff span composited over its line, itself composited over the canvas. */
+const stacked = (tokens, span, line) =>
+  alphaOver(
+    tokens.overlay[span].color,
+    tokens.overlay[line].hex,
+    tokens.overlay[span].alpha,
   );
 
 /** Pairs that must not look alike. Names are colour targets. */
@@ -358,6 +374,12 @@ function textPairs(tokens) {
         `overlay.${o} over surface.${s}`,
         over(tokens, o, s),
       );
+  for (const [span, line] of DIFF_STACKS)
+    add(
+      codeText(tokens),
+      `overlay.${span} over overlay.${line}`,
+      stacked(tokens, span, line),
+    );
   return pairs;
 }
 
@@ -791,6 +813,14 @@ export function check(tokens, raw) {
         tokens.surface[s],
         min,
       );
+  for (const [span, line] of DIFF_STACKS)
+    apart(
+      `overlay.${span} over overlay.${line}`,
+      stacked(tokens, span, line),
+      `overlay.${line}`,
+      tokens.overlay[line].hex,
+      SPAN_STEP,
+    );
   apart(
     "accent_hover",
     tokens.accent_hover,

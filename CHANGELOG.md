@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1 — 2026-10-01
+
+- **⚠️ `diff_inserted_text` changes colour:** from Freegreen at 25 % to Darkblack at 40 %. An editor draws the changed span on top of the inserted line, behind code; the green stack left numbers at 3.37:1. The span now darkens the line (worst code text 5.72:1).
+- Both `diff_*_text` recipes are now code overlays and are gated stacked on their line recipes, for contrast and for visibility.
+- New `merge_incoming_header` (Freegreen at 25 %, `fg` and `fg_muted` only), the value `diff_inserted_text` used to have, for the merge editor's incoming header.
+
 ## 0.2.0 — 2026-10-01
 
 - Nine overlay recipes for workbench surfaces: `hover`, `active`, `scrim`, `slider`, `slider_hover`, `slider_active`, `merge_current_content`, `merge_current_header`, `stack_frame`.

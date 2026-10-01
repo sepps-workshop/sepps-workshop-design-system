@@ -172,6 +172,8 @@ test("the report covers every surface and overlay the gates name", () => {
         (s) => `overlay.${o} over surface.${s}`,
       ),
     ),
+    "overlay.diff_inserted_text over overlay.diff_inserted_line",
+    "overlay.diff_removed_text over overlay.diff_removed_line",
   ];
   assert.deepEqual([...on].sort(), expected.sort());
   assert.ok(
@@ -504,4 +506,30 @@ test("gate 2: a surface overlay must darken, however faintly it lightens", () =>
   assertFails((r) => {
     r.overlay.hover = { color: "$palette.white.100", alpha: 0.05 };
   }, /overlay\.hover over surface\.bg .* lighter than the surface/);
+});
+
+/* ── Inline diff spans (0.2.1) ───────────────────────────────────── */
+
+test("gate 2: a changed span stacked on its diff line keeps code readable", () => {
+  assertFails((r) => {
+    r.overlay.diff_inserted_text = {
+      color: "$palette.freegreen.100",
+      alpha: 0.25,
+    };
+  }, /syntax\.number .* on overlay\.diff_inserted_text over overlay\.diff_inserted_line/);
+});
+
+test("gate 9: a changed span must be visible on its diff line", () => {
+  assertFails((r) => {
+    r.overlay.diff_inserted_text.alpha = 0.05;
+  }, /overlay\.diff_inserted_text over overlay\.diff_inserted_line .* too alike/);
+});
+
+test("the shipped diff spans darken their lines and carry code", () => {
+  const t = resolveTokens(parseTokens(SRC));
+  assert.equal(t.overlay.diff_inserted_text.color, t.palette.darkblack[100]);
+  assert.ok(CODE_OVERLAYS.includes("diff_inserted_text"));
+  assert.ok(CODE_OVERLAYS.includes("diff_removed_text"));
+  assert.ok(LABEL_OVERLAYS.includes("merge_incoming_header"));
+  assert.equal(t.overlay.merge_incoming_header.hex, "#184f64");
 });

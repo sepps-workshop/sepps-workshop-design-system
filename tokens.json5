@@ -13,7 +13,7 @@
 {
   meta: {
     name: "Sepp's Workshop",
-    version: "0.2.0",
+    version: "0.2.1",
     description: "One medium-dark theme on sepp.med Darkblue. WCAG AA enforced by the build.",
     career_url: "https://www.seppmed.com/career/",
   },
@@ -376,9 +376,11 @@
     },
     selected_item: { color: "$palette.sunset.100", alpha: 0.18 }, // list rows: fg / fg_muted only
     diff_inserted_line: { color: "$palette.freegreen.100", alpha: 0.12 },
-    diff_inserted_text: { color: "$palette.freegreen.100", alpha: 0.25 }, // fg / fg_muted only
+    // Changed spans are drawn on top of their line, behind code, so they
+    // darken it: a stronger green takes numbers and comments below 4.5:1.
+    diff_inserted_text: { color: "$palette.darkblack.100", alpha: 0.4 },
     diff_removed_line: { color: "$palette.signalred.100", alpha: 0.14 },
-    diff_removed_text: { color: "$palette.signalred.100", alpha: 0.35 }, // fg / fg_muted only
+    diff_removed_text: { color: "$palette.signalred.100", alpha: 0.35 },
     // Surface overlays: also drawn over bg_sunk and bg_overlay, and gated there.
     hover: { color: "$palette.darkblack.100", alpha: 0.3 }, // the row under the pointer
     active: { color: "$palette.darkblack.100", alpha: 0.5 }, // drop target, pressed item
@@ -387,9 +389,10 @@
     slider: { color: "$palette.darkblue.40", alpha: 0.3 }, // scrollbar and minimap thumb
     slider_hover: { color: "$palette.darkblue.40", alpha: 0.5 },
     slider_active: { color: "$palette.darkblue.40", alpha: 0.7 },
-    // Merge editor, "current" side. "Incoming" reuses diff_inserted_*.
+    // Merge editor. "Incoming" content reuses diff_inserted_line.
     merge_current_content: { color: "$palette.windblue.100", alpha: 0.1 },
     merge_current_header: { color: "$palette.windblue.100", alpha: 0.25 }, // fg / fg_muted only
+    merge_incoming_header: { color: "$palette.freegreen.100", alpha: 0.25 }, // fg / fg_muted only
     // One recipe for both debugger frames; the gutter arrow tells them apart.
     stack_frame: { color: "$palette.lightorange.100", alpha: 0.1 },
   },

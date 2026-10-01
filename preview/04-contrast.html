@@ -147,6 +147,7 @@ th{color:var(--sw-fg-muted);font-weight:400}
 .o-slider_active{background:var(--sw-overlay-slider-active)}
 .o-merge_current_content{background:var(--sw-overlay-merge-current-content)}
 .o-merge_current_header{background:var(--sw-overlay-merge-current-header)}
+.o-merge_incoming_header{background:var(--sw-overlay-merge-incoming-header)}
 .o-stack_frame{background:var(--sw-overlay-stack-frame)}
 </style>
 </head>
@@ -438,18 +439,55 @@ th{color:var(--sw-fg-muted);font-weight:400}
 <tr data-pair><td><span class="chip" style="background:#9dd59a"></span>semantic.success</td><td>#9dd59a</td><td>6.38:1</td><td>Lc 64</td></tr>
 <tr data-pair><td><span class="chip" style="background:#f59e33"></span>semantic.warning</td><td>#f59e33</td><td>5.05:1</td><td>Lc 51</td></tr>
 <tr data-pair><td><span class="chip" style="background:#66bee5"></span>semantic.info</td><td>#66bee5</td><td>5.17:1</td><td>Lc 52</td></tr></table></section>
+<section><h2>On overlay.diff_inserted_text (#132951)</h2><table><tr><th>Text</th><th>Value</th><th>WCAG 2.x</th><th>APCA</th></tr>
+<tr data-pair><td><span class="chip" style="background:#e7eaf1"></span>text.fg</td><td>#e7eaf1</td><td>11.91:1</td><td>Lc 90</td></tr>
+<tr data-pair><td><span class="chip" style="background:#b6c1d5"></span>text.fg_muted</td><td>#b6c1d5</td><td>7.91:1</td><td>Lc 65</td></tr>
+<tr data-pair><td><span class="chip" style="background:#9eadc7"></span>text.fg_subtle</td><td>#9eadc7</td><td>6.32:1</td><td>Lc 53</td></tr>
+<tr data-pair><td><span class="chip" style="background:#9eadc7"></span>syntax.comment</td><td>#9eadc7</td><td>6.32:1</td><td>Lc 53</td></tr>
+<tr data-pair><td><span class="chip" style="background:#fbba00"></span>syntax.keyword</td><td>#fbba00</td><td>8.28:1</td><td>Lc 68</td></tr>
+<tr data-pair><td><span class="chip" style="background:#f7c29c"></span>syntax.string</td><td>#f7c29c</td><td>8.99:1</td><td>Lc 72</td></tr>
+<tr data-pair><td><span class="chip" style="background:#f29452"></span>syntax.number</td><td>#f29452</td><td>6.24:1</td><td>Lc 53</td></tr>
+<tr data-pair><td><span class="chip" style="background:#66bee5"></span>syntax.function</td><td>#66bee5</td><td>6.87:1</td><td>Lc 58</td></tr>
+<tr data-pair><td><span class="chip" style="background:#b3dff2"></span>syntax.parameter</td><td>#b3dff2</td><td>10.08:1</td><td>Lc 79</td></tr>
+<tr data-pair><td><span class="chip" style="background:#fde399"></span>syntax.type</td><td>#fde399</td><td>11.36:1</td><td>Lc 87</td></tr>
+<tr data-pair><td><span class="chip" style="background:#f29452"></span>syntax.constant</td><td>#f29452</td><td>6.24:1</td><td>Lc 53</td></tr>
+<tr data-pair><td><span class="chip" style="background:#fbba00"></span>syntax.tag</td><td>#fbba00</td><td>8.28:1</td><td>Lc 68</td></tr>
+<tr data-pair><td><span class="chip" style="background:#b3dff2"></span>syntax.attr</td><td>#b3dff2</td><td>10.08:1</td><td>Lc 79</td></tr>
+<tr data-pair><td><span class="chip" style="background:#f29452"></span>syntax.regex</td><td>#f29452</td><td>6.24:1</td><td>Lc 53</td></tr>
+<tr data-pair><td><span class="chip" style="background:#b6c1d5"></span>syntax.punct</td><td>#b6c1d5</td><td>7.91:1</td><td>Lc 65</td></tr>
+<tr data-pair><td><span class="chip" style="background:#ff897b"></span>semantic.danger</td><td>#ff897b</td><td>6.23:1</td><td>Lc 53</td></tr>
+<tr data-pair><td><span class="chip" style="background:#9dd59a"></span>semantic.success</td><td>#9dd59a</td><td>8.48:1</td><td>Lc 69</td></tr>
+<tr data-pair><td><span class="chip" style="background:#f59e33"></span>semantic.warning</td><td>#f59e33</td><td>6.71:1</td><td>Lc 57</td></tr>
+<tr data-pair><td><span class="chip" style="background:#66bee5"></span>semantic.info</td><td>#66bee5</td><td>6.87:1</td><td>Lc 58</td></tr></table></section>
+<section><h2>On overlay.diff_removed_text (#502854)</h2><table><tr><th>Text</th><th>Value</th><th>WCAG 2.x</th><th>APCA</th></tr>
+<tr data-pair><td><span class="chip" style="background:#e7eaf1"></span>text.fg</td><td>#e7eaf1</td><td>9.84:1</td><td>Lc 87</td></tr>
+<tr data-pair><td><span class="chip" style="background:#b6c1d5"></span>text.fg_muted</td><td>#b6c1d5</td><td>6.53:1</td><td>Lc 61</td></tr>
+<tr data-pair><td><span class="chip" style="background:#9eadc7"></span>text.fg_subtle</td><td>#9eadc7</td><td>5.22:1</td><td>Lc 50</td></tr>
+<tr data-pair><td><span class="chip" style="background:#9eadc7"></span>syntax.comment</td><td>#9eadc7</td><td>5.22:1</td><td>Lc 50</td></tr>
+<tr data-pair><td><span class="chip" style="background:#fbba00"></span>syntax.keyword</td><td>#fbba00</td><td>6.84:1</td><td>Lc 64</td></tr>
+<tr data-pair><td><span class="chip" style="background:#f7c29c"></span>syntax.string</td><td>#f7c29c</td><td>7.42:1</td><td>Lc 69</td></tr>
+<tr data-pair><td><span class="chip" style="background:#f29452"></span>syntax.number</td><td>#f29452</td><td>5.15:1</td><td>Lc 50</td></tr>
+<tr data-pair><td><span class="chip" style="background:#66bee5"></span>syntax.function</td><td>#66bee5</td><td>5.68:1</td><td>Lc 54</td></tr>
+<tr data-pair><td><span class="chip" style="background:#b3dff2"></span>syntax.parameter</td><td>#b3dff2</td><td>8.32:1</td><td>Lc 76</td></tr>
+<tr data-pair><td><span class="chip" style="background:#fde399"></span>syntax.type</td><td>#fde399</td><td>9.38:1</td><td>Lc 84</td></tr>
+<tr data-pair><td><span class="chip" style="background:#f29452"></span>syntax.constant</td><td>#f29452</td><td>5.15:1</td><td>Lc 50</td></tr>
+<tr data-pair><td><span class="chip" style="background:#fbba00"></span>syntax.tag</td><td>#fbba00</td><td>6.84:1</td><td>Lc 64</td></tr>
+<tr data-pair><td><span class="chip" style="background:#b3dff2"></span>syntax.attr</td><td>#b3dff2</td><td>8.32:1</td><td>Lc 76</td></tr>
+<tr data-pair><td><span class="chip" style="background:#f29452"></span>syntax.regex</td><td>#f29452</td><td>5.15:1</td><td>Lc 50</td></tr>
+<tr data-pair><td><span class="chip" style="background:#b6c1d5"></span>syntax.punct</td><td>#b6c1d5</td><td>6.53:1</td><td>Lc 61</td></tr>
+<tr data-pair><td><span class="chip" style="background:#ff897b"></span>semantic.danger</td><td>#ff897b</td><td>5.14:1</td><td>Lc 50</td></tr>
+<tr data-pair><td><span class="chip" style="background:#9dd59a"></span>semantic.success</td><td>#9dd59a</td><td>7.01:1</td><td>Lc 65</td></tr>
+<tr data-pair><td><span class="chip" style="background:#f59e33"></span>semantic.warning</td><td>#f59e33</td><td>5.54:1</td><td>Lc 53</td></tr>
+<tr data-pair><td><span class="chip" style="background:#66bee5"></span>semantic.info</td><td>#66bee5</td><td>5.68:1</td><td>Lc 54</td></tr></table></section>
 <section><h2>On overlay.selected_item (#384a5f)</h2><table><tr><th>Text</th><th>Value</th><th>WCAG 2.x</th><th>APCA</th></tr>
 <tr data-pair><td><span class="chip" style="background:#e7eaf1"></span>text.fg</td><td>#e7eaf1</td><td>7.54:1</td><td>Lc 81</td></tr>
 <tr data-pair><td><span class="chip" style="background:#b6c1d5"></span>text.fg_muted</td><td>#b6c1d5</td><td>5.01:1</td><td>Lc 56</td></tr></table></section>
-<section><h2>On overlay.diff_inserted_text (#184f64)</h2><table><tr><th>Text</th><th>Value</th><th>WCAG 2.x</th><th>APCA</th></tr>
-<tr data-pair><td><span class="chip" style="background:#e7eaf1"></span>text.fg</td><td>#e7eaf1</td><td>7.45:1</td><td>Lc 81</td></tr>
-<tr data-pair><td><span class="chip" style="background:#b6c1d5"></span>text.fg_muted</td><td>#b6c1d5</td><td>4.95:1</td><td>Lc 56</td></tr></table></section>
-<section><h2>On overlay.diff_removed_text (#502854)</h2><table><tr><th>Text</th><th>Value</th><th>WCAG 2.x</th><th>APCA</th></tr>
-<tr data-pair><td><span class="chip" style="background:#e7eaf1"></span>text.fg</td><td>#e7eaf1</td><td>9.84:1</td><td>Lc 87</td></tr>
-<tr data-pair><td><span class="chip" style="background:#b6c1d5"></span>text.fg_muted</td><td>#b6c1d5</td><td>6.53:1</td><td>Lc 61</td></tr></table></section>
 <section><h2>On overlay.merge_current_header (#0a4a8c)</h2><table><tr><th>Text</th><th>Value</th><th>WCAG 2.x</th><th>APCA</th></tr>
 <tr data-pair><td><span class="chip" style="background:#e7eaf1"></span>text.fg</td><td>#e7eaf1</td><td>7.35:1</td><td>Lc 80</td></tr>
 <tr data-pair><td><span class="chip" style="background:#b6c1d5"></span>text.fg_muted</td><td>#b6c1d5</td><td>4.88:1</td><td>Lc 55</td></tr></table></section>
+<section><h2>On overlay.merge_incoming_header (#184f64)</h2><table><tr><th>Text</th><th>Value</th><th>WCAG 2.x</th><th>APCA</th></tr>
+<tr data-pair><td><span class="chip" style="background:#e7eaf1"></span>text.fg</td><td>#e7eaf1</td><td>7.45:1</td><td>Lc 81</td></tr>
+<tr data-pair><td><span class="chip" style="background:#b6c1d5"></span>text.fg_muted</td><td>#b6c1d5</td><td>4.95:1</td><td>Lc 56</td></tr></table></section>
 <section><h2>On overlay.hover over surface.bg (#112b5a)</h2><table><tr><th>Text</th><th>Value</th><th>WCAG 2.x</th><th>APCA</th></tr>
 <tr data-pair><td><span class="chip" style="background:#e7eaf1"></span>text.fg</td><td>#e7eaf1</td><td>11.49:1</td><td>Lc 90</td></tr>
 <tr data-pair><td><span class="chip" style="background:#b6c1d5"></span>text.fg_muted</td><td>#b6c1d5</td><td>7.63:1</td><td>Lc 64</td></tr>
@@ -569,7 +607,47 @@ th{color:var(--sw-fg-muted);font-weight:400}
 <tr data-pair><td><span class="chip" style="background:#ff897b"></span>semantic.danger</td><td>#ff897b</td><td>6.65:1</td><td>Lc 54</td></tr>
 <tr data-pair><td><span class="chip" style="background:#9dd59a"></span>semantic.success</td><td>#9dd59a</td><td>9.06:1</td><td>Lc 70</td></tr>
 <tr data-pair><td><span class="chip" style="background:#f59e33"></span>semantic.warning</td><td>#f59e33</td><td>7.17:1</td><td>Lc 58</td></tr>
-<tr data-pair><td><span class="chip" style="background:#66bee5"></span>semantic.info</td><td>#66bee5</td><td>7.34:1</td><td>Lc 59</td></tr></table></section><section><h2>ANSI on surface.bg_terminal (#0d3174)</h2><table><tr><th>Slot</th><th>Value</th><th>WCAG 2.x</th><th></th></tr>
+<tr data-pair><td><span class="chip" style="background:#66bee5"></span>semantic.info</td><td>#66bee5</td><td>7.34:1</td><td>Lc 59</td></tr></table></section>
+<section><h2>On overlay.diff_inserted_text over overlay.diff_inserted_line (#16324c)</h2><table><tr><th>Text</th><th>Value</th><th>WCAG 2.x</th><th>APCA</th></tr>
+<tr data-pair><td><span class="chip" style="background:#e7eaf1"></span>text.fg</td><td>#e7eaf1</td><td>10.93:1</td><td>Lc 89</td></tr>
+<tr data-pair><td><span class="chip" style="background:#b6c1d5"></span>text.fg_muted</td><td>#b6c1d5</td><td>7.26:1</td><td>Lc 63</td></tr>
+<tr data-pair><td><span class="chip" style="background:#9eadc7"></span>text.fg_subtle</td><td>#9eadc7</td><td>5.80:1</td><td>Lc 52</td></tr>
+<tr data-pair><td><span class="chip" style="background:#9eadc7"></span>syntax.comment</td><td>#9eadc7</td><td>5.80:1</td><td>Lc 52</td></tr>
+<tr data-pair><td><span class="chip" style="background:#fbba00"></span>syntax.keyword</td><td>#fbba00</td><td>7.60:1</td><td>Lc 66</td></tr>
+<tr data-pair><td><span class="chip" style="background:#f7c29c"></span>syntax.string</td><td>#f7c29c</td><td>8.25:1</td><td>Lc 71</td></tr>
+<tr data-pair><td><span class="chip" style="background:#f29452"></span>syntax.number</td><td>#f29452</td><td>5.73:1</td><td>Lc 52</td></tr>
+<tr data-pair><td><span class="chip" style="background:#66bee5"></span>syntax.function</td><td>#66bee5</td><td>6.31:1</td><td>Lc 56</td></tr>
+<tr data-pair><td><span class="chip" style="background:#b3dff2"></span>syntax.parameter</td><td>#b3dff2</td><td>9.25:1</td><td>Lc 78</td></tr>
+<tr data-pair><td><span class="chip" style="background:#fde399"></span>syntax.type</td><td>#fde399</td><td>10.42:1</td><td>Lc 86</td></tr>
+<tr data-pair><td><span class="chip" style="background:#f29452"></span>syntax.constant</td><td>#f29452</td><td>5.73:1</td><td>Lc 52</td></tr>
+<tr data-pair><td><span class="chip" style="background:#fbba00"></span>syntax.tag</td><td>#fbba00</td><td>7.60:1</td><td>Lc 66</td></tr>
+<tr data-pair><td><span class="chip" style="background:#b3dff2"></span>syntax.attr</td><td>#b3dff2</td><td>9.25:1</td><td>Lc 78</td></tr>
+<tr data-pair><td><span class="chip" style="background:#f29452"></span>syntax.regex</td><td>#f29452</td><td>5.73:1</td><td>Lc 52</td></tr>
+<tr data-pair><td><span class="chip" style="background:#b6c1d5"></span>syntax.punct</td><td>#b6c1d5</td><td>7.26:1</td><td>Lc 63</td></tr>
+<tr data-pair><td><span class="chip" style="background:#ff897b"></span>semantic.danger</td><td>#ff897b</td><td>5.72:1</td><td>Lc 52</td></tr>
+<tr data-pair><td><span class="chip" style="background:#9dd59a"></span>semantic.success</td><td>#9dd59a</td><td>7.79:1</td><td>Lc 67</td></tr>
+<tr data-pair><td><span class="chip" style="background:#f59e33"></span>semantic.warning</td><td>#f59e33</td><td>6.16:1</td><td>Lc 55</td></tr>
+<tr data-pair><td><span class="chip" style="background:#66bee5"></span>semantic.info</td><td>#66bee5</td><td>6.31:1</td><td>Lc 56</td></tr></table></section>
+<section><h2>On overlay.diff_removed_text over overlay.diff_removed_line (#62254c)</h2><table><tr><th>Text</th><th>Value</th><th>WCAG 2.x</th><th>APCA</th></tr>
+<tr data-pair><td><span class="chip" style="background:#e7eaf1"></span>text.fg</td><td>#e7eaf1</td><td>9.23:1</td><td>Lc 85</td></tr>
+<tr data-pair><td><span class="chip" style="background:#b6c1d5"></span>text.fg_muted</td><td>#b6c1d5</td><td>6.13:1</td><td>Lc 60</td></tr>
+<tr data-pair><td><span class="chip" style="background:#9eadc7"></span>text.fg_subtle</td><td>#9eadc7</td><td>4.90:1</td><td>Lc 49</td></tr>
+<tr data-pair><td><span class="chip" style="background:#9eadc7"></span>syntax.comment</td><td>#9eadc7</td><td>4.90:1</td><td>Lc 49</td></tr>
+<tr data-pair><td><span class="chip" style="background:#fbba00"></span>syntax.keyword</td><td>#fbba00</td><td>6.42:1</td><td>Lc 63</td></tr>
+<tr data-pair><td><span class="chip" style="background:#f7c29c"></span>syntax.string</td><td>#f7c29c</td><td>6.96:1</td><td>Lc 67</td></tr>
+<tr data-pair><td><span class="chip" style="background:#f29452"></span>syntax.number</td><td>#f29452</td><td>4.84:1</td><td>Lc 48</td></tr>
+<tr data-pair><td><span class="chip" style="background:#66bee5"></span>syntax.function</td><td>#66bee5</td><td>5.33:1</td><td>Lc 53</td></tr>
+<tr data-pair><td><span class="chip" style="background:#b3dff2"></span>syntax.parameter</td><td>#b3dff2</td><td>7.81:1</td><td>Lc 74</td></tr>
+<tr data-pair><td><span class="chip" style="background:#fde399"></span>syntax.type</td><td>#fde399</td><td>8.80:1</td><td>Lc 82</td></tr>
+<tr data-pair><td><span class="chip" style="background:#f29452"></span>syntax.constant</td><td>#f29452</td><td>4.84:1</td><td>Lc 48</td></tr>
+<tr data-pair><td><span class="chip" style="background:#fbba00"></span>syntax.tag</td><td>#fbba00</td><td>6.42:1</td><td>Lc 63</td></tr>
+<tr data-pair><td><span class="chip" style="background:#b3dff2"></span>syntax.attr</td><td>#b3dff2</td><td>7.81:1</td><td>Lc 74</td></tr>
+<tr data-pair><td><span class="chip" style="background:#f29452"></span>syntax.regex</td><td>#f29452</td><td>4.84:1</td><td>Lc 48</td></tr>
+<tr data-pair><td><span class="chip" style="background:#b6c1d5"></span>syntax.punct</td><td>#b6c1d5</td><td>6.13:1</td><td>Lc 60</td></tr>
+<tr data-pair><td><span class="chip" style="background:#ff897b"></span>semantic.danger</td><td>#ff897b</td><td>4.83:1</td><td>Lc 48</td></tr>
+<tr data-pair><td><span class="chip" style="background:#9dd59a"></span>semantic.success</td><td>#9dd59a</td><td>6.58:1</td><td>Lc 64</td></tr>
+<tr data-pair><td><span class="chip" style="background:#f59e33"></span>semantic.warning</td><td>#f59e33</td><td>5.20:1</td><td>Lc 52</td></tr>
+<tr data-pair><td><span class="chip" style="background:#66bee5"></span>semantic.info</td><td>#66bee5</td><td>5.33:1</td><td>Lc 53</td></tr></table></section><section><h2>ANSI on surface.bg_terminal (#0d3174)</h2><table><tr><th>Slot</th><th>Value</th><th>WCAG 2.x</th><th></th></tr>
 <tr><td><span class="chip" style="background:#102d62"></span>ansi.black</td><td>#102d62</td><td>1.09:1</td><td>exempt</td></tr>
 <tr><td><span class="chip" style="background:#ff897b"></span>ansi.red</td><td>#ff897b</td><td>5.34:1</td><td></td></tr>
 <tr><td><span class="chip" style="background:#9dd59a"></span>ansi.green</td><td>#9dd59a</td><td>7.27:1</td><td></td></tr>

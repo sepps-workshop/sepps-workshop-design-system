@@ -250,9 +250,9 @@ Recipes for the backgrounds that appear behind text and for a few workbench surf
 | `word_highlight_strong` | `sunset`       | 10 %  | `#253f68`  | `sunset`          | code             |
 | `selected_item`         | `sunset`       | 18 %  | `#384a5f`  |                   | `fg`, `fg_muted` |
 | `diff_inserted_line`    | `freegreen`    | 12 %  | `#12406c`  |                   | code             |
-| `diff_inserted_text`    | `freegreen`    | 25 %  | `#184f64`  |                   | `fg`, `fg_muted` |
+| `diff_inserted_text`    | `darkblack`    | 40 %  | `#132951`  |                   | code             |
 | `diff_removed_line`     | `signalred`    | 14 %  | `#282d67`  |                   | code             |
-| `diff_removed_text`     | `signalred`    | 35 %  | `#502854`  |                   | `fg`, `fg_muted` |
+| `diff_removed_text`     | `signalred`    | 35 %  | `#502854`  |                   | code             |
 | `hover`                 | `darkblack`    | 30 %  | `#112b5a`  |                   | surface          |
 | `active`                | `darkblack`    | 50 %  | `#142748`  |                   | surface          |
 | `scrim`                 | `darkblack`    | 60 %  | `#15253f`  |                   | non-text         |
@@ -261,6 +261,7 @@ Recipes for the backgrounds that appear behind text and for a few workbench surf
 | `slider_active`         | `darkblue.40`  | 70 %  | `#7388ae`  |                   | non-text         |
 | `merge_current_content` | `windblue`     | 10 %  | `#0c3b7e`  |                   | code             |
 | `merge_current_header`  | `windblue`     | 25 %  | `#0a4a8c`  |                   | `fg`, `fg_muted` |
+| `merge_incoming_header` | `freegreen`    | 25 %  | `#184f64`  |                   | `fg`, `fg_muted` |
 | `stack_frame`           | `lightorange`  | 10 %  | `#243c6e`  |                   | code             |
 
 <!-- /tokens -->
@@ -272,9 +273,11 @@ Highlights that have to carry a hue stay faint and get a border, which also mean
 The last column is the overlay's class, and every overlay has exactly one:
 
 - **code** overlays sit behind whole lines on the canvas and are checked against every syntax colour.
-- **`fg`, `fg_muted`** overlays sit behind list rows, headers and inline spans and carry those two text colours only.
+- **`fg`, `fg_muted`** overlays sit behind list rows and headers and carry those two text colours only.
 - **surface** overlays (`hover`, `active`) are also drawn over the sidebar, the status bar and menus. They are checked as code overlays on `bg`, `bg_sunk` and `bg_overlay`, so a port must use `hexa` for them.
 - **non-text** overlays are the shadow and the scrollbar thumbs. Nothing is read through them.
+
+A changed span in a diff is drawn on top of its line, behind code. So `diff_inserted_text` darkens the green line instead of deepening the green, which would take numbers and comments below 4.5:1, and both `diff_*_text` recipes are checked stacked on their line recipes.
 
 The debugger has two frame highlights and the foundation has one recipe, `stack_frame`: a second faint hue would not separate from the first on Darkblue. Ports tell the frames apart by the gutter arrow.
 
@@ -366,14 +369,14 @@ Themes cannot ship fonts, and this repository contains none. The foundation reco
 `npm run build` fails when any of these does not hold.
 
 1. **Text contrast.** `fg`, `fg_muted`, `fg_subtle`, every syntax slot and every semantic foreground reach 4.5:1 on `bg`, `bg_sunk` and `bg_overlay`. `fg` and `fg_muted` reach 4.5:1 on `bg_soft`.
-2. **Text on overlays.** The same colours reach 4.5:1 on every code overlay. `fg` and `fg_muted` reach 4.5:1 on the label overlays. `hover` and `active` are checked the same way on `bg`, `bg_sunk` and `bg_overlay`. Both must also darken each of those surfaces: a faint lightening can pass on contrast alone.
+2. **Text on overlays.** The same colours reach 4.5:1 on every code overlay. `fg` and `fg_muted` reach 4.5:1 on the label overlays. `hover` and `active` are checked the same way on `bg`, `bg_sunk` and `bg_overlay`, and each `diff_*_text` recipe stacked on its `diff_*_line` recipe. Both must also darken each of those surfaces: a faint lightening can pass on contrast alone.
 3. **ANSI.** All sixteen colours except `black` reach 4.5:1 on `bg_terminal`. The same fifteen reach 4.5:1 on `overlay.selection` and `overlay.selection_inactive`, where a terminal draws selected text.
 4. **Non-text.** `border.control` and `accent` reach 3:1 on every surface. Every overlay border reaches 3:1 on its own fill. `slider_active` reaches 3:1 on `bg` and `bg_sunk`.
 5. **Fills.** The text on each semantic fill, and `accent_on` on `accent` and on `accent_hover`, reach 4.5:1.
 6. **Distinctness.** Slots that must not look alike are at least 7 apart in OKLab (×100; about 2 is just noticeable): the listed syntax pairs, every pair within an ANSI row, and each ANSI colour against its bright version. Two core slots may share a colour only if `syntax_tokens.aliases` lists them together.
 7. **Signal separation.** `accent`, `warning` and `danger` are at least 7 apart. `danger` and `success` differ by at least 5 in lightness.
 8. **Palette integrity.** No hex value outside `palette_base` and `derived`, and no value under `derived` beyond the three documented ones. No ladder for Signalred or White. `bg_sunk` matches its recipe. The derived reds stay on the Signalred hue. `bg_terminal` equals `bg`, and `bg_overlay` equals `bg_sunk`.
-9. **Overlay visibility.** `selection` is at least 7 from `bg` and from `find_match`. `hover` is at least 3 from `bg` and `bg_sunk`, `active` at least 5, `slider` at least 7. `merge_current_header` is at least 7 from `bg`. `accent_hover` is at least 3 from `accent`.
+9. **Overlay visibility.** `selection` is at least 7 from `bg` and from `find_match`. `hover` is at least 3 from `bg` and `bg_sunk`, `active` at least 5, `slider` at least 7. `merge_current_header` is at least 7 from `bg`. `accent_hover` is at least 3 from `accent`. Each `diff_*_text` recipe, stacked, is at least 5 from its line.
 
 Before the gates run, the build checks the shape of the tokens: every colour is a `#rrggbb` value, every overlay has an alpha, every overlay belongs to exactly one class, role objects use only the keys `color`, `style`, `fish` and `psreadline`, every colour target in the role maps resolves, and no scope rule ends in `meta.*`. Each problem is reported with its path. A build that fails writes nothing.
 

@@ -1,4 +1,4 @@
-/* Sepp's Workshop 0.2.0 — AUTO-GENERATED from tokens.json5. Do not edit. */
+/* Sepp's Workshop 0.2.1 — AUTO-GENERATED from tokens.json5. Do not edit. */
 :root {
   /* Brand palette — base colours and their tint ladders */
   --sw-palette-darkblue-100: #0d3174;
@@ -183,8 +183,8 @@
   --sw-overlay-selected-item-hexa: #fbba002e;
   --sw-overlay-diff-inserted-line: #12406c;
   --sw-overlay-diff-inserted-line-hexa: #3aaa351f;
-  --sw-overlay-diff-inserted-text: #184f64;
-  --sw-overlay-diff-inserted-text-hexa: #3aaa3540;
+  --sw-overlay-diff-inserted-text: #132951;
+  --sw-overlay-diff-inserted-text-hexa: #1b1d1c66;
   --sw-overlay-diff-removed-line: #282d67;
   --sw-overlay-diff-removed-line-hexa: #cd171924;
   --sw-overlay-diff-removed-text: #502854;
@@ -205,6 +205,8 @@
   --sw-overlay-merge-current-content-hexa: #0093d31a;
   --sw-overlay-merge-current-header: #0a4a8c;
   --sw-overlay-merge-current-header-hexa: #0093d340;
+  --sw-overlay-merge-incoming-header: #184f64;
+  --sw-overlay-merge-incoming-header-hexa: #3aaa3540;
   --sw-overlay-stack-frame: #243c6e;
   --sw-overlay-stack-frame-hexa: #f59e331a;
 

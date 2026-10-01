@@ -22,27 +22,27 @@ Until it is on npm, install it with `npm install github:sepps-workshop/sepps-wor
 
 ## Step 2 — Map, don't invent
 
-| The port needs                        | Take it from                                                                                                              |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Editor syntax colours                 | `tokens.syntax`, `tokens.syntax_tokens`, `tokens.scope_recommendations`                                                   |
-| LSP semantic tokens                   | `tokens.semantic_token_recommendations`; set `semanticHighlighting: true`                                                 |
-| Errors, warnings, git, brackets       | `tokens.workbench_color_roles`                                                                                            |
-| The sixteen terminal colours          | `tokens.ansi`, background `tokens.surface.bg_terminal`                                                                    |
-| Shell highlighting (fish, PSReadLine) | `tokens.shell_roles` — each role lists the variables and keys it feeds                                                    |
-| Prompt segments (Starship)            | `tokens.prompt_roles`                                                                                                     |
-| Selection, find, word highlight, diff | `tokens.overlay.<name>`: `.hexa` where the target blends, `.hex` where it cannot, `.border` where present                 |
-| Row hover, drop target, pressed item  | `overlay.hover`, `overlay.active` (always `.hexa`: they sit on every surface)                                             |
-| Shadow, scrollbar and minimap thumbs  | `overlay.scrim`, `overlay.slider`, `slider_hover`, `slider_active` (always `.hexa`: a shadow and a thumb are translucent) |
-| Merge editor                          | current: `overlay.merge_current_*`; incoming: `overlay.diff_inserted_line` / `_text`; common: `overlay.hover` / `active`  |
-| Debugger frames                       | `overlay.stack_frame` for both; the gutter arrow takes `semantic.warning` (top) and `semantic.success` (focused)          |
-| Primary button under the pointer      | `tokens.accent_hover`                                                                                                     |
-| A named colour target                 | `resolveTarget(tokens, "keyword" \| "fg_muted" \| "semantic.danger" \| …)`                                                |
+| The port needs                        | Take it from                                                                                                                             |
+| ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| Editor syntax colours                 | `tokens.syntax`, `tokens.syntax_tokens`, `tokens.scope_recommendations`                                                                  |
+| LSP semantic tokens                   | `tokens.semantic_token_recommendations`; set `semanticHighlighting: true`                                                                |
+| Errors, warnings, git, brackets       | `tokens.workbench_color_roles`                                                                                                           |
+| The sixteen terminal colours          | `tokens.ansi`, background `tokens.surface.bg_terminal`                                                                                   |
+| Shell highlighting (fish, PSReadLine) | `tokens.shell_roles` — each role lists the variables and keys it feeds                                                                   |
+| Prompt segments (Starship)            | `tokens.prompt_roles`                                                                                                                    |
+| Selection, find, word highlight, diff | `tokens.overlay.<name>`: `.hexa` where the target blends, `.hex` where it cannot, `.border` where present                                |
+| Row hover, drop target, pressed item  | `overlay.hover`, `overlay.active` (always `.hexa`: they sit on every surface)                                                            |
+| Shadow, scrollbar and minimap thumbs  | `overlay.scrim`, `overlay.slider`, `slider_hover`, `slider_active` (always `.hexa`: a shadow and a thumb are translucent)                |
+| Merge editor                          | current: `overlay.merge_current_*`; incoming: `overlay.diff_inserted_line` / `merge_incoming_header`; common: `overlay.hover` / `active` |
+| Debugger frames                       | `overlay.stack_frame` for both; the gutter arrow takes `semantic.warning` (top) and `semantic.success` (focused)                         |
+| Primary button under the pointer      | `tokens.accent_hover`                                                                                                                    |
+| A named colour target                 | `resolveTarget(tokens, "keyword" \| "fg_muted" \| "semantic.danger" \| …)`                                                               |
 
 ## Hard rules
 
 - Never write a hex value in a port. A value you cannot find is a gap in the foundation: fix it there.
 - Red as text is `semantic.danger`. Signalred itself is for fills only, with `semantic_fill.danger.text` on top.
-- Overlays come from `tokens.overlay`, with no port-side alpha constants and no string building: read `.hexa` or `.hex`. `overlay.selected_item`, `merge_current_header` and the `diff_*_text` overlays carry `fg` and `fg_muted` only.
+- Overlays come from `tokens.overlay`, with no port-side alpha constants and no string building: read `.hexa` or `.hex`. `overlay.selected_item` and the `merge_*_header` overlays carry `fg` and `fg_muted` only.
 - A VS Code key with no role in the foundation stays at its default. Do not approximate it.
 - Controls are outlined with `border.control`, the focus ring is `accent`.
 - VS Code: the status bar stays on `surface.bg_sunk`; the accent appears as a border, not as its background. The debugging status bar uses the danger fill.
