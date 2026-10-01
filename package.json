@@ -32,7 +32,7 @@
   "scripts": {
     "build": "node tools/build-tokens.mjs && node tools/build-css.mjs && node tools/build-previews.mjs && node tools/build-readme.mjs",
     "check": "node tools/build-tokens.mjs --check && node tools/build-css.mjs --check && node tools/build-previews.mjs --check && node tools/build-readme.mjs --check",
-    "test": "node --test tools/"
+    "test": "node --test tools/*.test.mjs"
   },
   "engines": {
     "node": ">=18"
