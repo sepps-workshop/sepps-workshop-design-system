@@ -4,7 +4,7 @@ Token foundation for five theme ports (VS Code, Windows Terminal, PowerShell, fi
 
 ## Commands
 
-- `npm run build` — regenerate `tokens.json`, `dist/tokens.js`, `colors.css` and `preview/*.html`, and run the gates
+- `npm run build` — run the gates, then regenerate `tokens.json`, `dist/tokens.js`, `colors.css`, `preview/*.html` and the token tables in `README.md`
 - `npm run check` — fail if any generated file is out of date or a gate fails
 - `npm test` — unit tests for the colour maths, loader, gates, CSS and previews
 
@@ -29,7 +29,7 @@ Run `npm run build` after every change to `tokens.json5`.
 
 ## Don't
 
-- Don't hand-edit `tokens.json`, `dist/tokens.js`, `colors.css` or `preview/*.html`.
+- Don't hand-edit `tokens.json`, `dist/tokens.js`, `colors.css`, `preview/*.html`, or the README tables between `<!-- tokens:… -->` markers.
 - Don't lower a gate threshold to make a value pass.
 - Don't copy the 76 MB icon source into the repo; only the renders in `assets/` belong here.
 - Don't add font files. Themes cannot ship fonts; the foundation only recommends one.

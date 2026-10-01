@@ -10,6 +10,7 @@
  */
 
 import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { realpathSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { dirname, join, resolve } from "node:path";
 import {
@@ -256,7 +257,15 @@ function contrastPage(tokens) {
         `<tr><td><span class="chip" style="background:${hex}"></span>ansi.${slot}</td><td>${hex}</td><td>${contrast(hex, tokens.surface.bg_terminal).toFixed(2)}:1</td><td>${slot === "black" ? "exempt" : ""}</td></tr>`,
     )
     .join("\n");
+  const lcOf = (label) =>
+    Math.abs(
+      contrastReport(tokens).find(
+        (r) => r.label === label && r.on === "surface.bg",
+      ).lc,
+    ).toFixed(0);
+  const apcaNote = `<section><h2>APCA (reference only)</h2><p>On the canvas: body text Lc ${lcOf("text.fg")} (target 75), comments Lc ${lcOf("syntax.comment")} (target 45).</p></section>`;
   return (
+    apcaNote +
     tables.join("\n") +
     `<section><h2>ANSI on surface.bg_terminal (${tokens.surface.bg_terminal})</h2><table><tr><th>Slot</th><th>Value</th><th>WCAG 2.x</th><th></th></tr>\n${ansi}</table></section>`
   );
@@ -362,7 +371,11 @@ async function main() {
     );
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1] || "").href) {
+// realpath: Node resolves a symlinked entry script, argv[1] does not.
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(realpathSync(process.argv[1])).href
+) {
   main().catch((err) => {
     console.error(`✗ ${err.message}`);
     process.exit(1);

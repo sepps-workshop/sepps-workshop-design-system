@@ -238,6 +238,21 @@ export default {
         "italic"
       ]
     },
+    "aliases": [
+      [
+        "number",
+        "constant",
+        "regex"
+      ],
+      [
+        "keyword",
+        "tag"
+      ],
+      [
+        "parameter",
+        "attr"
+      ]
+    ],
     "extended": {
       "variable": "fg",
       "property": "fg",

@@ -139,6 +139,13 @@
       parameter: ["italic"],
       attr: ["italic"],
     },
+    // Core slots that share a colour on purpose. Any other two core
+    // slots resolving to the same value fail the build.
+    aliases: [
+      ["number", "constant", "regex"],
+      ["keyword", "tag"],
+      ["parameter", "attr"],
+    ],
     extended: {
       variable: "fg",
       property: "fg",

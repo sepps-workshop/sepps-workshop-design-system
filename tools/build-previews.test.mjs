@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { loadTokens } from "./build-tokens.mjs";
+import { loadTokens, contrastReport } from "./build-tokens.mjs";
 import { renderCss } from "./build-css.mjs";
 import { renderPages } from "./build-previews.mjs";
 
@@ -79,7 +79,13 @@ test("the terminal page shows all sixteen ANSI colours", () => {
 
 test("the contrast page lists every reported pair", () => {
   const rows = pages["04-contrast.html"].match(/<tr data-pair/g) ?? [];
-  assert.ok(rows.length > 150);
+  assert.equal(rows.length, contrastReport(tokens).length);
+});
+
+test("the contrast page states the APCA targets next to the measured values", () => {
+  const html = pages["04-contrast.html"];
+  assert.match(html, /body text Lc \d+ \(target 75\)/);
+  assert.match(html, /comments Lc \d+ \(target 45\)/);
 });
 
 test("user-visible text is HTML-escaped", () => {

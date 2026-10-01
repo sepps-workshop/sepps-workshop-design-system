@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import { mkdtemp, cp, writeFile } from "node:fs/promises";
+import { mkdtemp, cp, writeFile, symlink, appendFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 import { tmpdir } from "node:os";
@@ -13,6 +13,9 @@ import {
   contrast,
   check,
   contrastReport,
+  json5ToJson,
+  CODE_OVERLAYS,
+  LABEL_OVERLAYS,
 } from "./build-tokens.mjs";
 
 const SRC = await readFile(new URL("../tokens.json5", import.meta.url), "utf8");
@@ -87,7 +90,7 @@ test("gate 5: unreadable text on a semantic fill fails", () => {
 test("gate 6: two slots that must differ but look alike fail", () => {
   assertFails((r) => {
     r.syntax.type = "$palette.darkblue.20";
-  }, /syntax\.type .* syntax\.fg|text\.fg .* are too alike/);
+  }, /syntax\.type .* text\.fg .* are too alike/);
 });
 
 test("gate 6: ANSI blue and cyan must stay apart", () => {
@@ -156,18 +159,14 @@ test("scopes: a rule ending in a meta scope is refused", () => {
   }, /scope_recommendations\.function .*meta\./);
 });
 
-test("the report covers code on every code surface and overlay", () => {
-  const raw = parseTokens(SRC);
-  const rows = contrastReport(resolveTokens(raw));
+test("the report covers every surface and overlay the gates name", () => {
+  const rows = contrastReport(resolveTokens(parseTokens(SRC)));
   const on = new Set(rows.map((r) => r.on));
-  for (const name of [
-    "surface.bg",
-    "surface.bg_sunk",
-    "overlay.selection",
-    "overlay.find_match",
-  ]) {
-    assert.ok(on.has(name), `report is missing ${name}`);
-  }
+  const expected = [
+    ...["bg", "bg_sunk", "bg_overlay", "bg_soft"].map((s) => `surface.${s}`),
+    ...[...CODE_OVERLAYS, ...LABEL_OVERLAYS].map((o) => `overlay.${o}`),
+  ];
+  assert.deepEqual([...on].sort(), expected.sort());
   assert.ok(
     rows.every((r) => r.ratio >= 4.5),
     "every reported text pair clears AA",
@@ -250,4 +249,136 @@ test("a failing build writes nothing", async () => {
     !existsSync(join(dir, "tokens.json")),
     "tokens.json was written despite a gate failure",
   );
+});
+
+/* ── Deferred minors ─────────────────────────────────────────────── */
+
+test("gate 6: two core slots may share a colour only if listed as aliases", () => {
+  assertFails((r) => {
+    r.syntax.keyword = "$palette.windblue.60";
+  }, /syntax\.keyword and syntax\.function share .* syntax_tokens\.aliases/);
+});
+
+test("gate 6: an alias group naming an unknown slot is refused", () => {
+  assertFails((r) => {
+    r.syntax_tokens.aliases.push(["keyword", "keywrod"]);
+  }, /syntax_tokens\.aliases .*"keywrod"/);
+});
+
+test("gate 6: every ANSI colour differs from its bright version", () => {
+  assertFails((r) => {
+    r.ansi.bright_yellow = "$palette.sunset.90";
+  }, /ansi\.yellow .* ansi\.bright_yellow .* too alike/);
+});
+
+test("gate 4: the focus ring must reach 3:1", () => {
+  assertFails((r) => {
+    r.accent = "$palette.darkblue.70";
+  }, /^✗ accent .*needs 3:1/);
+});
+
+test("gate 5: text on the accent must be readable", () => {
+  assertFails((r) => {
+    r.accent_on = "$palette.sunset.90";
+  }, /accent_on .* on accent/);
+});
+
+test("gate 7: danger must not look like the accent or the warning", () => {
+  assertFails((r) => {
+    r.semantic.danger = "$palette.sunset.90";
+  }, /accent .* semantic\.danger .* too alike/);
+  assertFails((r) => {
+    r.semantic.warning = "$palette.pumpelorange.70";
+  }, /semantic\.warning .* semantic\.danger .* too alike/);
+});
+
+test("gate 9: selection and find match must not look alike", () => {
+  assertFails((r) => {
+    r.overlay.find_match.color = "$palette.darkblack.100";
+    r.overlay.find_match.alpha = 0.6;
+  }, /overlay\.selection .* overlay\.find_match .* too alike/);
+});
+
+test("gate 2: label overlays keep fg_muted readable", () => {
+  assertFails((r) => {
+    r.overlay.selected_item.alpha = 0.5;
+  }, /text\.fg_muted .* on overlay\.selected_item/);
+});
+
+test("a syntax slot must not shadow a text colour or the accent", () => {
+  assertFails((r) => {
+    r.syntax.fg = "$palette.sunset.100";
+  }, /syntax\.fg shadows/);
+});
+
+test("scopes: stray whitespace does not hide a meta scope", () => {
+  assertFails((r) => {
+    r.scope_recommendations.function.push("meta.function-call ");
+  }, /scope_recommendations\.function .*meta\./);
+  assertFails((r) => {
+    r.scope_recommendations.function.push("source.js  meta.function-call");
+  }, /scope_recommendations\.function .*meta\./);
+});
+
+test("gate 8: the terminal background is the canvas", () => {
+  assertFails((r) => {
+    r.surface.bg_terminal = "$derived.bg_sunk";
+  }, /surface\.bg_terminal must equal surface\.bg\b/);
+});
+
+test("gate 8: floating widgets sit on the sunk surface", () => {
+  assertFails((r) => {
+    r.surface.bg_overlay = "$palette.darkblue.90";
+  }, /surface\.bg_overlay must equal surface\.bg_sunk/);
+});
+
+test("gate 8: white has no ladder", () => {
+  assertFails((r) => {
+    r.ladder.exclude = ["signalred"];
+  }, /white must not have a ladder/);
+});
+
+test("gate 8: a new derived value is refused", () => {
+  assertFails((r) => {
+    r.derived.teal = "#11aa99";
+  }, /derived\.teal .*not one of the documented derived values/);
+});
+
+test("json5: an escaped quote in a single-quoted string survives", () => {
+  assert.deepEqual(
+    JSON.parse(json5ToJson("{ a: 'Sepp\\'s', b: \"x\\\"y\" }")),
+    { a: "Sepp's", b: 'x"y' },
+  );
+});
+
+async function scratchCopy() {
+  const dir = await mkdtemp(join(tmpdir(), "sw-build-"));
+  await cp(new URL("../tools", import.meta.url), join(dir, "tools"), {
+    recursive: true,
+  });
+  await writeFile(join(dir, "tokens.json5"), SRC);
+  return dir;
+}
+const runTool = (...args) =>
+  spawnSync(process.execPath, args, { encoding: "utf8" });
+
+test("the CLI runs when invoked through a symlinked path", async () => {
+  const dir = await scratchCopy();
+  const link = join(dir, "linked");
+  await symlink(join(dir, "tools"), link);
+  const run = runTool(join(link, "build-tokens.mjs"));
+  assert.equal(run.status, 0, run.stderr);
+  assert.match(run.stdout, /All gates pass/);
+  assert.ok(existsSync(join(dir, "tokens.json")));
+});
+
+test("--check fails when a generated file has drifted", async () => {
+  const dir = await scratchCopy();
+  const tool = join(dir, "tools", "build-tokens.mjs");
+  assert.equal(runTool(tool).status, 0);
+  assert.equal(runTool(tool, "--check").status, 0);
+  await appendFile(join(dir, "tokens.json"), "\n");
+  const run = runTool(tool, "--check");
+  assert.equal(run.status, 1);
+  assert.match(run.stderr, /tokens\.json out of date/);
 });

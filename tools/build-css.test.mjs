@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { loadTokens } from "./build-tokens.mjs";
+import { loadTokens, colourTargets } from "./build-tokens.mjs";
 import { cssVar, renderCss } from "./build-css.mjs";
 
 const tokens = await loadTokens();
@@ -36,21 +36,11 @@ test("every colour target used in the role maps has a declared property", () => 
   const declared = new Set(
     [...css.matchAll(/^\s*(--sw-[a-z0-9-]+):/gm)].map((m) => m[1]),
   );
-  const targets = [
-    ...tokens.syntax_tokens.core,
-    ...Object.values(tokens.shell_roles)
-      .map((r) => r.color)
-      .filter(Boolean),
-    "fg",
-    "fg_muted",
-    "fg_subtle",
-    "fg_disabled",
-    "accent",
-    "semantic.danger",
-    "semantic.success",
-    "semantic.warning",
-    "semantic.info",
-  ];
+  const targets = colourTargets(tokens);
+  assert.ok(
+    targets.includes("overlay.selected_item") &&
+      targets.includes("semantic.warning"),
+  );
   for (const t of targets)
     assert.ok(declared.has(cssVar(t)), `${t} → ${cssVar(t)} not declared`);
 });

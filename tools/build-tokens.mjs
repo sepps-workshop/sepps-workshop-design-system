@@ -12,6 +12,7 @@
  */
 
 import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { realpathSync } from "node:fs";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { dirname, join, resolve, relative } from "node:path";
 import {
@@ -56,7 +57,8 @@ export function json5ToJson(src) {
       i++;
       while (i < n && src[i] !== c) {
         if (src[i] === "\\") {
-          s += src[i] + src[i + 1];
+          // \' is not a JSON escape; inside '…' it is just a quote.
+          s += c === "'" && src[i + 1] === "'" ? "'" : src[i] + src[i + 1];
           i += 2;
           continue;
         }
@@ -166,12 +168,14 @@ export function resolveTarget(tokens, target) {
   if (target === "accent") return tokens.accent;
   if (Object.hasOwn(tokens.syntax, target)) return tokens.syntax[target];
   if (Object.hasOwn(tokens.text, target)) return tokens.text[target];
-  const [group, key] = String(target).split(".");
-  if (group === "semantic" && Object.hasOwn(tokens.semantic, key ?? "")) {
-    return tokens.semantic[key];
-  }
-  if (group === "overlay" && Object.hasOwn(tokens.overlay, key ?? "")) {
-    return tokens.overlay[key].hex;
+  const [group, key, ...extra] = String(target).split(".");
+  if (key !== undefined && extra.length === 0) {
+    if (group === "semantic" && Object.hasOwn(tokens.semantic, key)) {
+      return tokens.semantic[key];
+    }
+    if (group === "overlay" && Object.hasOwn(tokens.overlay, key)) {
+      return tokens.overlay[key].hex;
+    }
   }
   throw new Error(`Unknown colour target: ${target}`);
 }
@@ -183,6 +187,17 @@ const NON_TEXT = 3;
 const DISTINCT = 7;
 const LIGHTNESS_GAP = 5;
 const HUE_TOLERANCE = 0.03; // radians
+/** The only values allowed outside the palette and its ladders. */
+const DERIVED_KEYS = [
+  "bg_sunk",
+  "signalred_on_dark",
+  "signalred_on_dark_bright",
+];
+/** Surfaces the spec defines as equal: terminal = canvas, widgets = sunk. */
+const SAME_SURFACE = [
+  ["bg_terminal", "bg"],
+  ["bg_overlay", "bg_sunk"],
+];
 
 const CODE_SURFACES = ["bg", "bg_sunk", "bg_overlay"];
 const CONTROL_SURFACES = ["bg", "bg_sunk", "bg_soft", "bg_overlay"];
@@ -308,6 +323,14 @@ function collectTargets(node, path, out) {
   return out;
 }
 
+/** Every distinct colour target the role maps use, in first-use order. */
+export function colourTargets(tokens) {
+  const all = TARGET_MAPS.flatMap((map) =>
+    collectTargets(at(tokens, map), map, []),
+  );
+  return [...new Set(all.map(([, target]) => target))];
+}
+
 /** Collect [path, value] for every hex literal under `node`. */
 function collectHex(node, path, out) {
   if (typeof node === "string") {
@@ -324,7 +347,9 @@ function collectHex(node, path, out) {
   return out;
 }
 
-const at = (obj, dotted) => dotted.split(".").reduce((o, k) => o?.[k], obj);
+function at(obj, dotted) {
+  return dotted.split(".").reduce((o, k) => o?.[k], obj);
+}
 
 /**
  * Run every gate. `tokens` is the resolved tree, `raw` the tree as
@@ -428,6 +453,23 @@ export function check(tokens, raw) {
   if (fail.length) return fail;
 
   // Structure next: later gates assume every target resolves.
+  for (const slot of Object.keys(tokens.syntax)) {
+    if (slot === "accent" || Object.hasOwn(tokens.text, slot)) {
+      fail.push(
+        `✗ syntax.${slot} shadows the colour target "${slot}": rename the slot`,
+      );
+    }
+  }
+  const aliases = tokens.syntax_tokens.aliases ?? [];
+  for (const group of aliases) {
+    for (const slot of group) {
+      if (!Object.hasOwn(tokens.syntax, slot)) {
+        fail.push(
+          `✗ syntax_tokens.aliases names "${slot}", which syntax does not define`,
+        );
+      }
+    }
+  }
   for (const slot of tokens.syntax_tokens.core) {
     if (!Object.hasOwn(tokens.syntax, slot)) {
       fail.push(
@@ -455,7 +497,7 @@ export function check(tokens, raw) {
         `✗ scope_recommendations.${slot} is not a core or extended slot`,
       );
     for (const scope of scopes) {
-      if (scope.split(" ").pop().startsWith("meta.")) {
+      if (scope.trim().split(/\s+/).pop().startsWith("meta.")) {
         fail.push(
           `✗ scope_recommendations.${slot} targets "${scope}": never style a meta.* scope directly`,
         );
@@ -515,6 +557,19 @@ export function check(tokens, raw) {
   need("accent_on", tokens.accent_on, "accent", tokens.accent, AA);
 
   // 6. Distinctness — audited on resolved colours, not slot names.
+  // Core slots may share a colour only where syntax_tokens.aliases says so.
+  const aliased = (a, b) => aliases.some((g) => g.includes(a) && g.includes(b));
+  const core = tokens.syntax_tokens.core;
+  for (let i = 0; i < core.length; i++) {
+    for (let j = i + 1; j < core.length; j++) {
+      const [a, b] = [core[i], core[j]];
+      if (tokens.syntax[a] === tokens.syntax[b] && !aliased(a, b)) {
+        fail.push(
+          `✗ syntax.${a} and syntax.${b} share ${tokens.syntax[a]} but are not listed together in syntax_tokens.aliases`,
+        );
+      }
+    }
+  }
   for (const [a, b] of DISTINCT_PAIRS) {
     apart(
       targetLabel(a),
@@ -565,6 +620,23 @@ export function check(tokens, raw) {
     fail.push(
       "✗ signalred must not have a ladder: its tints drift into pink (brand decision)",
     );
+  }
+  if (!raw.ladder.exclude.includes("white")) {
+    fail.push("✗ white must not have a ladder: every tint of white is white");
+  }
+  for (const name of Object.keys(derived)) {
+    if (!DERIVED_KEYS.includes(name)) {
+      fail.push(
+        `✗ derived.${name} is not one of the documented derived values (${DERIVED_KEYS.join(", ")}): use a palette step`,
+      );
+    }
+  }
+  for (const [a, b] of SAME_SURFACE) {
+    if (tokens.surface[a] !== tokens.surface[b]) {
+      fail.push(
+        `✗ surface.${a} must equal surface.${b} (${tokens.surface[b]}), but is ${tokens.surface[a]}`,
+      );
+    }
   }
   const sunk = mix(palette_base.darkblue, palette_base.darkblack, 0.8);
   if (derived.bg_sunk !== sunk) {
@@ -664,7 +736,11 @@ async function main() {
   );
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1] || "").href) {
+// realpath: Node resolves a symlinked entry script, argv[1] does not.
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(realpathSync(process.argv[1])).href
+) {
   main().catch((err) => {
     console.error(`✗ ${err.message}`);
     process.exit(1);

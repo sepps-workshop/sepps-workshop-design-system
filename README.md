@@ -57,6 +57,8 @@ The preview pages are generated from the tokens. Clone the repository and open t
 
 The base colours come from the sepp.med brand kit.
 
+<!-- tokens:palette -->
+
 | Colour       | Hex       | On Darkblue | Ladder       |
 | ------------ | --------- | ----------- | ------------ |
 | Darkblue     | `#0d3174` | 1.00:1      | 100 % … 10 % |
@@ -70,6 +72,8 @@ The base colours come from the sepp.med brand kit.
 | Signalred    | `#cd1719` | 2.18:1      | none         |
 | Freegreen    | `#3aaa35` | 4.09:1      | 100 % … 10 % |
 | White        | `#ffffff` | 12.29:1     | none         |
+
+<!-- /tokens -->
 
 **Ladders.** Every colour except Signalred and White has a ladder of tints in 10 % steps towards white, as in the brand kit. The build generates them (`palette.<name>.<step>`), so `pumpelorange.70` is 70 % Pumpelorange and 30 % white.
 
@@ -91,6 +95,8 @@ The rule for ports: **red as text is `semantic.danger`; red as a fill is Signalr
 
 ## Surfaces, text, borders
 
+<!-- tokens:surfaces -->
+
 | Token                 | Source            | Value     | On `bg`          | Use                                              |
 | --------------------- | ----------------- | --------- | ---------------- | ------------------------------------------------ |
 | `surface.bg`          | `darkblue`        | `#0d3174` |                  | Editor canvas                                    |
@@ -108,6 +114,8 @@ The rule for ports: **red as text is `semantic.danger`; red as a fill is Signalr
 | `accent`              | `sunset`          | `#fbba00` | 7.10:1           | Cursor, focus ring, active tab, primary button   |
 | `accent_on`           | `darkblue`        | `#0d3174` | 7.10:1 on accent | Text on the accent                               |
 
+<!-- /tokens -->
+
 - `bg_soft` is lighter than the canvas and costs contrast. It carries `fg` and `fg_muted` only, never comments or syntax colours.
 - Floating widgets sit on the darker `bg_sunk`. Hover and peek widgets show code, and a darker surface adds contrast.
 - `bg_terminal` equals `bg` on purpose. A standalone terminal shows no other surface, and it should be the Darkblue people recognise.
@@ -118,6 +126,8 @@ The rule for ports: **red as text is `semantic.danger`; red as a fill is Signalr
 A traditional theme uses seven to nine hues. The brand offers three that stay apart on Darkblue. Measured in OKLab, Lightorange sits 4 units from the Pumpelorange tints and the Middleblue tints sit 4 units from the Windblue tints, which is too close to tell apart at a glance, so neither carries a syntax slot. The theme makes up for the missing hues with lightness, the dimension the eye separates best: each hue appears at two steps, and italics add a third axis. Warm colours mark data, cool colours mark behaviour.
 
 ### Core slots
+
+<!-- tokens:syntax -->
 
 | Slot        | Source            | Value     | Style  | On `bg` |
 | ----------- | ----------------- | --------- | ------ | ------- |
@@ -134,11 +144,17 @@ A traditional theme uses seven to nine hues. The brand offers three that stay ap
 | `regex`     | `pumpelorange.70` | `#f29452` |        | 5.35:1  |
 | `punct`     | `text.fg_muted`   | `#b6c1d5` |        | 6.78:1  |
 
+<!-- /tokens -->
+
+Slots that share a colour on purpose are listed in `syntax_tokens.aliases`: `number`, `constant` and `regex`; `keyword` and `tag`; `parameter` and `attr`.
+
 Variables and properties are `fg`. In JavaScript and TypeScript nearly every declaration is a `const`, so `variable.other.constant` falls through to `fg`; the language server's `variable.readonly` token marks real constants.
 
 ### Extended tokens
 
 Each resolves to a core slot, a text colour or a semantic role, with an optional font style.
+
+<!-- tokens:extended -->
 
 | Token                | Colour            | Style             |
 | -------------------- | ----------------- | ----------------- |
@@ -167,6 +183,8 @@ Each resolves to a core slot, a text colour or a semantic role, with an optional
 | `event`              | `function`        |                   |
 | `label`              | `fg`              | italic            |
 
+<!-- /tokens -->
+
 `operator` is `fg_muted` and not the keyword colour: Sunset is the loudest hue, and spending it on every `=` would dilute it.
 
 ### Recommendation maps
@@ -177,6 +195,8 @@ Each resolves to a core slot, a text colour or a semantic role, with an optional
 
 ## Semantic roles
 
+<!-- tokens:semantic -->
+
 | Role      | Foreground on dark                    | On `bg` | Fill                    | Text on fill         |
 | --------- | ------------------------------------- | ------- | ----------------------- | -------------------- |
 | `danger`  | `derived.signalred_on_dark` `#ff897b` | 5.34:1  | `signalred` `#cd1719`   | `white` (5.63:1)     |
@@ -184,11 +204,15 @@ Each resolves to a core slot, a text colour or a semantic role, with an optional
 | `warning` | `lightorange` `#f59e33`               | 5.75:1  | `lightorange` `#f59e33` | `darkblack` (7.93:1) |
 | `info`    | `windblue.60` `#66bee5`               | 5.89:1  | —                       | —                    |
 
+<!-- /tokens -->
+
 - **Warning is Lightorange.** Yellow is the accent, and Pumpelorange is too close to the derived red. Lightorange is the remaining orange; it sits close to the number colour, so ports pair a warning with a shape (a squiggle, an icon), never with colour alone.
 - **Danger and success differ in lightness as well as hue**, so the pair survives red-green colour blindness. Success is lighter than contrast alone would require.
 - The VS Code debugging status bar uses the danger fill, because the accent is already yellow.
 
 ## ANSI
+
+<!-- tokens:ansi -->
 
 | Slot    | Normal                                | On terminal | Bright                                       | On terminal |
 | ------- | ------------------------------------- | ----------- | -------------------------------------------- | ----------- |
@@ -201,6 +225,8 @@ Each resolves to a core slot, a text colour or a semantic role, with an optional
 | cyan    | `windblue.50` `#80c9e9`               | 6.70:1      | `windblue.30` `#b3dff2`                      | 8.63:1      |
 | white   | `shadowgrey.60` `#d1d1d1`             | 8.05:1      | `darkblue.10` `#e7eaf1`                      | 10.21:1     |
 
+<!-- /tokens -->
+
 - **Magenta is Lightorange.** The brand has no magenta. This is the one place where the ANSI name and the colour disagree.
 - **Blue and cyan differ in lightness as well as hue.** Blue on a blue terminal is the hardest slot; it takes Middleblue, and cyan takes a lighter Windblue step.
 - **The neutrals are true greys** (Shadowgrey and a Darkblack tint). A blue-grey from the Darkblue ladder would not stay apart from blue and cyan.
@@ -209,6 +235,8 @@ Each resolves to a core slot, a text colour or a semantic role, with an optional
 ## Overlays
 
 Recipes for the backgrounds that appear behind text: `{ color, alpha, border? }`, composited over `surface.bg`. The build adds the composited `hex`, so a port that cannot blend gets the same colour as one that can.
+
+<!-- tokens:overlay -->
 
 | Recipe                  | Colour         | Alpha | Composited | Border            | Carries          |
 | ----------------------- | -------------- | ----- | ---------- | ----------------- | ---------------- |
@@ -225,6 +253,8 @@ Recipes for the backgrounds that appear behind text: `{ color, alpha, border? }`
 | `diff_removed_line`     | `signalred`    | 14 %  | `#282d67`  |                   | code             |
 | `diff_removed_text`     | `signalred`    | 35 %  | `#502854`  |                   | `fg`, `fg_muted` |
 
+<!-- /tokens -->
+
 **Overlays darken.** Darkblue is a medium-dark canvas. A selection that lightens it by a visible amount pushes every saturated brand colour below 4.5:1; a selection that darkens it adds contrast. So selection and line highlight mix towards Darkblack.
 
 Highlights that have to carry a hue stay faint and get a border, which also means they do not rely on colour alone. Read and write word highlights share a fill; the write highlight adds the border.
@@ -234,6 +264,8 @@ Overlays marked "code" sit behind whole lines and are checked against every synt
 ## Shell and prompt roles
 
 fish and PowerShell both need to know what colour a command, an option or an autosuggestion is. `shell_roles` answers that once, and lists the fish variables and PSReadLine keys each role feeds.
+
+<!-- tokens:shell -->
 
 | Role                         | Colour                  | Style     | fish                                                          | PSReadLine                                 |
 | ---------------------------- | ----------------------- | --------- | ------------------------------------------------------------- | ------------------------------------------ |
@@ -269,11 +301,15 @@ fish and PowerShell both need to know what colour a command, an option or an aut
 | `host`                       | `fg_muted`              |           | `fish_color_host`                                             |                                            |
 | `host_remote`                | `semantic.warning`      |           | `fish_color_host_remote`                                      |                                            |
 
+<!-- /tokens -->
+
 The selected pager row lightens the canvas, so its text is restated in the `pager_selected_*` roles: the description steps up from `fg_subtle` to `fg_muted`.
 
 Commands take the function colour, not the accent: the cursor is already Sunset, and a typed command is a call.
 
 `prompt_roles` does the same for Starship.
+
+<!-- tokens:prompt -->
 
 | Role                    | Colour             | Style |
 | ----------------------- | ------------------ | ----- |
@@ -295,6 +331,8 @@ Commands take the function colour, not the accent: the cursor is already Sunset,
 | `git_status.diverged`   | `fg_muted`         |       |
 | `git_status.stashed`    | `fg_muted`         |       |
 
+<!-- /tokens -->
+
 Language modules stay neutral. The brand has too few hues to give each language its own, and a module's symbol already identifies it.
 
 ## Typography
@@ -315,9 +353,9 @@ Themes cannot ship fonts, and this repository contains none. The foundation reco
 3. **ANSI.** All sixteen colours except `black` reach 4.5:1 on `bg_terminal`.
 4. **Non-text.** `border.control` and `accent` reach 3:1 on every surface. Every overlay border reaches 3:1 on its own fill.
 5. **Fills.** The text on each semantic fill, and `accent_on` on `accent`, reach 4.5:1.
-6. **Distinctness.** Slots that must not look alike are at least 7 apart in OKLab (×100; about 2 is just noticeable): the listed syntax pairs, every pair within an ANSI row, and each ANSI colour against its bright version.
+6. **Distinctness.** Slots that must not look alike are at least 7 apart in OKLab (×100; about 2 is just noticeable): the listed syntax pairs, every pair within an ANSI row, and each ANSI colour against its bright version. Two core slots may share a colour only if `syntax_tokens.aliases` lists them together.
 7. **Signal separation.** `accent`, `warning` and `danger` are at least 7 apart. `danger` and `success` differ by at least 5 in lightness.
-8. **Palette integrity.** No hex value outside `palette_base` and `derived`. No ladder for Signalred. `bg_sunk` matches its recipe. The derived reds stay on the Signalred hue.
+8. **Palette integrity.** No hex value outside `palette_base` and `derived`, and no value under `derived` beyond the three documented ones. No ladder for Signalred or White. `bg_sunk` matches its recipe. The derived reds stay on the Signalred hue. `bg_terminal` equals `bg`, and `bg_overlay` equals `bg_sunk`.
 9. **Overlay visibility.** `selection` is at least 7 from `bg` and from `find_match`.
 
 Before the gates run, the build checks the shape of the tokens: every colour is a `#rrggbb` value, every overlay has an alpha, role objects use only the keys `color`, `style`, `fish` and `psreadline`, every colour target in the role maps resolves, and no scope rule ends in `meta.*`. Each problem is reported with its path. A build that fails writes nothing.
@@ -333,7 +371,8 @@ tokens.json5            the only file edited by hand
    │
    ├─ tools/build-tokens.mjs    → tokens.json, dist/tokens.js   (and runs the gates)
    ├─ tools/build-css.mjs       → colors.css
-   └─ tools/build-previews.mjs  → preview/*.html
+   ├─ tools/build-previews.mjs  → preview/*.html
+   └─ tools/build-readme.mjs    → the token tables in this README
 ```
 
 - `npm run build` regenerates everything and runs the gates.
@@ -347,7 +386,7 @@ tokens.json5        source of truth
 tokens.json         generated: resolved tokens
 dist/tokens.js      generated: the same as an ES module
 colors.css          generated: custom properties (--sw-*)
-tools/              color.mjs, build-tokens.mjs, build-css.mjs, build-previews.mjs, tests
+tools/              color.mjs, build-tokens.mjs, build-css.mjs, build-previews.mjs, build-readme.mjs, tests
 preview/            generated reference pages
 assets/             icon renders
 handoff/            Claude Code skill for port repositories

@@ -80,3 +80,15 @@ test("resolving twice gives identical output", () => {
     JSON.stringify(resolveTokens(fresh())),
   );
 });
+
+test("resolveTarget refuses a target with extra path segments", () => {
+  const t = resolveTokens(fresh());
+  assert.throws(
+    () => resolveTarget(t, "semantic.danger.extra"),
+    /Unknown colour target/,
+  );
+  assert.throws(
+    () => resolveTarget(t, "overlay.selection.hex"),
+    /Unknown colour target/,
+  );
+});

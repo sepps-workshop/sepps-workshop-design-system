@@ -266,9 +266,9 @@ Preview pages use the same stack and fall back gracefully when the font is not i
 3. **ANSI.** All sixteen ≥ 4.5:1 on `bg_terminal`, except `black`.
 4. **Non-text.** `border.control` ≥ 3:1 on `bg`, `bg_sunk`, `bg_soft`, `bg_overlay`. `accent` ≥ 3:1 on the same (focus ring). Every overlay border ≥ 3:1 on its own composited fill.
 5. **Fills.** Each semantic fill's text colour ≥ 4.5:1 on its fill; `accent_on` ≥ 4.5:1 on `accent`.
-6. **Distinctness.** Pairs that must not look alike have an OKLab distance ≥ 7 (×100 scale; a just-noticeable difference is about 2): `function`/`fg`, `function`/`tag`, `function`/`parameter`, `function`/`comment`, `type`/`fg`, `type`/`keyword`, `type`/`string`, `type`/`attr`, `string`/`number`, `string`/`fg`, `parameter`/`fg`, `comment`/`fg`, `punct`/`fg`; within each ANSI row every pair of the eight slots; every ANSI normal against its bright. Slots that share a value on purpose (`number`/`constant`/`regex`, `keyword`/`tag`, `parameter`/`attr`) are listed as allowed aliases so the audit runs on resolved colours, not slot names.
+6. **Distinctness.** Pairs that must not look alike have an OKLab distance ≥ 7 (×100 scale; a just-noticeable difference is about 2): `function`/`fg`, `function`/`tag`, `function`/`parameter`, `function`/`comment`, `type`/`fg`, `type`/`keyword`, `type`/`string`, `type`/`attr`, `string`/`number`, `string`/`fg`, `parameter`/`fg`, `comment`/`fg`, `punct`/`fg`; within each ANSI row every pair of the eight slots; every ANSI normal against its bright. Slots that share a value on purpose (`number`/`constant`/`regex`, `keyword`/`tag`, `parameter`/`attr`) are listed in `syntax_tokens.aliases`; any other two core slots resolving to the same colour fail, so the audit runs on resolved colours, not slot names.
 7. **Signal separation.** `accent`, `warning`, `danger` pairwise distance ≥ 7. `danger` and `success` differ by ≥ 5 in OKLab lightness.
-8. **Palette integrity.** Every colour reference resolves to a base colour, a generated ladder step, or one of the named derived literals. No stray hex. Signalred has no ladder steps.
+8. **Palette integrity.** Every colour reference resolves to a base colour, a generated ladder step, or one of the named derived literals. No stray hex, and no derived value beyond the three named ones. Signalred and White have no ladder steps. `bg_terminal` equals `bg` and `bg_overlay` equals `bg_sunk`.
 9. **Overlays are visible and distinct.** `selection` and `find_match`, composited, have a distance ≥ 7 from each other, and `selection` a distance ≥ 7 from `bg`.
 
 Before the gates, the build validates shape and reports each problem by path: every colour is `#rrggbb`, every overlay has an alpha, role objects use only `color`, `style`, `fish`, `psreadline`. A failing build writes no output.
@@ -285,9 +285,10 @@ tokens.json                  Generated — resolved
 dist/tokens.js               Generated — ES module
 colors.css                   Generated — custom properties for the previews
 tools/
-  build-tokens.mjs           Resolve, generate ladders, run gates, --check, --test
+  build-tokens.mjs           Resolve, generate ladders, run gates, --check
   build-css.mjs              tokens → colors.css
   build-previews.mjs         tokens → preview/*.html; --check for drift
+  build-readme.mjs           tokens → the token tables in README.md; --check
 preview/
   01-syntax.html             TS/JSX, Python, CSS, HTML, JSON, Markdown samples
   02-terminal.html           ANSI grid, sample git/ls output
@@ -306,7 +307,7 @@ package.json
 .editorconfig  .gitignore  .prettierignore
 ```
 
-No dependencies; plain Node ≥ 18. Scripts: `build`, `check`, `test`, as in Vivid Life. `package.json` is named `@sepps-workshop/design-system` with `exports` for `.`, `./tokens.json`, `./css`, `./assets/*`, `./tools/build-tokens`, so ports can depend on it by local path or git URL now and by npm later without changing imports.
+No dependencies; plain Node ≥ 18. Scripts: `build`, `check`, `test`. Tests are `tools/*.test.mjs`, run by `node --test`. `package.json` is named `@sepps-workshop/design-system` with `exports` for `.`, `./tokens.json`, `./css`, `./assets/*`, `./tools/build-tokens`, so ports can depend on it by local path or git URL now and by npm later without changing imports.
 
 ### Icon
 

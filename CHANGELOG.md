@@ -6,3 +6,4 @@
 - Build with nine gates: WCAG AA text contrast on surfaces and overlays, ANSI contrast, non-text contrast, fills, distinctness, signal separation, palette integrity, overlay visibility.
 - Generated `tokens.json`, `dist/tokens.js`, `colors.css` and four preview pages.
 - Port handoff skill.
+- README token tables generated from the tokens and checked by `npm run check`.
