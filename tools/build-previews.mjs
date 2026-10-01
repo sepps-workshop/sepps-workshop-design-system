@@ -203,7 +203,9 @@ const STATES = `@line_highlight|[[keyword:const]] total [[operator:=]] [[functio
 @word_highlight|[[keyword:const]] total [[operator:=]] [[function:sum]][[punct:(]][[number:1]][[punct:,]] [[string:"2"]][[punct:)]][[punct:;]] [[comment:// symbol read]]
 @word_highlight_strong|[[keyword:const]] total [[operator:=]] [[function:sum]][[punct:(]][[number:1]][[punct:,]] [[string:"2"]][[punct:)]][[punct:;]] [[comment:// symbol written]]
 @diff_inserted_line|[[keyword:const]] total [[operator:=]] [[function:sum]][[punct:(]][[number:1]][[punct:,]] [[string:"2"]][[punct:)]][[punct:;]] [[comment:// inserted]] [[invalid:error text]]
-@diff_removed_line|[[keyword:const]] total [[operator:=]] [[function:sum]][[punct:(]][[number:1]][[punct:,]] [[string:"2"]][[punct:)]][[punct:;]] [[comment:// removed]] [[invalid:error text]]`;
+@diff_removed_line|[[keyword:const]] total [[operator:=]] [[function:sum]][[punct:(]][[number:1]][[punct:,]] [[string:"2"]][[punct:)]][[punct:;]] [[comment:// removed]] [[invalid:error text]]
+@merge_current_content|[[keyword:const]] total [[operator:=]] [[function:sum]][[punct:(]][[number:1]][[punct:,]] [[string:"2"]][[punct:)]][[punct:;]] [[comment:// merge, current side]] [[invalid:error text]]
+@stack_frame|[[keyword:const]] total [[operator:=]] [[function:sum]][[punct:(]][[number:1]][[punct:,]] [[string:"2"]][[punct:)]][[punct:;]] [[comment:// debugger paused here]] [[invalid:error text]]`;
 
 const TERM = `[[green:sepp@workshop]] [[blue:~/themes]] $ git status
 On branch [[cyan:main]]
@@ -271,6 +273,22 @@ function contrastPage(tokens) {
   );
 }
 
+/** Surface and non-text overlays, drawn translucent so they show on any surface. */
+const WORKBENCH = [
+  "hover",
+  "active",
+  "slider",
+  "slider_hover",
+  "slider_active",
+];
+const workbench = (cls) =>
+  `<pre${cls ? ` class="${cls}"` : ""}>` +
+  WORKBENCH.map(
+    (n) =>
+      `<span class="line" style="background:var(--sw-overlay-${kebab(n)}-hexa)">${n}</span>`,
+  ).join("") +
+  `</pre>`;
+
 export function renderPages(tokens) {
   const mono = tokens.typography.mono.primary;
   const syntax = [
@@ -281,6 +299,7 @@ export function renderPages(tokens) {
     block("JSON", JSON_, "t-"),
     block("Markdown", MD, "t-"),
     block("Editor states — the same line on every code overlay", STATES, "t-"),
+    `<section><h2>Workbench overlays — on the canvas, then on the sunk surface</h2>${workbench("")}${workbench("sunk")}</section>`,
     `<section><h2>Signals</h2><p>` +
       ["danger", "success", "warning", "info"]
         .map(

@@ -115,6 +115,7 @@
   /* Accent */
   --sw-accent: #fbba00;
   --sw-accent-on: #0d3174;
+  --sw-accent-hover: #fcc833;
 
   /* Semantic — foregrounds on dark, then fills with their text colour */
   --sw-danger: #ff897b;
@@ -160,31 +161,52 @@
   --sw-ansi-bright-cyan: #b3dff2;
   --sw-ansi-bright-white: #e7eaf1;
 
-  /* Overlays — composited over --sw-bg */
+  /* Overlays — composited over --sw-bg; -hexa is the translucent recipe */
   --sw-overlay-selection: #15253f;
+  --sw-overlay-selection-hexa: #1b1d1c99;
   --sw-overlay-selection-inactive: #132951;
+  --sw-overlay-selection-inactive-hexa: #1b1d1c66;
   --sw-overlay-line-highlight: #112b5a;
+  --sw-overlay-line-highlight-hexa: #1b1d1c4d;
   --sw-overlay-find-match: #2e3964;
+  --sw-overlay-find-match-hexa: #ec660826;
   --sw-overlay-find-match-border: #f29452;
   --sw-overlay-find-match-other: #1f356b;
+  --sw-overlay-find-match-other-hexa: #ec660814;
   --sw-overlay-find-match-other-border: #8698ba;
   --sw-overlay-word-highlight: #253f68;
+  --sw-overlay-word-highlight-hexa: #fbba001a;
   --sw-overlay-word-highlight-strong: #253f68;
+  --sw-overlay-word-highlight-strong-hexa: #fbba001a;
   --sw-overlay-word-highlight-strong-border: #fbba00;
   --sw-overlay-selected-item: #384a5f;
+  --sw-overlay-selected-item-hexa: #fbba002e;
   --sw-overlay-diff-inserted-line: #12406c;
+  --sw-overlay-diff-inserted-line-hexa: #3aaa351f;
   --sw-overlay-diff-inserted-text: #184f64;
+  --sw-overlay-diff-inserted-text-hexa: #3aaa3540;
   --sw-overlay-diff-removed-line: #282d67;
+  --sw-overlay-diff-removed-line-hexa: #cd171924;
   --sw-overlay-diff-removed-text: #502854;
+  --sw-overlay-diff-removed-text-hexa: #cd171959;
   --sw-overlay-hover: #112b5a;
+  --sw-overlay-hover-hexa: #1b1d1c4d;
   --sw-overlay-active: #142748;
+  --sw-overlay-active-hexa: #1b1d1c80;
   --sw-overlay-scrim: #15253f;
+  --sw-overlay-scrim-hexa: #1b1d1c99;
   --sw-overlay-slider: #39568d;
+  --sw-overlay-slider-hexa: #9eadc74d;
   --sw-overlay-slider-hover: #566f9e;
+  --sw-overlay-slider-hover-hexa: #9eadc780;
   --sw-overlay-slider-active: #7388ae;
+  --sw-overlay-slider-active-hexa: #9eadc7b3;
   --sw-overlay-merge-current-content: #0c3b7e;
+  --sw-overlay-merge-current-content-hexa: #0093d31a;
   --sw-overlay-merge-current-header: #0a4a8c;
+  --sw-overlay-merge-current-header-hexa: #0093d340;
   --sw-overlay-stack-frame: #243c6e;
+  --sw-overlay-stack-frame-hexa: #f59e331a;
 
   /* Typography */
   --sw-font-mono: "JetBrains Mono", "JetBrainsMono Nerd Font", "Cascadia Code", Consolas, ui-monospace, monospace;

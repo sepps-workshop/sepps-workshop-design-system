@@ -63,6 +63,8 @@ test("the syntax page exercises every core slot and the code overlays", () => {
     "word_highlight_strong",
     "diff_inserted_line",
     "diff_removed_line",
+    "merge_current_content",
+    "stack_frame",
   ]) {
     assert.ok(html.includes(`class="line o-${o}"`), `no sample line on ${o}`);
   }
@@ -102,4 +104,20 @@ test("sample lines are block elements with no newline between them", () => {
       `${name} double-spaces its samples`,
     );
   }
+});
+
+test("the syntax page shows the workbench overlays on the canvas and the sunk surface", () => {
+  const html = pages["01-syntax.html"];
+  for (const o of [
+    "hover",
+    "active",
+    "slider",
+    "slider-hover",
+    "slider-active",
+  ]) {
+    const uses =
+      html.split(`style="background:var(--sw-overlay-${o}-hexa)"`).length - 1;
+    assert.equal(uses, 2, `${o} is shown ${uses} times, expected 2`);
+  }
+  assert.ok(html.includes('<pre class="sunk">'), "no sunk sample block");
 });

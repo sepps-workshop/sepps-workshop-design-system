@@ -18,6 +18,7 @@ const kebab = (s) => String(s).replace(/_/g, "-");
 /** A colour target (see resolveTarget) → its custom property name. */
 export function cssVar(target) {
   if (target === "accent") return "--sw-accent";
+  if (target === "accent_hover") return "--sw-accent-hover";
   if (target.startsWith("fg")) return `--sw-${kebab(target)}`;
   const [group, key] = target.split(".");
   if (group === "semantic") return `--sw-${kebab(key)}`;
@@ -58,6 +59,7 @@ export function renderCss(tokens) {
   section("Accent", [
     ["--sw-accent", tokens.accent],
     ["--sw-accent-on", tokens.accent_on],
+    ["--sw-accent-hover", tokens.accent_hover],
   ]);
   section("Semantic — foregrounds on dark, then fills with their text colour", [
     ...Object.entries(tokens.semantic).map(([k, v]) => [`--sw-${kebab(k)}`, v]),
@@ -75,9 +77,10 @@ export function renderCss(tokens) {
     Object.entries(tokens.ansi).map(([k, v]) => [`--sw-ansi-${kebab(k)}`, v]),
   );
   section(
-    "Overlays — composited over --sw-bg",
+    "Overlays — composited over --sw-bg; -hexa is the translucent recipe",
     Object.entries(tokens.overlay).flatMap(([k, o]) => [
       [`--sw-overlay-${kebab(k)}`, o.hex],
+      [`--sw-overlay-${kebab(k)}-hexa`, o.hexa],
       ...(o.border ? [[`--sw-overlay-${kebab(k)}-border`, o.border]] : []),
     ]),
   );

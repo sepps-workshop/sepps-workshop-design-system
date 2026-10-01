@@ -10,6 +10,7 @@ test("cssVar maps every kind of colour target", () => {
   assert.equal(cssVar("keyword"), "--sw-syn-keyword");
   assert.equal(cssVar("fg_muted"), "--sw-fg-muted");
   assert.equal(cssVar("accent"), "--sw-accent");
+  assert.equal(cssVar("accent_hover"), "--sw-accent-hover");
   assert.equal(cssVar("semantic.danger"), "--sw-danger");
   assert.equal(cssVar("overlay.find_match"), "--sw-overlay-find-match");
 });
@@ -25,6 +26,9 @@ test("the stylesheet declares the documented properties with resolved values", (
     "--sw-syn-keyword: #fbba00;",
     "--sw-ansi-bright-red: #ffb4aa;",
     "--sw-overlay-selection: #15253f;",
+    "--sw-accent-hover: #fcc833;",
+    "--sw-overlay-selection-hexa: #1b1d1c99;",
+    "--sw-overlay-hover: #112b5a;",
     "--sw-palette-pumpelorange-90: #ee7521;",
   ]) {
     assert.ok(css.includes(line), `missing: ${line}`);
