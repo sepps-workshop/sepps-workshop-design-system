@@ -1,0 +1,502 @@
+// ════════════════════════════════════════════════════════════════════
+// Sepp's Workshop — Foundation Tokens
+// ────────────────────────────────────────────────────────────────────
+// The single source of truth. Every port (VS Code, Windows Terminal,
+// PowerShell, fish, Starship) reads its values from the files generated
+// from this one. If a port needs a value that is not here, that is a
+// gap in the foundation: fix it here.
+//
+// Format: JSON5 subset (comments, unquoted keys, trailing commas).
+// Strings starting with "$" are references: "$palette.sunset.100".
+// Run `npm run build` after every edit.
+// ════════════════════════════════════════════════════════════════════
+{
+  meta: {
+    name: "Sepp's Workshop",
+    version: "0.1.0",
+    description: "One medium-dark theme on sepp.med Darkblue. WCAG AA enforced by the build.",
+    career_url: "https://www.seppmed.com/career/",
+  },
+
+  // ── 1. BRAND COLOURS ────────────────────────────────────────────
+  // Authoritative values from the sepp.med brand kit. Hex literals are
+  // allowed here and under `derived`, nowhere else (gate 8).
+  palette_base: {
+    darkblue: "#0d3174",
+    sunset: "#fbba00",
+    shadowgrey: "#b2b2b2",
+    middleblue: "#0069a9",
+    pumpelorange: "#ec6608",
+    windblue: "#0093d3",
+    lightorange: "#f59e33",
+    darkblack: "#1b1d1c",
+    signalred: "#cd1719", // signal only — no ladder, never text on dark
+    freegreen: "#3aaa35", // signal only — no syntax slot
+    white: "#ffffff", // the brand's unlisted "non-colour"; text on fills only
+  },
+
+  // The build generates palette.<name>.<step> for every step: the base
+  // colour mixed towards white, as in the brand kit. Signalred has no
+  // tints by brand decision (they drift into pink).
+  ladder: {
+    steps: [100, 90, 80, 70, 60, 50, 40, 30, 20, 10],
+    exclude: ["signalred", "white"],
+  },
+
+  // ── 2. DERIVED LITERALS ─────────────────────────────────────────
+  // The only values that are neither a brand colour nor a ladder step.
+  derived: {
+    // The ladder only goes lighter. Surfaces below the canvas mix
+    // Darkblue 80 % with Darkblack. The build verifies the recipe.
+    bg_sunk: "#102d62",
+    // Signalred reaches 2.18:1 on Darkblue. These keep its OKLCH hue,
+    // raise lightness to 5.34:1 / 7.23:1, and hold chroma at the sRGB
+    // maximum. Foreground on dark surfaces only; fills use Signalred.
+    signalred_on_dark: "#ff897b",
+    signalred_on_dark_bright: "#ffb4aa",
+  },
+
+  // ── 3. SURFACES, TEXT, BORDERS ──────────────────────────────────
+  surface: {
+    bg: "$palette.darkblue.100", // editor canvas
+    bg_sunk: "$derived.bg_sunk", // sidebar, activity bar, status bar, inactive tabs
+    bg_soft: "$palette.darkblue.90", // hover, inputs — carries fg and fg_muted only
+    bg_overlay: "$derived.bg_sunk", // menus, hover/suggest widgets, quick input
+    bg_terminal: "$palette.darkblue.100", // = bg: a standalone terminal should be Darkblue
+  },
+  text: {
+    fg: "$palette.darkblue.10",
+    fg_muted: "$palette.darkblue.30",
+    fg_subtle: "$palette.darkblue.40",
+    fg_disabled: "$palette.darkblue.60", // exempt from the text gate
+  },
+  border: {
+    subtle: "$palette.darkblue.90",
+    default: "$palette.darkblue.80",
+    control: "$palette.darkblue.50", // ≥ 3:1 on every surface
+  },
+  accent: "$palette.sunset.100", // cursor, focus ring, active tab, primary button
+  accent_on: "$palette.darkblue.100", // text on the accent
+
+  // ── 4. SEMANTIC ROLES ───────────────────────────────────────────
+  // Warning is Lightorange: yellow is the accent, and Pumpelorange is
+  // too close to the derived red. Success sits two steps lighter than
+  // contrast needs so red and green differ in lightness too.
+  semantic: {
+    danger: "$derived.signalred_on_dark",
+    success: "$palette.freegreen.50",
+    warning: "$palette.lightorange.100",
+    info: "$palette.windblue.60",
+  },
+  semantic_fill: {
+    danger: { fill: "$palette.signalred.100", text: "$palette.white.100" },
+    success: { fill: "$palette.freegreen.100", text: "$palette.darkblack.100" },
+    warning: {
+      fill: "$palette.lightorange.100",
+      text: "$palette.darkblack.100",
+    },
+  },
+
+  // ── 5. SYNTAX ───────────────────────────────────────────────────
+  // Three hues (yellow, orange, cyan-blue), two lightness steps each,
+  // plus the blue-grey text ramp. Warm = data, cool = behaviour.
+  syntax: {
+    comment: "$text.fg_subtle",
+    keyword: "$palette.sunset.100",
+    string: "$palette.pumpelorange.40",
+    number: "$palette.pumpelorange.70",
+    function: "$palette.windblue.60",
+    parameter: "$palette.windblue.30",
+    type: "$palette.sunset.40",
+    constant: "$palette.pumpelorange.70",
+    tag: "$palette.sunset.100",
+    attr: "$palette.windblue.30",
+    regex: "$palette.pumpelorange.70",
+    punct: "$text.fg_muted",
+  },
+
+  // Colour targets used from here on are names, not "$" references:
+  //   a core slot (keyword, string, …) · fg, fg_muted, fg_subtle, fg_disabled
+  //   · accent · semantic.<role> · overlay.<name>
+  // Ports resolve them with resolveTarget() from tools/build-tokens.mjs.
+  syntax_tokens: {
+    core: [
+      "comment",
+      "keyword",
+      "string",
+      "number",
+      "function",
+      "parameter",
+      "type",
+      "constant",
+      "tag",
+      "attr",
+      "regex",
+      "punct",
+    ],
+    core_style: {
+      comment: ["italic"],
+      parameter: ["italic"],
+      attr: ["italic"],
+    },
+    extended: {
+      variable: "fg",
+      property: "fg",
+      operator: "fg_muted", // not the keyword colour: Sunset on every "=" dilutes it
+      decorator: { color: "function", style: ["italic"] },
+      builtin: { color: "function", style: ["italic"] }, // "not yours"
+      namespace: "type",
+      macro: "function",
+      lifetime: "constant",
+      heading: { color: "keyword", style: ["bold"] },
+      link: "function",
+      selector: "tag",
+      unit: "number",
+      hex: "string",
+      shebang: "comment",
+      lang_var: { color: "keyword", style: ["italic"] }, // this / self / super
+      emphasis: { style: ["italic"] },
+      strong: { style: ["bold"] },
+      invalid: { color: "semantic.danger", style: ["italic", "underline"] },
+      invalid_deprecated: { color: "fg", style: ["italic", "underline"] },
+      doc_keyword: "keyword",
+      doc_type: { color: "type", style: ["italic"] },
+      doc_param: { color: "parameter", style: ["italic"] },
+      event: "function",
+      label: { color: "fg", style: ["italic"] },
+    },
+  },
+
+  // TextMate scopes per slot, most specific first. A rule must never
+  // end in a meta.* scope (the build checks this).
+  scope_recommendations: {
+    comment: ["comment", "comment.line", "comment.block"],
+    keyword: [
+      "keyword.control",
+      "keyword.other",
+      "storage.type",
+      "storage.modifier",
+      "constant.language",
+    ],
+    string: ["string", "string.quoted", "string.template"],
+    number: ["constant.numeric"],
+    function: ["entity.name.function", "support.function"],
+    parameter: ["variable.parameter"],
+    type: [
+      "entity.name.type",
+      "entity.name.class",
+      "support.class",
+      "support.type",
+    ],
+    constant: ["constant.other"],
+    tag: ["entity.name.tag"],
+    attr: ["entity.other.attribute-name"],
+    regex: ["string.regexp"],
+    punct: ["punctuation"],
+    variable: ["variable.other.readwrite", "variable.other"],
+    property: [
+      "variable.other.property",
+      "variable.other.member",
+      "support.type.property-name",
+    ],
+    operator: ["keyword.operator"],
+    decorator: [
+      "entity.name.function.decorator",
+      "meta.decorator entity.name.function",
+      "punctuation.decorator",
+    ],
+    builtin: [
+      "support.function.builtin",
+      "support.class.builtin",
+      "support.variable.builtin",
+    ],
+    namespace: ["entity.name.namespace", "entity.name.module"],
+    macro: ["entity.name.function.macro", "support.function.macro"],
+    lifetime: ["storage.modifier.lifetime.rust", "entity.name.lifetime.rust"],
+    heading: [
+      "markup.heading",
+      "entity.name.section",
+      "punctuation.definition.heading",
+    ],
+    link: ["markup.underline.link", "string.other.link"],
+    selector: [
+      "entity.other.pseudo-class",
+      "entity.other.pseudo-element",
+      "meta.selector entity.other.attribute-name",
+    ],
+    unit: ["keyword.other.unit"],
+    hex: ["constant.other.color", "constant.other.color.rgb-value.css"],
+    shebang: ["comment.line.shebang"],
+    lang_var: [
+      "variable.language.this",
+      "variable.language.self",
+      "variable.language.super",
+    ],
+    emphasis: ["markup.italic"],
+    strong: ["markup.bold"],
+    invalid: ["invalid.illegal"],
+    invalid_deprecated: ["invalid.deprecated"],
+    doc_keyword: ["comment.block.documentation keyword"],
+    doc_type: ["comment.block.documentation entity.name.type"],
+    doc_param: ["comment.block.documentation variable"],
+    event: ["variable.other.event", "support.type.event"],
+    label: ["entity.name.label", "variable.label"],
+    // In JS/TS nearly every declaration is `const`. Colouring them all
+    // as constants is noise; the LSP `variable.readonly` token does it.
+    fg_fallthrough_jsts: [
+      "variable.other.constant.js",
+      "variable.other.constant.ts",
+      "variable.other.constant.tsx",
+    ],
+  },
+
+  // LSP semantic tokens. Ports set "semanticHighlighting": true.
+  semantic_token_recommendations: {
+    types: {
+      namespace: "type",
+      class: "type",
+      enum: "type",
+      interface: "type",
+      struct: "type",
+      typeParameter: "parameter",
+      type: "type",
+      parameter: { color: "parameter", style: ["italic"] },
+      variable: "fg",
+      property: "fg",
+      enumMember: "constant",
+      decorator: { color: "function", style: ["italic"] },
+      event: "function",
+      function: "function",
+      method: "function",
+      macro: "function",
+      label: { color: "fg", style: ["italic"] },
+      comment: { color: "comment", style: ["italic"] },
+      string: "string",
+      keyword: "keyword",
+      number: "number",
+      regexp: "regex",
+      operator: "fg_muted",
+    },
+    // "none" = no change to the base type.
+    modifiers: {
+      declaration: "none",
+      definition: "none",
+      readonly: { color: "constant" },
+      static: "none",
+      deprecated: { style: ["italic", "underline"] },
+      abstract: { style: ["italic"] },
+      async: "none",
+      modification: "none",
+      documentation: { color: "comment" },
+      defaultLibrary: { style: ["italic"] },
+    },
+  },
+
+  // The same role takes the same colour wherever it appears: squiggle,
+  // gutter, overview ruler, status bar, file tree.
+  workbench_color_roles: {
+    signals: {
+      error: "semantic.danger",
+      warning: "semantic.warning",
+      info: "semantic.info",
+      hint: "fg_muted",
+      success: "semantic.success",
+    },
+    git: {
+      added: "semantic.success",
+      modified: "semantic.info",
+      deleted: "semantic.danger",
+      untracked: "semantic.success",
+      ignored: "fg_disabled",
+      conflicting: "semantic.warning",
+    },
+    // Starts neutral; skips the keyword colour.
+    bracket_pairs: ["fg", "function", "string", "type", "parameter", "number"],
+    bracket_unexpected: "semantic.danger",
+  },
+
+  // ── 6. ANSI ─────────────────────────────────────────────────────
+  // The brand has no magenta: the slot takes Lightorange. Neutrals are
+  // true greys (Shadowgrey, Darkblack tints) to stay apart from blue
+  // and cyan.
+  ansi: {
+    black: "$derived.bg_sunk", // reverse-video anchor; exempt from the contrast gate
+    red: "$derived.signalred_on_dark",
+    green: "$palette.freegreen.50",
+    yellow: "$palette.sunset.100",
+    blue: "$palette.middleblue.60",
+    magenta: "$palette.lightorange.100",
+    cyan: "$palette.windblue.50",
+    white: "$palette.shadowgrey.60",
+    bright_black: "$palette.darkblack.40",
+    bright_red: "$derived.signalred_on_dark_bright",
+    bright_green: "$palette.freegreen.30",
+    bright_yellow: "$palette.sunset.40",
+    bright_blue: "$palette.middleblue.40",
+    bright_magenta: "$palette.lightorange.60",
+    bright_cyan: "$palette.windblue.30",
+    bright_white: "$palette.darkblue.10",
+  },
+
+  // ── 7. OVERLAYS ─────────────────────────────────────────────────
+  // { color, alpha, border? }, composited over surface.bg. The build
+  // adds `hex`. Overlays DARKEN: on a medium-dark canvas a lighter
+  // selection takes saturated colours below 4.5:1, a darker one adds
+  // contrast. Hued highlights stay faint and get a border.
+  overlay: {
+    selection: { color: "$palette.darkblack.100", alpha: 0.6 },
+    selection_inactive: { color: "$palette.darkblack.100", alpha: 0.4 },
+    line_highlight: { color: "$palette.darkblack.100", alpha: 0.3 },
+    find_match: {
+      color: "$palette.pumpelorange.100",
+      alpha: 0.15,
+      border: "$palette.pumpelorange.70",
+    },
+    find_match_other: {
+      color: "$palette.pumpelorange.100",
+      alpha: 0.08,
+      border: "$palette.darkblue.50",
+    },
+    word_highlight: { color: "$palette.sunset.100", alpha: 0.1 },
+    word_highlight_strong: {
+      color: "$palette.sunset.100",
+      alpha: 0.1,
+      border: "$palette.sunset.100",
+    },
+    selected_item: { color: "$palette.sunset.100", alpha: 0.18 }, // list rows: fg / fg_muted only
+    diff_inserted_line: { color: "$palette.freegreen.100", alpha: 0.12 },
+    diff_inserted_text: { color: "$palette.freegreen.100", alpha: 0.25 }, // fg / fg_muted only
+    diff_removed_line: { color: "$palette.signalred.100", alpha: 0.14 },
+    diff_removed_text: { color: "$palette.signalred.100", alpha: 0.35 }, // fg / fg_muted only
+  },
+
+  // ── 8. SHELL ROLES ──────────────────────────────────────────────
+  // One answer for fish and PowerShell. `fish` / `psreadline` name the
+  // variables and keys each role feeds.
+  shell_roles: {
+    command: {
+      color: "function",
+      fish: ["fish_color_command"],
+      psreadline: ["Command"],
+    },
+    keyword: {
+      color: "keyword",
+      fish: ["fish_color_keyword"],
+      psreadline: ["Keyword"],
+    },
+    option: {
+      color: "attr",
+      fish: ["fish_color_option"],
+      psreadline: ["Parameter"],
+    },
+    argument: {
+      color: "fg",
+      fish: ["fish_color_normal", "fish_color_param"],
+      psreadline: ["Default"],
+    },
+    string: {
+      color: "string",
+      fish: ["fish_color_quote"],
+      psreadline: ["String"],
+    },
+    number: { color: "number", psreadline: ["Number"] },
+    variable: { color: "type", psreadline: ["Variable"] },
+    type: { color: "type", psreadline: ["Type"] },
+    member: { color: "fg", psreadline: ["Member"] },
+    operator: {
+      color: "fg_muted",
+      fish: ["fish_color_operator", "fish_color_end"],
+      psreadline: ["Operator"],
+    },
+    redirection: { color: "fg_muted", fish: ["fish_color_redirection"] },
+    escape: { color: "constant", fish: ["fish_color_escape"] },
+    comment: {
+      color: "comment",
+      style: ["italic"],
+      fish: ["fish_color_comment"],
+      psreadline: ["Comment"],
+    },
+    autosuggestion: {
+      color: "fg_subtle",
+      fish: ["fish_color_autosuggestion"],
+      psreadline: ["InlinePrediction", "ContinuationPrompt"],
+    },
+    error: {
+      color: "semantic.danger",
+      fish: ["fish_color_error", "fish_color_status"],
+      psreadline: ["Error"],
+    },
+    emphasis: { color: "accent", psreadline: ["Emphasis"] },
+    valid_path: { style: ["underline"], fish: ["fish_color_valid_path"] },
+    selection: {
+      color: "overlay.selection",
+      fish: ["fish_color_selection"],
+      psreadline: ["Selection"],
+    },
+    search_match: {
+      color: "overlay.find_match",
+      fish: ["fish_color_search_match"],
+    },
+    pager_selected: {
+      color: "overlay.selected_item",
+      fish: ["fish_pager_color_selected_background"],
+      psreadline: ["ListPredictionSelected"],
+    },
+    pager_prefix: { color: "accent", fish: ["fish_pager_color_prefix"] },
+    pager_completion: {
+      color: "fg",
+      fish: ["fish_pager_color_completion"],
+      psreadline: ["ListPrediction"],
+    },
+    pager_description: {
+      color: "fg_subtle",
+      fish: ["fish_pager_color_description", "fish_pager_color_progress"],
+    },
+    cwd: { color: "accent", fish: ["fish_color_cwd"] },
+    cwd_root: { color: "semantic.danger", fish: ["fish_color_cwd_root"] },
+    user: { color: "function", fish: ["fish_color_user"] },
+    host: { color: "fg_muted", fish: ["fish_color_host"] },
+    host_remote: {
+      color: "semantic.warning",
+      fish: ["fish_color_host_remote"],
+    },
+  },
+
+  // ── 9. PROMPT ROLES ─────────────────────────────────────────────
+  // For Starship. Language modules stay neutral: the brand has too few
+  // hues to give each language its own, and the symbol identifies it.
+  prompt_roles: {
+    directory: { color: "accent", style: ["bold"] },
+    git_branch: { color: "semantic.info" },
+    git_status: {
+      added: "semantic.success",
+      untracked: "semantic.success",
+      modified: "semantic.info",
+      renamed: "semantic.info",
+      deleted: "semantic.danger",
+      conflicted: "semantic.warning",
+      staged: "semantic.warning",
+      ahead: "fg_muted",
+      behind: "fg_muted",
+      diverged: "fg_muted",
+      stashed: "fg_muted",
+    },
+    character_success: { color: "semantic.success" },
+    character_error: { color: "semantic.danger" },
+    duration: { color: "fg_muted" },
+    language_module: { color: "fg_muted" },
+  },
+
+  // ── 10. TYPOGRAPHY ──────────────────────────────────────────────
+  // A recommendation. Themes cannot ship fonts and this repo has none.
+  typography: {
+    mono: {
+      primary: "JetBrains Mono",
+      nerd_font: "JetBrainsMono Nerd Font",
+      stack: '"JetBrains Mono", "JetBrainsMono Nerd Font", "Cascadia Code", Consolas, ui-monospace, monospace',
+      license: "OFL-1.1",
+      source: "https://www.jetbrains.com/lp/mono/",
+      nerd_font_source: "https://www.nerdfonts.com/font-downloads",
+    },
+  },
+}
