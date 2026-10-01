@@ -31,3 +31,9 @@ To recreate and re-push, use a **signed annotated tag** — `tag.gpgsign=true` i
 git tag -s vX.Y.Z <commit-sha> -m "vX.Y.Z"
 git push origin vX.Y.Z
 ```
+
+Deleting the tag turns its GitHub release into a draft. After re-pushing the tag, publish the release again:
+
+```bash
+gh release edit vX.Y.Z --draft=false
+```
