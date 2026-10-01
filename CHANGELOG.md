@@ -7,6 +7,7 @@
 - Every overlay gains `hexa`, the recipe as `#rrggbbaa`, beside the composited `hex`. `colors.css` gains `--sw-overlay-<name>-hexa` and `--sw-accent-hover`.
 - Every overlay must belong to exactly one class (code, label, surface, non-text), or the build fails.
 - Gates: `hover` and `active` are checked on every code surface; ANSI colours are checked on the selection; `slider_active` reaches 3:1; `accent_on` is checked on `accent_hover`; new visibility minimums for hover, active, slider, the merge header and `accent_hover`.
+- `hover` and `active` must darken `bg`, `bg_sunk` and `bg_overlay`: a faint lightening can pass on contrast alone. An overlay that a gate reads by name but that is not defined is reported as a failure.
 
 ## 0.1.0 — 2026-10-01
 
