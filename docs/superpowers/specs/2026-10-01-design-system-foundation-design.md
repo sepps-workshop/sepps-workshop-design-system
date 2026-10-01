@@ -1,7 +1,7 @@
 # Sepp's Workshop Design System — Foundation Design Spec
 
 **Date:** 2026-10-01
-**Status:** Approved
+**Status:** Approved (revised after gate verification)
 
 ## Goal
 
@@ -70,15 +70,15 @@ Contrast against the Darkblue canvas, which decides what can be text:
 
 ### Two documented departures from the ladder
 
-Everything resolves to a base colour or a ladder step, with two exceptions. Both are named literals in `tokens.json5` with the reason beside them.
+Everything resolves to a base colour or a ladder step, with two exceptions. They are named literals in `tokens.json5` with the reason beside them.
 
 **1. Surfaces below the canvas.** The ladder only goes lighter. Sunk surfaces mix Darkblue towards Darkblack: `mix(darkblue, darkblack, 0.8)` = `#102d62`. Two brand colours, one recipe.
 
 **2. A readable red.** Signalred reaches 2.18:1 on Darkblue, under the 3:1 a squiggle needs and far under the 4.5:1 text needs. Red text cannot be avoided: ANSI red, `git diff` removals, shell error highlighting.
 
-Decision: one derived value, `signalred_on_dark` = `#fe7365`. Same OKLCH hue as Signalred, lightness raised to the first step that clears 4.5:1 (4.60), chroma kept at the sRGB gamut maximum. It reads as a vivid coral red rather than the pink a white tint gives (`#e68b8c` at the equivalent step). It is used only where red must be a foreground on a dark surface. Wherever red can be a **fill** — error badges, the debugging status bar, validation boxes — the foundation uses true Signalred with white text (5.63:1).
+Decision: a derived red, `signalred_on_dark` = `#ff897b`. Same OKLCH hue as Signalred, lightness raised until it clears 5.3:1 on Darkblue (5.34), chroma kept at the sRGB gamut maximum. The target is 5.3 rather than 4.5 because red text also has to stay readable on the tinted overlays below. It reads as a warm coral red rather than the pink a white tint gives. A second step of the same hue, `signalred_on_dark_bright` = `#ffb4aa` (7.23:1), serves ANSI bright red. Both are used only where red must be a foreground on a dark surface. Wherever red can be a **fill** — error badges, the debugging status bar, validation boxes — the foundation uses true Signalred with white text (5.63:1).
 
-Rejected alternative: no red foreground at all. Errors become white text on a Signalred fill where the target supports a background (fish, PSReadLine, VS Code badges), and ANSI red plus squiggles fall back to `pumpelorange.80`. Cost: red and orange stop being distinguishable in terminal output, and warning needs a different colour.
+Rejected alternative: no red foreground at all. Errors become white text on a Signalred fill where the target supports a background (fish, PSReadLine, VS Code badges), and ANSI red plus squiggles fall back to a Pumpelorange tint. Cost: red and orange stop being distinguishable in terminal output, and warning needs a different colour.
 
 ## Surfaces, text, borders
 
@@ -87,7 +87,7 @@ Rejected alternative: no red foreground at all. Errors become white text on a Si
 | `surface.bg`          | `darkblue.100`        | Editor canvas                                    |
 | `surface.bg_sunk`     | `#102d62` (see above) | Sidebar, activity bar, status bar, inactive tabs |
 | `surface.bg_soft`     | `darkblue.90`         | Hover, lifted panels, inputs                     |
-| `surface.bg_overlay`  | `darkblue.90`         | Menus, suggest widget, quick input               |
+| `surface.bg_overlay`  | `= surface.bg_sunk`   | Menus, hover and suggest widgets, quick input    |
 | `surface.bg_terminal` | `= surface.bg`        | Terminal background, in editors and standalone   |
 | `text.fg`             | `darkblue.10`         | Body text, variables (10.21:1)                   |
 | `text.fg_muted`       | `darkblue.30`         | Secondary text, punctuation (6.78:1)             |
@@ -95,26 +95,28 @@ Rejected alternative: no red foreground at all. Errors become white text on a Si
 | `text.fg_disabled`    | `darkblue.60`         | Disabled; exempt from the text gate (3.22:1)     |
 | `border.subtle`       | `darkblue.90`         | Dividers                                         |
 | `border.default`      | `darkblue.80`         | Panel edges                                      |
-| `border.control`      | resolved by gate      | Control outline, ≥ 3:1 on every control surface  |
+| `border.control`      | `darkblue.50`         | Control outline, ≥ 3:1 on every control surface  |
 | `accent`              | `sunset.100`          | Cursor, focus ring, active tab, primary button   |
 | `accent_on`           | `darkblue.100`        | Text on the accent (7.10:1)                      |
 
+Floating widgets sit on the darker `bg_sunk`, not on a lighter panel: hover and peek widgets show code, and every lighter surface costs contrast (see Overlay recipes). `bg_soft` is for hover states and inputs; it carries `fg` and `fg_muted` only.
+
 `bg_terminal` equals the canvas on purpose: a standalone terminal shows no other surface, and it should be the Darkblue people recognise.
 
-No pure white and no pure black anywhere: `fg` is `#e7eaf1`, ANSI black is `bg_sunk`.
+Body text is not pure white and no surface is pure black: `fg` is `#e7eaf1`, ANSI black is `bg_sunk`. White itself is part of the brand as an unlisted "non-colour" (`palette.white`, no ladder); the foundation uses it only as text on the Signalred fill.
 
 ## Semantic roles
 
 | Role      | Foreground on dark         | Fill (with text colour)        |
 | --------- | -------------------------- | ------------------------------ |
-| `danger`  | `signalred_on_dark`        | `signalred.100` + white        |
-| `success` | `freegreen.80` (5.14:1)    | `freegreen.100` + Darkblack    |
-| `warning` | `pumpelorange.80` (4.75:1) | `pumpelorange.100` + Darkblack |
-| `info`    | `windblue.70` (5.17:1)     | —                              |
+| `danger`  | `signalred_on_dark`        | `signalred.100` + white (5.63) |
+| `success` | `freegreen.50` (7.27:1)    | `freegreen.100` + Darkblack    |
+| `warning` | `lightorange.100` (5.75:1) | `lightorange.100` + Darkblack  |
+| `info`    | `windblue.60` (5.89:1)     | —                              |
 
-Warning is orange, not yellow, because yellow is the accent. For the same reason the VS Code debugging status bar uses the danger fill.
+Warning is Lightorange, not yellow, because yellow is the accent, and not Pumpelorange, because that sits too close to the derived red (OKLab distance 6.4 against 10.0 for Lightorange). For the same reason the VS Code debugging status bar uses the danger fill.
 
-Danger and success differ in lightness as well as hue (gate below), so they survive red-green colour blindness. Ports still pair them with shape or position, never colour alone.
+Success is two ladder steps lighter than strictly needed so that danger and success differ in lightness as well as hue and survive red-green colour blindness. Ports still pair them with shape or position, never colour alone.
 
 ## Syntax
 
@@ -124,22 +126,24 @@ The brand gives three hue families that stay distinct on Darkblue — yellow, or
 
 Three hues is fewer than the 7–9 a traditional theme uses. This theme therefore sits between the traditional and minimalist schools: three hues, **two lightness steps per hue**, and font style as a third axis. Lightness is the dimension the eye separates best, and the build gates on it.
 
-### Core slots (provisional — the gates decide)
+### Core slots
 
-| Slot        | Value             | Style  | Note                                  |
-| ----------- | ----------------- | ------ | ------------------------------------- |
-| `comment`   | `text.fg_subtle`  | italic |                                       |
-| `keyword`   | `sunset.100`      |        | The signature colour                  |
-| `string`    | `pumpelorange.50` |        | Warm = data                           |
-| `number`    | `pumpelorange.80` |        | Deeper than string                    |
-| `constant`  | `pumpelorange.80` |        |                                       |
-| `function`  | `windblue.70`     |        | Cool = behaviour                      |
-| `type`      | `windblue.40`     |        | Lighter than function                 |
-| `parameter` | `sunset.40`       | italic | Pale yellow                           |
-| `tag`       | `sunset.100`      |        | Not the function colour               |
-| `attr`      | `sunset.40`       | italic |                                       |
-| `regex`     | `pumpelorange.80` |        | Signal colours are not available here |
-| `punct`     | `text.fg_muted`   |        |                                       |
+Values verified against the gates below.
+
+| Slot        | Value             | Style  | On `bg` | Note                                  |
+| ----------- | ----------------- | ------ | ------- | ------------------------------------- |
+| `comment`   | `text.fg_subtle`  | italic | 5.42    |                                       |
+| `keyword`   | `sunset.100`      |        | 7.10    | The signature colour                  |
+| `type`      | `sunset.40`       |        | 9.73    | Pale yellow; structure                |
+| `string`    | `pumpelorange.40` |        | 7.70    | Warm = data                           |
+| `number`    | `pumpelorange.70` |        | 5.35    | Deeper than string                    |
+| `constant`  | `pumpelorange.70` |        | 5.35    |                                       |
+| `regex`     | `pumpelorange.70` |        | 5.35    | Signal colours are not available here |
+| `function`  | `windblue.60`     |        | 5.89    | Cool = behaviour                      |
+| `parameter` | `windblue.30`     | italic | 8.63    | Pale blue                             |
+| `attr`      | `windblue.30`     | italic | 8.63    |                                       |
+| `tag`       | `sunset.100`      |        | 7.10    | Not the function colour               |
+| `punct`     | `text.fg_muted`   |        | 6.78    |                                       |
 
 Variables and properties are `fg`. JS/TS `const` declarations fall through to `fg`.
 
@@ -163,44 +167,50 @@ Carried over in shape from Vivid Life and resolved against the slots above:
 
 ## ANSI palette
 
-| Slot    | Normal              | Bright            |
-| ------- | ------------------- | ----------------- |
-| black   | `surface.bg_sunk`   | `darkblue.50`     |
-| red     | `signalred_on_dark` | resolved by gate  |
-| green   | `freegreen.80`      | `freegreen.50`    |
-| yellow  | `sunset.100`        | `sunset.50`       |
-| blue    | `middleblue.50`     | `middleblue.30`   |
-| magenta | `pumpelorange.80`   | `pumpelorange.50` |
-| cyan    | `windblue.70`       | `windblue.40`     |
-| white   | `darkblue.30`       | `darkblue.10`     |
+| Slot    | Normal              | Bright                     |
+| ------- | ------------------- | -------------------------- |
+| black   | `surface.bg_sunk`   | `darkblack.40`             |
+| red     | `signalred_on_dark` | `signalred_on_dark_bright` |
+| green   | `freegreen.50`      | `freegreen.30`             |
+| yellow  | `sunset.100`        | `sunset.40`                |
+| blue    | `middleblue.60`     | `middleblue.40`            |
+| magenta | `lightorange.100`   | `lightorange.60`           |
+| cyan    | `windblue.50`       | `windblue.30`              |
+| white   | `shadowgrey.60`     | `darkblue.10`              |
 
 Notes:
 
-- The brand has no magenta. The slot takes Pumpelorange, the only unassigned hue. This is the one place the ANSI name and the colour disagree; the README says so.
-- ANSI blue on a blue terminal is the hardest slot. It takes Middleblue so it stays apart from cyan (Windblue) by hue as far as the brand allows; the distinctness gate checks the pair.
+- The brand has no magenta. The slot takes Lightorange, which sits between yellow and red and is far enough from both. This is the one place the ANSI name and the colour disagree; the README says so.
+- ANSI blue on a blue terminal is the hardest slot. It takes Middleblue, with cyan on a lighter Windblue step so the pair differs in lightness as well as hue.
+- The neutral slots use true greys (Shadowgrey for `white`, a Darkblack tint for `bright_black`), so they stay apart from `blue` and `cyan`. A blue-grey from the Darkblue ladder would not.
 - `black` is exempt from the contrast gate, as the conventional near-background anchor. `bright_black` is not.
-- Bright red, if the red decision goes as recommended, is the next OKLCH lightness step of the same hue.
 
 ## Overlay recipes
 
-Vivid Life's ports each hard-code their own alphas. Here they are tokens: `{ color, alpha }` pairs, composited over `surface.bg` by a helper the foundation exports (`alphaOver`), so a port without alpha support bakes the same value a port with alpha support blends.
+Vivid Life's ports each hard-code their own alphas. Here they are tokens: `{ color, alpha, border? }`, composited over `surface.bg` by a helper the foundation exports (`alphaOver`), so a port without alpha support bakes the same value a port with alpha support blends. The build adds the composited `hex` to each recipe.
 
-| Recipe                  | Colour         | Alpha |
-| ----------------------- | -------------- | ----- |
-| `selection`             | `windblue`     | 30 %  |
-| `selection_inactive`    | `windblue`     | 18 %  |
-| `line_highlight`        | `darkblue.90`  | solid |
-| `find_match`            | `pumpelorange` | 45 %  |
-| `find_match_other`      | `windblue`     | 22 %  |
-| `word_highlight`        | `sunset`       | 22 %  |
-| `word_highlight_strong` | `sunset`       | 38 %  |
-| `selected_item`         | `sunset`       | 18 %  |
-| `diff_inserted_line`    | `freegreen`    | 12 %  |
-| `diff_inserted_text`    | `freegreen`    | 25 %  |
-| `diff_removed_line`     | `signalred`    | 14 %  |
-| `diff_removed_text`     | `signalred`    | 35 %  |
+**Overlays darken.** Darkblue is a medium-dark canvas: white reaches only 12.3:1 on it, and a selection that lightens the canvas by a visible amount takes every saturated brand colour below 4.5:1. A selection that darkens it does the opposite. So selection and line highlight mix towards Darkblack, and text gets more contrast when selected, not less.
 
-Selection is blue and the current find match is orange so the two never look alike. Alphas are starting values; the gate below can force them down.
+Highlights that must carry a hue stay faint and get a border, which also means they do not rely on colour alone.
+
+| Recipe                  | Colour         | Alpha | Border            |
+| ----------------------- | -------------- | ----- | ----------------- |
+| `selection`             | `darkblack`    | 60 %  |                   |
+| `selection_inactive`    | `darkblack`    | 40 %  |                   |
+| `line_highlight`        | `darkblack`    | 30 %  |                   |
+| `find_match`            | `pumpelorange` | 15 %  | `pumpelorange.70` |
+| `find_match_other`      | `pumpelorange` | 8 %   | `darkblue.50`     |
+| `word_highlight`        | `sunset`       | 10 %  |                   |
+| `word_highlight_strong` | `sunset`       | 10 %  | `sunset.100`      |
+| `selected_item`         | `sunset`       | 18 %  |                   |
+| `diff_inserted_line`    | `freegreen`    | 12 %  |                   |
+| `diff_inserted_text`    | `freegreen`    | 25 %  |                   |
+| `diff_removed_line`     | `signalred`    | 14 %  |                   |
+| `diff_removed_text`     | `signalred`    | 35 %  |                   |
+
+Selection is a dark neutral and the current find match is orange with a border, so the two never look alike. Read and write word highlights share a fill; the write highlight adds the border.
+
+`selected_item` and the two `*_text` recipes carry `fg` and `fg_muted` only: list rows and inline diff spans, not whole lines of code.
 
 ## Shell roles
 
@@ -248,19 +258,19 @@ Preview pages use the same stack and fall back gracefully when the font is not i
 
 `tools/build-tokens.mjs` fails the build when any of these do not hold. Colour maths (luminance, contrast, alpha compositing, mixing) is adapted from Vivid Life's `tools/build-tokens.mjs`.
 
-1. **Text contrast.** `fg`, `fg_muted`, `fg_subtle`, every syntax slot, every semantic foreground: ≥ 4.5:1 on `bg`, `bg_sunk`, `bg_soft`, `bg_overlay`.
-2. **Text on overlays.** `fg` and every syntax slot: ≥ 4.5:1 on `selection`, `line_highlight`, `find_match`, `find_match_other`, `word_highlight`, `word_highlight_strong` and the diff line recipes, each composited over `bg`. People read code while it is selected.
+1. **Text contrast.** `fg`, `fg_muted`, `fg_subtle`, every syntax slot, every semantic foreground: ≥ 4.5:1 on `bg`, `bg_sunk`, `bg_overlay`. `fg` and `fg_muted`: ≥ 4.5:1 on `bg_soft`.
+2. **Text on overlays.** `fg`, `fg_subtle`, every syntax slot and every semantic foreground: ≥ 4.5:1 on `selection`, `selection_inactive`, `line_highlight`, `find_match`, `find_match_other`, `word_highlight`, `word_highlight_strong` and the two diff line recipes, each composited over `bg`. People read code while it is selected. `fg` and `fg_muted`: ≥ 4.5:1 on `selected_item` and the two diff text recipes.
 3. **ANSI.** All sixteen ≥ 4.5:1 on `bg_terminal`, except `black`.
-4. **Non-text.** `border.control` ≥ 3:1 on `bg`, `bg_sunk`, `bg_soft`, `bg_overlay`. `accent` ≥ 3:1 on the same (focus ring).
+4. **Non-text.** `border.control` ≥ 3:1 on `bg`, `bg_sunk`, `bg_soft`, `bg_overlay`. `accent` ≥ 3:1 on the same (focus ring). Every overlay border ≥ 3:1 on its own composited fill.
 5. **Fills.** Each semantic fill's text colour ≥ 4.5:1 on its fill; `accent_on` ≥ 4.5:1 on `accent`.
-6. **Distinctness.** Pairs that must not look alike have an OKLab distance ≥ 8 (×100 scale): `function`/`fg`, `function`/`tag`, `function`/`type`, `string`/`number`, `keyword`/`parameter`, `type`/`attr`, `comment`/`fg`, ANSI `blue`/`cyan`, ANSI `yellow`/`magenta`, every ANSI normal against its bright. Slots that share a value on purpose (`number`/`constant`/`regex`, `keyword`/`tag`, `parameter`/`attr`) are listed as allowed aliases so the audit runs on resolved colours, not slot names.
-7. **Signal separation.** `accent`, `warning`, `danger` pairwise distance ≥ 8. `danger` and `success` differ by ≥ 5 in OKLab lightness.
-8. **Palette integrity.** Every colour reference resolves to a base colour, a generated ladder step, or one of the two named literals. No stray hex. Signalred has no ladder steps.
-9. **Selection ≠ find.** `selection` and `find_match`, composited, have a distance ≥ 8.
+6. **Distinctness.** Pairs that must not look alike have an OKLab distance ≥ 7 (×100 scale; a just-noticeable difference is about 2): `function`/`fg`, `function`/`tag`, `function`/`parameter`, `function`/`comment`, `type`/`fg`, `type`/`keyword`, `type`/`string`, `type`/`attr`, `string`/`number`, `string`/`fg`, `parameter`/`fg`, `comment`/`fg`, `punct`/`fg`; within each ANSI row every pair of the eight slots; every ANSI normal against its bright. Slots that share a value on purpose (`number`/`constant`/`regex`, `keyword`/`tag`, `parameter`/`attr`) are listed as allowed aliases so the audit runs on resolved colours, not slot names.
+7. **Signal separation.** `accent`, `warning`, `danger` pairwise distance ≥ 7. `danger` and `success` differ by ≥ 5 in OKLab lightness.
+8. **Palette integrity.** Every colour reference resolves to a base colour, a generated ladder step, or one of the named derived literals. No stray hex. Signalred has no ladder steps.
+9. **Overlays are visible and distinct.** `selection` and `find_match`, composited, have a distance ≥ 7 from each other, and `selection` a distance ≥ 7 from `bg`.
 
 **APCA** (Lc for every text pair) is printed as a report and written to the contrast preview, with the syntax document's targets beside it (body ≥ 75, comments ≥ 45). It informs; it does not fail the build. WCAG 2.x AA is the hard requirement.
 
-Where a gate fails on the provisional values in this spec, the fix order is: move along the same ladder; then swap roles between brand hues; never add a hue.
+The values in this spec pass. Where a later change fails a gate, the fix order is: move along the same ladder; then swap roles between brand hues; never add a hue.
 
 ## Repository layout
 
@@ -272,7 +282,7 @@ colors.css                   Generated — custom properties for the previews
 tools/
   build-tokens.mjs           Resolve, generate ladders, run gates, --check, --test
   build-css.mjs              tokens → colors.css
-  build-previews.mjs         --check: every var(--…) in preview/ resolves
+  build-previews.mjs         tokens → preview/*.html; --check for drift
 preview/
   01-syntax.html             TS/JSX, Python, CSS, HTML, JSON, Markdown samples
   02-terminal.html           ANSI grid, sample git/ls output
