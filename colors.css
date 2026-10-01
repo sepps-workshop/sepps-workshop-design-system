@@ -1,0 +1,182 @@
+/* Sepp's Workshop 0.1.0 — AUTO-GENERATED from tokens.json5. Do not edit. */
+:root {
+  /* Brand palette — base colours and their tint ladders */
+  --sw-palette-darkblue-100: #0d3174;
+  --sw-palette-darkblue-90: #254682;
+  --sw-palette-darkblue-80: #3d5a90;
+  --sw-palette-darkblue-70: #566f9e;
+  --sw-palette-darkblue-60: #6e83ac;
+  --sw-palette-darkblue-50: #8698ba;
+  --sw-palette-darkblue-40: #9eadc7;
+  --sw-palette-darkblue-30: #b6c1d5;
+  --sw-palette-darkblue-20: #cfd6e3;
+  --sw-palette-darkblue-10: #e7eaf1;
+  --sw-palette-sunset-100: #fbba00;
+  --sw-palette-sunset-90: #fbc119;
+  --sw-palette-sunset-80: #fcc833;
+  --sw-palette-sunset-70: #fccf4d;
+  --sw-palette-sunset-60: #fdd666;
+  --sw-palette-sunset-50: #fddd80;
+  --sw-palette-sunset-40: #fde399;
+  --sw-palette-sunset-30: #feeab3;
+  --sw-palette-sunset-20: #fef1cc;
+  --sw-palette-sunset-10: #fff8e6;
+  --sw-palette-shadowgrey-100: #b2b2b2;
+  --sw-palette-shadowgrey-90: #bababa;
+  --sw-palette-shadowgrey-80: #c1c1c1;
+  --sw-palette-shadowgrey-70: #c9c9c9;
+  --sw-palette-shadowgrey-60: #d1d1d1;
+  --sw-palette-shadowgrey-50: #d9d9d9;
+  --sw-palette-shadowgrey-40: #e0e0e0;
+  --sw-palette-shadowgrey-30: #e8e8e8;
+  --sw-palette-shadowgrey-20: #f0f0f0;
+  --sw-palette-shadowgrey-10: #f7f7f7;
+  --sw-palette-middleblue-100: #0069a9;
+  --sw-palette-middleblue-90: #1978b2;
+  --sw-palette-middleblue-80: #3387ba;
+  --sw-palette-middleblue-70: #4d96c3;
+  --sw-palette-middleblue-60: #66a5cb;
+  --sw-palette-middleblue-50: #80b4d4;
+  --sw-palette-middleblue-40: #99c3dd;
+  --sw-palette-middleblue-30: #b3d2e5;
+  --sw-palette-middleblue-20: #cce1ee;
+  --sw-palette-middleblue-10: #e6f0f6;
+  --sw-palette-pumpelorange-100: #ec6608;
+  --sw-palette-pumpelorange-90: #ee7521;
+  --sw-palette-pumpelorange-80: #f08539;
+  --sw-palette-pumpelorange-70: #f29452;
+  --sw-palette-pumpelorange-60: #f4a36b;
+  --sw-palette-pumpelorange-50: #f6b384;
+  --sw-palette-pumpelorange-40: #f7c29c;
+  --sw-palette-pumpelorange-30: #f9d1b5;
+  --sw-palette-pumpelorange-20: #fbe0ce;
+  --sw-palette-pumpelorange-10: #fdf0e6;
+  --sw-palette-windblue-100: #0093d3;
+  --sw-palette-windblue-90: #199ed7;
+  --sw-palette-windblue-80: #33a9dc;
+  --sw-palette-windblue-70: #4db3e0;
+  --sw-palette-windblue-60: #66bee5;
+  --sw-palette-windblue-50: #80c9e9;
+  --sw-palette-windblue-40: #99d4ed;
+  --sw-palette-windblue-30: #b3dff2;
+  --sw-palette-windblue-20: #cce9f6;
+  --sw-palette-windblue-10: #e6f4fb;
+  --sw-palette-lightorange-100: #f59e33;
+  --sw-palette-lightorange-90: #f6a847;
+  --sw-palette-lightorange-80: #f7b15c;
+  --sw-palette-lightorange-70: #f8bb70;
+  --sw-palette-lightorange-60: #f9c585;
+  --sw-palette-lightorange-50: #facf99;
+  --sw-palette-lightorange-40: #fbd8ad;
+  --sw-palette-lightorange-30: #fce2c2;
+  --sw-palette-lightorange-20: #fdecd6;
+  --sw-palette-lightorange-10: #fef5eb;
+  --sw-palette-darkblack-100: #1b1d1c;
+  --sw-palette-darkblack-90: #323433;
+  --sw-palette-darkblack-80: #494a49;
+  --sw-palette-darkblack-70: #5f6160;
+  --sw-palette-darkblack-60: #767777;
+  --sw-palette-darkblack-50: #8d8e8e;
+  --sw-palette-darkblack-40: #a4a5a4;
+  --sw-palette-darkblack-30: #bbbbbb;
+  --sw-palette-darkblack-20: #d1d2d2;
+  --sw-palette-darkblack-10: #e8e8e8;
+  --sw-palette-signalred-100: #cd1719;
+  --sw-palette-freegreen-100: #3aaa35;
+  --sw-palette-freegreen-90: #4eb349;
+  --sw-palette-freegreen-80: #61bb5d;
+  --sw-palette-freegreen-70: #75c472;
+  --sw-palette-freegreen-60: #89cc86;
+  --sw-palette-freegreen-50: #9dd59a;
+  --sw-palette-freegreen-40: #b0ddae;
+  --sw-palette-freegreen-30: #c4e6c2;
+  --sw-palette-freegreen-20: #d8eed7;
+  --sw-palette-freegreen-10: #ebf7eb;
+  --sw-palette-white-100: #ffffff;
+
+  /* Surfaces */
+  --sw-bg: #0d3174;
+  --sw-bg-sunk: #102d62;
+  --sw-bg-soft: #254682;
+  --sw-bg-overlay: #102d62;
+  --sw-bg-terminal: #0d3174;
+
+  /* Text */
+  --sw-fg: #e7eaf1;
+  --sw-fg-muted: #b6c1d5;
+  --sw-fg-subtle: #9eadc7;
+  --sw-fg-disabled: #6e83ac;
+
+  /* Borders */
+  --sw-border-subtle: #254682;
+  --sw-border-default: #3d5a90;
+  --sw-border-control: #8698ba;
+
+  /* Accent */
+  --sw-accent: #fbba00;
+  --sw-accent-on: #0d3174;
+
+  /* Semantic — foregrounds on dark, then fills with their text colour */
+  --sw-danger: #ff897b;
+  --sw-success: #9dd59a;
+  --sw-warning: #f59e33;
+  --sw-info: #66bee5;
+  --sw-danger-fill: #cd1719;
+  --sw-danger-fill-text: #ffffff;
+  --sw-success-fill: #3aaa35;
+  --sw-success-fill-text: #1b1d1c;
+  --sw-warning-fill: #f59e33;
+  --sw-warning-fill-text: #1b1d1c;
+
+  /* Syntax */
+  --sw-syn-comment: #9eadc7;
+  --sw-syn-keyword: #fbba00;
+  --sw-syn-string: #f7c29c;
+  --sw-syn-number: #f29452;
+  --sw-syn-function: #66bee5;
+  --sw-syn-parameter: #b3dff2;
+  --sw-syn-type: #fde399;
+  --sw-syn-constant: #f29452;
+  --sw-syn-tag: #fbba00;
+  --sw-syn-attr: #b3dff2;
+  --sw-syn-regex: #f29452;
+  --sw-syn-punct: #b6c1d5;
+
+  /* ANSI */
+  --sw-ansi-black: #102d62;
+  --sw-ansi-red: #ff897b;
+  --sw-ansi-green: #9dd59a;
+  --sw-ansi-yellow: #fbba00;
+  --sw-ansi-blue: #66a5cb;
+  --sw-ansi-magenta: #f59e33;
+  --sw-ansi-cyan: #80c9e9;
+  --sw-ansi-white: #d1d1d1;
+  --sw-ansi-bright-black: #a4a5a4;
+  --sw-ansi-bright-red: #ffb4aa;
+  --sw-ansi-bright-green: #c4e6c2;
+  --sw-ansi-bright-yellow: #fde399;
+  --sw-ansi-bright-blue: #99c3dd;
+  --sw-ansi-bright-magenta: #f9c585;
+  --sw-ansi-bright-cyan: #b3dff2;
+  --sw-ansi-bright-white: #e7eaf1;
+
+  /* Overlays — composited over --sw-bg */
+  --sw-overlay-selection: #15253f;
+  --sw-overlay-selection-inactive: #132951;
+  --sw-overlay-line-highlight: #112b5a;
+  --sw-overlay-find-match: #2e3964;
+  --sw-overlay-find-match-border: #f29452;
+  --sw-overlay-find-match-other: #1f356b;
+  --sw-overlay-find-match-other-border: #8698ba;
+  --sw-overlay-word-highlight: #253f68;
+  --sw-overlay-word-highlight-strong: #253f68;
+  --sw-overlay-word-highlight-strong-border: #fbba00;
+  --sw-overlay-selected-item: #384a5f;
+  --sw-overlay-diff-inserted-line: #12406c;
+  --sw-overlay-diff-inserted-text: #184f64;
+  --sw-overlay-diff-removed-line: #282d67;
+  --sw-overlay-diff-removed-text: #502854;
+
+  /* Typography */
+  --sw-font-mono: "JetBrains Mono", "JetBrainsMono Nerd Font", "Cascadia Code", Consolas, ui-monospace, monospace;
+}
