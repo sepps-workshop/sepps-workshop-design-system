@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "file=$(jq -r '.tool_input.file_path // empty'); case \"$file\" in */tokens.json|*/dist/tokens.js|*/colors.css|*/preview/*.html) echo \"Blocked: $file is generated. Edit tokens.json5 and run npm run build.\" >&2; exit 2;; esac; exit 0"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "file=$(jq -r '.tool_input.file_path // empty'); case \"$file\" in */tokens.json5) cd \"$CLAUDE_PROJECT_DIR\" && npm run build >&2 || exit 2;; esac; exit 0"
+          }
+        ]
+      }
+    ]
+  }
+}

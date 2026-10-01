@@ -8,11 +8,13 @@ Token foundation for five theme ports (VS Code, Windows Terminal, PowerShell, fi
 - `npm run check` — fail if any generated file is out of date or a gate fails
 - `npm test` — unit tests for the colour maths, loader, gates, CSS and previews
 
-Run `npm run build` after every change to `tokens.json5`.
+Run `npm run build` after every change to `tokens.json5`. A PostToolUse hook does this on edit.
+
+After cloning, run `git config core.hooksPath .githooks` to enable the gitleaks pre-commit hook. CI runs `npm run check` and `npm test`.
 
 ## References
 
-@README.md **Read when:** working on the palette, roles, gates, or the contract with the ports.
+`README.md` **Read when:** working on the palette, roles, gates, or the contract with the ports.
 
 `docs/superpowers/specs/2026-10-01-design-system-foundation-design.md` **Read when:** you need the reasoning behind a value or a rule.
 
@@ -42,3 +44,5 @@ When the user corrects a mistake or points out a recurring issue, append a one-l
 ## Compact Instructions
 
 When compacting, preserve: list of modified files, current test status, open TODOs, and key decisions made.
+
+<!-- cc-config: last-optimize-run: 2026-10-01 5c211dd6537fce9070a26d719dde74c04f82cd2e -->
