@@ -85,6 +85,9 @@ export function parseTokens(src) {
   return JSON.parse(json5ToJson(src));
 }
 
+const isColour = (v) => typeof v === "string" && /^#[0-9a-f]{6}$/i.test(v);
+const isAlpha = (v) => typeof v === "number" && v > 0 && v <= 1;
+
 /* ── Resolution ──────────────────────────────────────────────────── */
 
 function lookup(root, ref, at, seen) {
@@ -140,7 +143,11 @@ export function resolveTokens(raw) {
   const withPalette = { meta, palette_base, ladder, palette, derived, ...rest };
   const tokens = resolveRefs(withPalette, withPalette, "");
   for (const o of Object.values(tokens.overlay)) {
-    o.hex = alphaOver(o.color, tokens.surface.bg, o.alpha);
+    // A malformed recipe gets no hex here; check() reports it by path.
+    o.hex =
+      isColour(o.color) && isColour(tokens.surface.bg) && isAlpha(o.alpha)
+        ? alphaOver(o.color, tokens.surface.bg, o.alpha)
+        : null;
   }
   return tokens;
 }
@@ -228,6 +235,9 @@ const ANSI_EXEMPT = new Set(["black"]);
 
 /** Keys inside role maps that hold metadata, not colour targets. */
 const NOT_A_TARGET = new Set(["style", "fish", "psreadline"]);
+/** The only keys a role object may have, and the font styles it may name. */
+const ROLE_KEYS = new Set(["color", "style", "fish", "psreadline"]);
+const STYLES = new Set(["italic", "bold", "underline"]);
 const TARGET_MAPS = [
   "syntax_tokens.extended",
   "semantic_token_recommendations",
@@ -340,7 +350,84 @@ export function check(tokens, raw) {
     }
   };
 
-  // Structure first: later gates assume every target resolves.
+  // Shape first: the gates below assume colours are colours and roles
+  // are spelt right. Everything here is reported by path.
+  const { palette_base, derived, ...roles } = raw;
+  for (const [path, value] of collectHex(roles, "", [])) {
+    fail.push(
+      `✗ ${path} is the hex literal ${value}: reference a palette step or a derived value instead`,
+    );
+  }
+  const colour = (path, v) => {
+    if (!isColour(v))
+      fail.push(`✗ ${path} is ${JSON.stringify(v)}, not a colour (#rrggbb)`);
+  };
+  for (const group of [
+    "surface",
+    "text",
+    "border",
+    "semantic",
+    "syntax",
+    "ansi",
+  ]) {
+    for (const [k, v] of Object.entries(tokens[group]))
+      colour(`${group}.${k}`, v);
+  }
+  colour("accent", tokens.accent);
+  colour("accent_on", tokens.accent_on);
+  for (const [k, f] of Object.entries(tokens.semantic_fill)) {
+    colour(`semantic_fill.${k}.fill`, f.fill);
+    colour(`semantic_fill.${k}.text`, f.text);
+  }
+  for (const [k, o] of Object.entries(tokens.overlay)) {
+    colour(`overlay.${k}.color`, o.color);
+    if ("border" in o) colour(`overlay.${k}.border`, o.border);
+    if (!isAlpha(o.alpha)) {
+      fail.push(
+        `✗ overlay.${k}.alpha is ${JSON.stringify(o.alpha)}, needs a number above 0 and up to 1`,
+      );
+    }
+  }
+  const role = (path, v) => {
+    if (!v || typeof v !== "object" || Array.isArray(v)) return;
+    for (const key of Object.keys(v)) {
+      if (!ROLE_KEYS.has(key)) {
+        fail.push(
+          `✗ ${path} has the unknown key "${key}" (allowed: ${[...ROLE_KEYS].join(", ")})`,
+        );
+      }
+    }
+    for (const style of v.style ?? []) {
+      if (!STYLES.has(style)) {
+        fail.push(
+          `✗ ${path} has the unknown style "${style}" (allowed: ${[...STYLES].join(", ")})`,
+        );
+      }
+    }
+  };
+  for (const [map, entries] of [
+    ["shell_roles", tokens.shell_roles],
+    [
+      "prompt_roles",
+      Object.fromEntries(
+        Object.entries(tokens.prompt_roles).filter(([k]) => k !== "git_status"),
+      ),
+    ],
+    ["syntax_tokens.extended", tokens.syntax_tokens.extended],
+    [
+      "semantic_token_recommendations.types",
+      tokens.semantic_token_recommendations.types,
+    ],
+    [
+      "semantic_token_recommendations.modifiers",
+      tokens.semantic_token_recommendations.modifiers,
+    ],
+  ]) {
+    for (const [k, v] of Object.entries(entries)) role(`${map}.${k}`, v);
+  }
+  if (fail.length) return fail;
+
+  // Structure next: later gates assume every target resolves.
   for (const slot of tokens.syntax_tokens.core) {
     if (!Object.hasOwn(tokens.syntax, slot)) {
       fail.push(
@@ -474,12 +561,6 @@ export function check(tokens, raw) {
   }
 
   // 8. Palette integrity.
-  const { palette_base, derived, ...roles } = raw;
-  for (const [path, value] of collectHex(roles, "", [])) {
-    fail.push(
-      `✗ ${path} is the hex literal ${value}: reference a palette step or a derived value instead`,
-    );
-  }
   if (!raw.ladder.exclude.includes("signalred")) {
     fail.push(
       "✗ signalred must not have a ladder: its tints drift into pink (brand decision)",
@@ -541,6 +622,15 @@ async function main() {
   const raw = parseTokens(src);
   const tokens = resolveTokens(raw);
 
+  // Gates first: a build that fails must not leave rejected values on disk.
+  const failures = check(tokens, raw);
+  if (failures.length) {
+    console.error(`\n${failures.length} gate failure(s):`);
+    for (const f of failures) console.error("  " + f);
+    console.error("\nNothing was written.");
+    process.exit(1);
+  }
+
   const stale = [];
   for (const [path, content] of renderOutputs(tokens)) {
     if (checkMode) {
@@ -559,12 +649,6 @@ async function main() {
   if (checkMode)
     console.log("✓ tokens.json and dist/tokens.js match tokens.json5");
 
-  const failures = check(tokens, raw);
-  if (failures.length) {
-    console.error(`\n${failures.length} gate failure(s):`);
-    for (const f of failures) console.error("  " + f);
-    process.exit(1);
-  }
   const rows = contrastReport(tokens);
   const tightest = rows.reduce((a, b) => (a.ratio < b.ratio ? a : b));
   const body = rows.find((r) => r.label === "text.fg" && r.on === "surface.bg");

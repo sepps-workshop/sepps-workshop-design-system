@@ -1,9 +1,16 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import { mkdtemp, cp, writeFile } from "node:fs/promises";
+import { existsSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import {
   parseTokens,
   resolveTokens,
+  resolveTarget,
+  contrast,
   check,
   contrastReport,
 } from "./build-tokens.mjs";
@@ -167,4 +174,80 @@ test("the report covers code on every code surface and overlay", () => {
   );
   const body = rows.find((r) => r.label === "text.fg" && r.on === "surface.bg");
   assert.ok(Math.abs(body.lc) >= 75, "body text reaches APCA Lc 75");
+});
+
+/* ── Final-review fixes ──────────────────────────────────────────── */
+
+test("a short hex in a gated slot is named by path, not thrown", () => {
+  assertFails((r) => {
+    r.syntax.keyword = "#fb0";
+  }, /syntax\.keyword .*hex literal/);
+});
+
+test("a reference to a whole ladder is refused as not a colour", () => {
+  assertFails((r) => {
+    r.syntax.keyword = "$palette.sunset";
+  }, /syntax\.keyword .*not a colour/);
+  assertFails((r) => {
+    r.border.subtle = "$palette.darkblue";
+  }, /border\.subtle .*not a colour/);
+});
+
+test("an overlay without a numeric alpha is named", () => {
+  assertFails((r) => {
+    delete r.overlay.selection.alpha;
+  }, /overlay\.selection\.alpha/);
+});
+
+test("a misspelt key in a role is refused", () => {
+  assertFails((r) => {
+    r.shell_roles.command = { colour: "function" };
+  }, /shell_roles\.command.*unknown key "colour"/);
+});
+
+test("an unknown font style in a role is refused", () => {
+  assertFails((r) => {
+    r.shell_roles.comment.style = ["italics"];
+  }, /shell_roles\.comment.*unknown style "italics"/);
+});
+
+test("text on the selected pager row is readable", () => {
+  const t = resolveTokens(parseTokens(SRC));
+  const row = t.overlay.selected_item.hex;
+  for (const role of [
+    "pager_selected_completion",
+    "pager_selected_description",
+    "pager_selected_prefix",
+  ]) {
+    assert.ok(t.shell_roles[role], `shell_roles.${role} is missing`);
+    assert.ok(
+      contrast(resolveTarget(t, t.shell_roles[role].color), row) >= 4.5,
+      `${role} on the selected row`,
+    );
+  }
+});
+
+test("a failing build writes nothing", async () => {
+  const dir = await mkdtemp(join(tmpdir(), "sw-build-"));
+  await cp(new URL("../tools", import.meta.url), join(dir, "tools"), {
+    recursive: true,
+  });
+  await writeFile(
+    join(dir, "tokens.json5"),
+    SRC.replace(
+      'function: "$palette.windblue.60"',
+      'function: "$palette.windblue.100"',
+    ),
+  );
+  const run = spawnSync(
+    process.execPath,
+    [join(dir, "tools", "build-tokens.mjs")],
+    { encoding: "utf8" },
+  );
+  assert.equal(run.status, 1);
+  assert.match(run.stderr, /syntax\.function/);
+  assert.ok(
+    !existsSync(join(dir, "tokens.json")),
+    "tokens.json was written despite a gate failure",
+  );
 });

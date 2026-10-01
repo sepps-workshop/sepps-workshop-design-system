@@ -216,27 +216,30 @@ Selection is a dark neutral and the current find match is orange with a border, 
 
 New in this foundation. fish and PowerShell each need "what colour is a command, an option, an autosuggestion" and the Vivid Life ports each answered it separately. One map, `shell_roles`, with the fish variable and PSReadLine key each role feeds listed beside it:
 
-| Role                | Value                   | Style     |
-| ------------------- | ----------------------- | --------- |
-| `command`           | `function` slot         |           |
-| `keyword`           | `keyword` slot          |           |
-| `option`            | `attr` slot             |           |
-| `argument`          | `fg`                    |           |
-| `string`            | `string` slot           |           |
-| `number`            | `number` slot           |           |
-| `variable`          | `type` slot             |           |
-| `operator`          | `fg_muted`              |           |
-| `redirection`       | `fg_muted`              |           |
-| `escape`            | `constant` slot         |           |
-| `comment`           | `comment` slot          | italic    |
-| `autosuggestion`    | `fg_subtle`             |           |
-| `error`             | `semantic.danger`       |           |
-| `valid_path`        | —                       | underline |
-| `selection`         | `overlay.selection`     |           |
-| `search_match`      | `overlay.find_match`    |           |
-| `pager_selected`    | `overlay.selected_item` |           |
-| `pager_prefix`      | `accent`                |           |
-| `pager_description` | `fg_subtle`             |           |
+| Role                         | Value                   | Style     |
+| ---------------------------- | ----------------------- | --------- |
+| `command`                    | `function` slot         |           |
+| `keyword`                    | `keyword` slot          |           |
+| `option`                     | `attr` slot             |           |
+| `argument`                   | `fg`                    |           |
+| `string`                     | `string` slot           |           |
+| `number`                     | `number` slot           |           |
+| `variable`                   | `type` slot             |           |
+| `operator`                   | `fg_muted`              |           |
+| `redirection`                | `fg_muted`              |           |
+| `escape`                     | `constant` slot         |           |
+| `comment`                    | `comment` slot          | italic    |
+| `autosuggestion`             | `fg_subtle`             |           |
+| `error`                      | `semantic.danger`       |           |
+| `valid_path`                 | —                       | underline |
+| `selection`                  | `overlay.selection`     |           |
+| `search_match`               | `overlay.find_match`    |           |
+| `pager_selected`             | `overlay.selected_item` |           |
+| `pager_selected_completion`  | `fg`                    |           |
+| `pager_selected_description` | `fg_muted`              |           |
+| `pager_selected_prefix`      | `accent`                |           |
+| `pager_prefix`               | `accent`                |           |
+| `pager_description`          | `fg_subtle`             |           |
 
 Commands take the function colour rather than the accent (as Vivid Life does): the cursor is already Sunset, and a typed command is a call.
 
@@ -267,6 +270,8 @@ Preview pages use the same stack and fall back gracefully when the font is not i
 7. **Signal separation.** `accent`, `warning`, `danger` pairwise distance ≥ 7. `danger` and `success` differ by ≥ 5 in OKLab lightness.
 8. **Palette integrity.** Every colour reference resolves to a base colour, a generated ladder step, or one of the named derived literals. No stray hex. Signalred has no ladder steps.
 9. **Overlays are visible and distinct.** `selection` and `find_match`, composited, have a distance ≥ 7 from each other, and `selection` a distance ≥ 7 from `bg`.
+
+Before the gates, the build validates shape and reports each problem by path: every colour is `#rrggbb`, every overlay has an alpha, role objects use only `color`, `style`, `fish`, `psreadline`. A failing build writes no output.
 
 **APCA** (Lc for every text pair) is printed as a report and written to the contrast preview, with the syntax document's targets beside it (body ≥ 75, comments ≥ 45). It informs; it does not fail the build. WCAG 2.x AA is the hard requirement.
 

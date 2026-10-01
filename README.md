@@ -235,36 +235,41 @@ Overlays marked "code" sit behind whole lines and are checked against every synt
 
 fish and PowerShell both need to know what colour a command, an option or an autosuggestion is. `shell_roles` answers that once, and lists the fish variables and PSReadLine keys each role feeds.
 
-| Role                | Colour                  | Style     | fish                                                          | PSReadLine                                 |
-| ------------------- | ----------------------- | --------- | ------------------------------------------------------------- | ------------------------------------------ |
-| `command`           | `function`              |           | `fish_color_command`                                          | `Command`                                  |
-| `keyword`           | `keyword`               |           | `fish_color_keyword`                                          | `Keyword`                                  |
-| `option`            | `attr`                  |           | `fish_color_option`                                           | `Parameter`                                |
-| `argument`          | `fg`                    |           | `fish_color_normal`<br>`fish_color_param`                     | `Default`                                  |
-| `string`            | `string`                |           | `fish_color_quote`                                            | `String`                                   |
-| `number`            | `number`                |           |                                                               | `Number`                                   |
-| `variable`          | `type`                  |           |                                                               | `Variable`                                 |
-| `type`              | `type`                  |           |                                                               | `Type`                                     |
-| `member`            | `fg`                    |           |                                                               | `Member`                                   |
-| `operator`          | `fg_muted`              |           | `fish_color_operator`<br>`fish_color_end`                     | `Operator`                                 |
-| `redirection`       | `fg_muted`              |           | `fish_color_redirection`                                      |                                            |
-| `escape`            | `constant`              |           | `fish_color_escape`                                           |                                            |
-| `comment`           | `comment`               | italic    | `fish_color_comment`                                          | `Comment`                                  |
-| `autosuggestion`    | `fg_subtle`             |           | `fish_color_autosuggestion`                                   | `InlinePrediction`<br>`ContinuationPrompt` |
-| `error`             | `semantic.danger`       |           | `fish_color_error`<br>`fish_color_status`                     | `Error`                                    |
-| `emphasis`          | `accent`                |           |                                                               | `Emphasis`                                 |
-| `valid_path`        | inherits                | underline | `fish_color_valid_path`                                       |                                            |
-| `selection`         | `overlay.selection`     |           | `fish_color_selection`                                        | `Selection`                                |
-| `search_match`      | `overlay.find_match`    |           | `fish_color_search_match`                                     |                                            |
-| `pager_selected`    | `overlay.selected_item` |           | `fish_pager_color_selected_background`                        | `ListPredictionSelected`                   |
-| `pager_prefix`      | `accent`                |           | `fish_pager_color_prefix`                                     |                                            |
-| `pager_completion`  | `fg`                    |           | `fish_pager_color_completion`                                 | `ListPrediction`                           |
-| `pager_description` | `fg_subtle`             |           | `fish_pager_color_description`<br>`fish_pager_color_progress` |                                            |
-| `cwd`               | `accent`                |           | `fish_color_cwd`                                              |                                            |
-| `cwd_root`          | `semantic.danger`       |           | `fish_color_cwd_root`                                         |                                            |
-| `user`              | `function`              |           | `fish_color_user`                                             |                                            |
-| `host`              | `fg_muted`              |           | `fish_color_host`                                             |                                            |
-| `host_remote`       | `semantic.warning`      |           | `fish_color_host_remote`                                      |                                            |
+| Role                         | Colour                  | Style     | fish                                                          | PSReadLine                                 |
+| ---------------------------- | ----------------------- | --------- | ------------------------------------------------------------- | ------------------------------------------ |
+| `command`                    | `function`              |           | `fish_color_command`                                          | `Command`                                  |
+| `keyword`                    | `keyword`               |           | `fish_color_keyword`                                          | `Keyword`                                  |
+| `option`                     | `attr`                  |           | `fish_color_option`                                           | `Parameter`                                |
+| `argument`                   | `fg`                    |           | `fish_color_normal`<br>`fish_color_param`                     | `Default`                                  |
+| `string`                     | `string`                |           | `fish_color_quote`                                            | `String`                                   |
+| `number`                     | `number`                |           |                                                               | `Number`                                   |
+| `variable`                   | `type`                  |           |                                                               | `Variable`                                 |
+| `type`                       | `type`                  |           |                                                               | `Type`                                     |
+| `member`                     | `fg`                    |           |                                                               | `Member`                                   |
+| `operator`                   | `fg_muted`              |           | `fish_color_operator`<br>`fish_color_end`                     | `Operator`                                 |
+| `redirection`                | `fg_muted`              |           | `fish_color_redirection`                                      |                                            |
+| `escape`                     | `constant`              |           | `fish_color_escape`                                           |                                            |
+| `comment`                    | `comment`               | italic    | `fish_color_comment`                                          | `Comment`                                  |
+| `autosuggestion`             | `fg_subtle`             |           | `fish_color_autosuggestion`                                   | `InlinePrediction`<br>`ContinuationPrompt` |
+| `error`                      | `semantic.danger`       |           | `fish_color_error`<br>`fish_color_status`                     | `Error`                                    |
+| `emphasis`                   | `accent`                |           |                                                               | `Emphasis`                                 |
+| `valid_path`                 | inherits                | underline | `fish_color_valid_path`                                       |                                            |
+| `selection`                  | `overlay.selection`     |           | `fish_color_selection`                                        | `Selection`                                |
+| `search_match`               | `overlay.find_match`    |           | `fish_color_search_match`                                     |                                            |
+| `pager_selected`             | `overlay.selected_item` |           | `fish_pager_color_selected_background`                        | `ListPredictionSelected`                   |
+| `pager_selected_completion`  | `fg`                    |           | `fish_pager_color_selected_completion`                        |                                            |
+| `pager_selected_description` | `fg_muted`              |           | `fish_pager_color_selected_description`                       |                                            |
+| `pager_selected_prefix`      | `accent`                |           | `fish_pager_color_selected_prefix`                            |                                            |
+| `pager_prefix`               | `accent`                |           | `fish_pager_color_prefix`                                     |                                            |
+| `pager_completion`           | `fg`                    |           | `fish_pager_color_completion`                                 | `ListPrediction`                           |
+| `pager_description`          | `fg_subtle`             |           | `fish_pager_color_description`<br>`fish_pager_color_progress` |                                            |
+| `cwd`                        | `accent`                |           | `fish_color_cwd`                                              |                                            |
+| `cwd_root`                   | `semantic.danger`       |           | `fish_color_cwd_root`                                         |                                            |
+| `user`                       | `function`              |           | `fish_color_user`                                             |                                            |
+| `host`                       | `fg_muted`              |           | `fish_color_host`                                             |                                            |
+| `host_remote`                | `semantic.warning`      |           | `fish_color_host_remote`                                      |                                            |
+
+The selected pager row lightens the canvas, so its text is restated in the `pager_selected_*` roles: the description steps up from `fg_subtle` to `fg_muted`.
 
 Commands take the function colour, not the accent: the cursor is already Sunset, and a typed command is a call.
 
@@ -315,7 +320,7 @@ Themes cannot ship fonts, and this repository contains none. The foundation reco
 8. **Palette integrity.** No hex value outside `palette_base` and `derived`. No ladder for Signalred. `bg_sunk` matches its recipe. The derived reds stay on the Signalred hue.
 9. **Overlay visibility.** `selection` is at least 7 from `bg` and from `find_match`.
 
-The build also checks that every colour target in the role maps resolves and that no scope rule ends in `meta.*`.
+Before the gates run, the build checks the shape of the tokens: every colour is a `#rrggbb` value, every overlay has an alpha, role objects use only the keys `color`, `style`, `fish` and `psreadline`, every colour target in the role maps resolves, and no scope rule ends in `meta.*`. Each problem is reported with its path. A build that fails writes nothing.
 
 APCA lightness contrast is reported for every pair and shown on the contrast page. It informs and does not fail the build; WCAG 2.x AA is the requirement.
 

@@ -442,6 +442,20 @@
       fish: ["fish_pager_color_selected_background"],
       psreadline: ["ListPredictionSelected"],
     },
+    // The selected row lightens the canvas, so its text is restated:
+    // the description steps up from fg_subtle to fg_muted.
+    pager_selected_completion: {
+      color: "fg",
+      fish: ["fish_pager_color_selected_completion"],
+    },
+    pager_selected_description: {
+      color: "fg_muted",
+      fish: ["fish_pager_color_selected_description"],
+    },
+    pager_selected_prefix: {
+      color: "accent",
+      fish: ["fish_pager_color_selected_prefix"],
+    },
     pager_prefix: { color: "accent", fish: ["fish_pager_color_prefix"] },
     pager_completion: {
       color: "fg",

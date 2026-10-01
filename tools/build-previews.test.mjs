@@ -91,6 +91,9 @@ test("sample lines are block elements with no newline between them", () => {
   // .line is display:block inside <pre>; a newline between two lines
   // would render as an extra blank row.
   for (const [name, html] of Object.entries(pages)) {
-    assert.ok(!/<\/span>\n<span class="line/.test(html), `${name} double-spaces its samples`);
+    assert.ok(
+      !/<\/span>\n<span class="line/.test(html),
+      `${name} double-spaces its samples`,
+    );
   }
 });
