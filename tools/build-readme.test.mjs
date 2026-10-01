@@ -47,3 +47,19 @@ test("every table is present in the README", () => {
     );
   }
 });
+
+test("the overlay table names the class of each recipe", () => {
+  const out = renderReadme(tokens, "<!-- tokens:overlay -->\n<!-- /tokens -->");
+  assert.match(out, /`hover`\s.*\|\s+surface\s+\|/);
+  assert.match(out, /`scrim`\s.*\|\s+non-text\s+\|/);
+  assert.match(out, /`stack_frame`\s.*\|\s+code\s+\|/);
+  assert.match(out, /`merge_current_header`\s.*`fg`, `fg_muted`/);
+});
+
+test("the surfaces table lists accent_hover", () => {
+  const out = renderReadme(
+    tokens,
+    "<!-- tokens:surfaces -->\n<!-- /tokens -->",
+  );
+  assert.match(out, /`accent_hover`\s+\|\s+`sunset\.80`\s+\|\s+`#fcc833`/);
+});

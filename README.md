@@ -113,6 +113,7 @@ The rule for ports: **red as text is `semantic.danger`; red as a fill is Signalr
 | `border.control`      | `darkblue.50`     | `#8698ba` | 4.22:1           | Control outline                                  |
 | `accent`              | `sunset`          | `#fbba00` | 7.10:1           | Cursor, focus ring, active tab, primary button   |
 | `accent_on`           | `darkblue`        | `#0d3174` | 7.10:1 on accent | Text on the accent                               |
+| `accent_hover`        | `sunset.80`       | `#fcc833` | 7.87:1           | Primary button under the pointer                 |
 
 <!-- /tokens -->
 
@@ -234,7 +235,7 @@ Each resolves to a core slot, a text colour or a semantic role, with an optional
 
 ## Overlays
 
-Recipes for the backgrounds that appear behind text: `{ color, alpha, border? }`, composited over `surface.bg`. The build adds the composited `hex`, so a port that cannot blend gets the same colour as one that can.
+Recipes for the backgrounds that appear behind text and for a few workbench surfaces: `{ color, alpha, border? }`. The build adds two values to each. `hex` is the recipe composited over `surface.bg`, for a port that cannot blend. `hexa` is the recipe itself as `#rrggbbaa`, for a port that can. Over the canvas both look the same.
 
 <!-- tokens:overlay -->
 
@@ -252,12 +253,12 @@ Recipes for the backgrounds that appear behind text: `{ color, alpha, border? }`
 | `diff_inserted_text`    | `freegreen`    | 25 %  | `#184f64`  |                   | `fg`, `fg_muted` |
 | `diff_removed_line`     | `signalred`    | 14 %  | `#282d67`  |                   | code             |
 | `diff_removed_text`     | `signalred`    | 35 %  | `#502854`  |                   | `fg`, `fg_muted` |
-| `hover`                 | `darkblack`    | 30 %  | `#112b5a`  |                   | code             |
-| `active`                | `darkblack`    | 50 %  | `#142748`  |                   | code             |
-| `scrim`                 | `darkblack`    | 60 %  | `#15253f`  |                   | code             |
-| `slider`                | `darkblue.40`  | 30 %  | `#39568d`  |                   | code             |
-| `slider_hover`          | `darkblue.40`  | 50 %  | `#566f9e`  |                   | code             |
-| `slider_active`         | `darkblue.40`  | 70 %  | `#7388ae`  |                   | code             |
+| `hover`                 | `darkblack`    | 30 %  | `#112b5a`  |                   | surface          |
+| `active`                | `darkblack`    | 50 %  | `#142748`  |                   | surface          |
+| `scrim`                 | `darkblack`    | 60 %  | `#15253f`  |                   | non-text         |
+| `slider`                | `darkblue.40`  | 30 %  | `#39568d`  |                   | non-text         |
+| `slider_hover`          | `darkblue.40`  | 50 %  | `#566f9e`  |                   | non-text         |
+| `slider_active`         | `darkblue.40`  | 70 %  | `#7388ae`  |                   | non-text         |
 | `merge_current_content` | `windblue`     | 10 %  | `#0c3b7e`  |                   | code             |
 | `merge_current_header`  | `windblue`     | 25 %  | `#0a4a8c`  |                   | `fg`, `fg_muted` |
 | `stack_frame`           | `lightorange`  | 10 %  | `#243c6e`  |                   | code             |
@@ -268,7 +269,14 @@ Recipes for the backgrounds that appear behind text: `{ color, alpha, border? }`
 
 Highlights that have to carry a hue stay faint and get a border, which also means they do not rely on colour alone. Read and write word highlights share a fill; the write highlight adds the border.
 
-Overlays marked "code" sit behind whole lines and are checked against every syntax colour. `selected_item` and the two `*_text` recipes sit behind list rows and inline spans and carry `fg` and `fg_muted` only.
+The last column is the overlay's class, and every overlay has exactly one:
+
+- **code** overlays sit behind whole lines on the canvas and are checked against every syntax colour.
+- **`fg`, `fg_muted`** overlays sit behind list rows, headers and inline spans and carry those two text colours only.
+- **surface** overlays (`hover`, `active`) are also drawn over the sidebar, the status bar and menus. They are checked as code overlays on `bg`, `bg_sunk` and `bg_overlay`, so a port must use `hexa` for them.
+- **non-text** overlays are the shadow and the scrollbar thumbs. Nothing is read through them.
+
+The debugger has two frame highlights and the foundation has one recipe, `stack_frame`: a second faint hue would not separate from the first on Darkblue. Ports tell the frames apart by the gutter arrow.
 
 ## Shell and prompt roles
 
@@ -358,16 +366,16 @@ Themes cannot ship fonts, and this repository contains none. The foundation reco
 `npm run build` fails when any of these does not hold.
 
 1. **Text contrast.** `fg`, `fg_muted`, `fg_subtle`, every syntax slot and every semantic foreground reach 4.5:1 on `bg`, `bg_sunk` and `bg_overlay`. `fg` and `fg_muted` reach 4.5:1 on `bg_soft`.
-2. **Text on overlays.** The same colours reach 4.5:1 on every code overlay. `fg` and `fg_muted` reach 4.5:1 on the label overlays.
-3. **ANSI.** All sixteen colours except `black` reach 4.5:1 on `bg_terminal`.
-4. **Non-text.** `border.control` and `accent` reach 3:1 on every surface. Every overlay border reaches 3:1 on its own fill.
-5. **Fills.** The text on each semantic fill, and `accent_on` on `accent`, reach 4.5:1.
+2. **Text on overlays.** The same colours reach 4.5:1 on every code overlay. `fg` and `fg_muted` reach 4.5:1 on the label overlays. `hover` and `active` are checked the same way on `bg`, `bg_sunk` and `bg_overlay`.
+3. **ANSI.** All sixteen colours except `black` reach 4.5:1 on `bg_terminal`. The same fifteen reach 4.5:1 on `overlay.selection` and `overlay.selection_inactive`, where a terminal draws selected text.
+4. **Non-text.** `border.control` and `accent` reach 3:1 on every surface. Every overlay border reaches 3:1 on its own fill. `slider_active` reaches 3:1 on `bg` and `bg_sunk`.
+5. **Fills.** The text on each semantic fill, and `accent_on` on `accent` and on `accent_hover`, reach 4.5:1.
 6. **Distinctness.** Slots that must not look alike are at least 7 apart in OKLab (×100; about 2 is just noticeable): the listed syntax pairs, every pair within an ANSI row, and each ANSI colour against its bright version. Two core slots may share a colour only if `syntax_tokens.aliases` lists them together.
 7. **Signal separation.** `accent`, `warning` and `danger` are at least 7 apart. `danger` and `success` differ by at least 5 in lightness.
 8. **Palette integrity.** No hex value outside `palette_base` and `derived`, and no value under `derived` beyond the three documented ones. No ladder for Signalred or White. `bg_sunk` matches its recipe. The derived reds stay on the Signalred hue. `bg_terminal` equals `bg`, and `bg_overlay` equals `bg_sunk`.
-9. **Overlay visibility.** `selection` is at least 7 from `bg` and from `find_match`.
+9. **Overlay visibility.** `selection` is at least 7 from `bg` and from `find_match`. `hover` is at least 3 from `bg` and `bg_sunk`, `active` at least 5, `slider` at least 7. `merge_current_header` is at least 7 from `bg`. `accent_hover` is at least 3 from `accent`.
 
-Before the gates run, the build checks the shape of the tokens: every colour is a `#rrggbb` value, every overlay has an alpha, role objects use only the keys `color`, `style`, `fish` and `psreadline`, every colour target in the role maps resolves, and no scope rule ends in `meta.*`. Each problem is reported with its path. A build that fails writes nothing.
+Before the gates run, the build checks the shape of the tokens: every colour is a `#rrggbb` value, every overlay has an alpha, every overlay belongs to exactly one class, role objects use only the keys `color`, `style`, `fish` and `psreadline`, every colour target in the role maps resolves, and no scope rule ends in `meta.*`. Each problem is reported with its path. A build that fails writes nothing.
 
 APCA lightness contrast is reported for every pair and shown on the contrast page. It informs and does not fail the build; WCAG 2.x AA is the requirement.
 
@@ -408,7 +416,7 @@ docs/               design spec and implementation plan
 2. Editor ports take syntax from `syntax`, `syntax_tokens` and the recommendation maps.
 3. Terminal ports take all sixteen colours from `ansi` and the background from `surface.bg_terminal`.
 4. Shell ports take every colour from `shell_roles`; prompt ports from `prompt_roles`.
-5. Overlays come from `overlay.<name>.hex` and `.border`, not from alpha constants in the port.
+5. Overlays come from `overlay.<name>`: `.hexa` where the target blends, `.hex` where it cannot, `.border` where present. No alpha constants in the port.
 6. Red as text is `semantic.danger`. Red as a fill is `semantic_fill.danger.fill` with `semantic_fill.danger.text` on it. Never Signalred as text on a dark surface.
 7. A value a port needs and cannot find is a gap in the foundation. Fix it here.
 

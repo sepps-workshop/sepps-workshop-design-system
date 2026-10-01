@@ -17,6 +17,8 @@ import {
   parseTokens,
   contrast,
   LABEL_OVERLAYS,
+  SURFACE_OVERLAYS,
+  NON_TEXT_OVERLAYS,
 } from "./build-tokens.mjs";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -51,6 +53,14 @@ function tables(tokens, raw) {
   const ratio = (hex, on = bg) => contrast(hex, on).toFixed(2) + ":1";
   const styles = (list) => (list ?? []).join(", ");
   const names = (list) => (list ?? []).map(code).join("<br>");
+  const carries = (k) =>
+    LABEL_OVERLAYS.includes(k)
+      ? "`fg`, `fg_muted`"
+      : SURFACE_OVERLAYS.includes(k)
+        ? "surface"
+        : NON_TEXT_OVERLAYS.includes(k)
+          ? "non-text"
+          : "code";
   const group = (g, use, withRatio) =>
     Object.entries(tokens[g]).map(([k, v]) => [
       code(`${g}.${k}`),
@@ -127,6 +137,13 @@ function tables(tokens, raw) {
             ratio(tokens.accent_on, tokens.accent) + " on accent",
             "Text on the accent",
           ],
+          [
+            "`accent_hover`",
+            source(raw.accent_hover),
+            code(tokens.accent_hover),
+            ratio(tokens.accent_hover),
+            "Primary button under the pointer",
+          ],
         ],
       ),
     syntax: () =>
@@ -193,7 +210,7 @@ function tables(tokens, raw) {
           `${Math.round(o.alpha * 100)} %`,
           code(o.hex),
           o.border ? source(raw.overlay[k].border) : "",
-          LABEL_OVERLAYS.includes(k) ? "`fg`, `fg_muted`" : "code",
+          carries(k),
         ]),
       ),
     shell: () =>
