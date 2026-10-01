@@ -22,21 +22,21 @@ Until it is on npm, install it with `npm install github:sepps-workshop/sepps-wor
 
 ## Step 2 — Map, don't invent
 
-| The port needs                        | Take it from                                                                                                             |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| Editor syntax colours                 | `tokens.syntax`, `tokens.syntax_tokens`, `tokens.scope_recommendations`                                                  |
-| LSP semantic tokens                   | `tokens.semantic_token_recommendations`; set `semanticHighlighting: true`                                                |
-| Errors, warnings, git, brackets       | `tokens.workbench_color_roles`                                                                                           |
-| The sixteen terminal colours          | `tokens.ansi`, background `tokens.surface.bg_terminal`                                                                   |
-| Shell highlighting (fish, PSReadLine) | `tokens.shell_roles` — each role lists the variables and keys it feeds                                                   |
-| Prompt segments (Starship)            | `tokens.prompt_roles`                                                                                                    |
-| Selection, find, word highlight, diff | `tokens.overlay.<name>`: `.hexa` where the target blends, `.hex` where it cannot, `.border` where present                |
-| Row hover, drop target, pressed item  | `overlay.hover`, `overlay.active` (always `.hexa`: they sit on every surface)                                            |
-| Shadow, scrollbar and minimap thumbs  | `overlay.scrim`, `overlay.slider`, `slider_hover`, `slider_active`                                                       |
-| Merge editor                          | current: `overlay.merge_current_*`; incoming: `overlay.diff_inserted_line` / `_text`; common: `overlay.hover` / `active` |
-| Debugger frames                       | `overlay.stack_frame` for both; the gutter arrow takes `semantic.warning` (top) and `semantic.success` (focused)         |
-| Primary button under the pointer      | `tokens.accent_hover`                                                                                                    |
-| A named colour target                 | `resolveTarget(tokens, "keyword" \| "fg_muted" \| "semantic.danger" \| …)`                                               |
+| The port needs                        | Take it from                                                                                                              |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Editor syntax colours                 | `tokens.syntax`, `tokens.syntax_tokens`, `tokens.scope_recommendations`                                                   |
+| LSP semantic tokens                   | `tokens.semantic_token_recommendations`; set `semanticHighlighting: true`                                                 |
+| Errors, warnings, git, brackets       | `tokens.workbench_color_roles`                                                                                            |
+| The sixteen terminal colours          | `tokens.ansi`, background `tokens.surface.bg_terminal`                                                                    |
+| Shell highlighting (fish, PSReadLine) | `tokens.shell_roles` — each role lists the variables and keys it feeds                                                    |
+| Prompt segments (Starship)            | `tokens.prompt_roles`                                                                                                     |
+| Selection, find, word highlight, diff | `tokens.overlay.<name>`: `.hexa` where the target blends, `.hex` where it cannot, `.border` where present                 |
+| Row hover, drop target, pressed item  | `overlay.hover`, `overlay.active` (always `.hexa`: they sit on every surface)                                             |
+| Shadow, scrollbar and minimap thumbs  | `overlay.scrim`, `overlay.slider`, `slider_hover`, `slider_active` (always `.hexa`: a shadow and a thumb are translucent) |
+| Merge editor                          | current: `overlay.merge_current_*`; incoming: `overlay.diff_inserted_line` / `_text`; common: `overlay.hover` / `active`  |
+| Debugger frames                       | `overlay.stack_frame` for both; the gutter arrow takes `semantic.warning` (top) and `semantic.success` (focused)          |
+| Primary button under the pointer      | `tokens.accent_hover`                                                                                                     |
+| A named colour target                 | `resolveTarget(tokens, "keyword" \| "fg_muted" \| "semantic.danger" \| …)`                                                |
 
 ## Hard rules
 
