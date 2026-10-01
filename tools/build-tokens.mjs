@@ -257,6 +257,13 @@ const VISIBLE_OVERLAYS = [
   ["slider", ["bg", "bg_sunk"], DISTINCT],
   ["merge_current_header", ["bg"], DISTINCT],
 ];
+/** Overlays a gate reads by name; each must exist before the gates run. */
+const GATED_BY_NAME = [
+  ...TERMINAL_SELECTIONS,
+  ...VISIBLE_OVERLAYS.map(([name]) => name),
+  "slider_active",
+  "find_match",
+];
 /** accent_hover is seen only in succession to accent on the same button. */
 const HOVER_STEP = 3;
 
@@ -579,10 +586,28 @@ export function check(tokens, raw) {
       }
     }
   }
+  for (const name of new Set(GATED_BY_NAME)) {
+    if (!Object.hasOwn(tokens.overlay, name)) {
+      fail.push(
+        `✗ overlay.${name} is used by a gate but not defined (tools/build-tokens.mjs)`,
+      );
+    }
+  }
   if (fail.length) return fail;
 
   // 1 + 2. Text contrast on surfaces and overlays.
   for (const p of textPairs(tokens)) need(p.label, p.fg, p.on, p.bg, AA);
+  // Contrast does not see direction: a faint lightening can still pass.
+  for (const o of SURFACE_OVERLAYS) {
+    for (const s of CODE_SURFACES) {
+      const hex = over(tokens, o, s);
+      if (oklab(hex)[0] > oklab(tokens.surface[s])[0]) {
+        fail.push(
+          `✗ overlay.${o} over surface.${s} (${hex}) is lighter than the surface (${tokens.surface[s]}): surface overlays must darken`,
+        );
+      }
+    }
+  }
 
   // 3. ANSI on the terminal background.
   for (const [slot, color] of Object.entries(tokens.ansi)) {

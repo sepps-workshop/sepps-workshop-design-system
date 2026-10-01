@@ -366,7 +366,7 @@ Themes cannot ship fonts, and this repository contains none. The foundation reco
 `npm run build` fails when any of these does not hold.
 
 1. **Text contrast.** `fg`, `fg_muted`, `fg_subtle`, every syntax slot and every semantic foreground reach 4.5:1 on `bg`, `bg_sunk` and `bg_overlay`. `fg` and `fg_muted` reach 4.5:1 on `bg_soft`.
-2. **Text on overlays.** The same colours reach 4.5:1 on every code overlay. `fg` and `fg_muted` reach 4.5:1 on the label overlays. `hover` and `active` are checked the same way on `bg`, `bg_sunk` and `bg_overlay`.
+2. **Text on overlays.** The same colours reach 4.5:1 on every code overlay. `fg` and `fg_muted` reach 4.5:1 on the label overlays. `hover` and `active` are checked the same way on `bg`, `bg_sunk` and `bg_overlay`. Both must also darken each of those surfaces: a faint lightening can pass on contrast alone.
 3. **ANSI.** All sixteen colours except `black` reach 4.5:1 on `bg_terminal`. The same fifteen reach 4.5:1 on `overlay.selection` and `overlay.selection_inactive`, where a terminal draws selected text.
 4. **Non-text.** `border.control` and `accent` reach 3:1 on every surface. Every overlay border reaches 3:1 on its own fill. `slider_active` reaches 3:1 on `bg` and `bg_sunk`.
 5. **Fills.** The text on each semantic fill, and `accent_on` on `accent` and on `accent_hover`, reach 4.5:1.

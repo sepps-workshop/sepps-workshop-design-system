@@ -484,3 +484,24 @@ test("gate 9: accent_hover must differ from the accent", () => {
     r.accent_hover = "$palette.sunset.90";
   }, /accent_hover .* accent .* too alike/);
 });
+
+/* ── Final-review fixes (workbench overlays) ─────────────────────── */
+
+test("a renamed overlay that a gate still names is reported, not thrown", () => {
+  const i = NON_TEXT_OVERLAYS.indexOf("slider_active");
+  NON_TEXT_OVERLAYS[i] = "slider_drag";
+  try {
+    assertFails((r) => {
+      r.overlay.slider_drag = r.overlay.slider_active;
+      delete r.overlay.slider_active;
+    }, /overlay\.slider_active is used by a gate but not defined/);
+  } finally {
+    NON_TEXT_OVERLAYS[i] = "slider_active";
+  }
+});
+
+test("gate 2: a surface overlay must darken, however faintly it lightens", () => {
+  assertFails((r) => {
+    r.overlay.hover = { color: "$palette.white.100", alpha: 0.05 };
+  }, /overlay\.hover over surface\.bg .* lighter than the surface/);
+});
