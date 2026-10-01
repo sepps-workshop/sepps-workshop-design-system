@@ -1,0 +1,6 @@
+# Generated — a formatter would make `npm run check` report drift.
+tokens.json
+dist/
+colors.css
+preview/
+assets/

@@ -1,0 +1,40 @@
+{
+  "name": "@sepps-workshop/design-system",
+  "description": "Token foundation for the Sepp's Workshop themes. One medium-dark theme on sepp.med Darkblue, WCAG AA enforced by the build.",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "author": "sepp.med GmbH",
+  "homepage": "https://github.com/sepps-workshop/sepps-workshop-design-system",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sepps-workshop/sepps-workshop-design-system.git"
+  },
+  "type": "module",
+  "main": "./dist/tokens.js",
+  "exports": {
+    ".": "./dist/tokens.js",
+    "./tokens.json": "./tokens.json",
+    "./css": "./colors.css",
+    "./assets/*": "./assets/*",
+    "./tools/build-tokens": "./tools/build-tokens.mjs"
+  },
+  "files": [
+    "tokens.json5",
+    "tokens.json",
+    "dist/",
+    "colors.css",
+    "assets/",
+    "tools/",
+    "handoff/",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "node tools/build-tokens.mjs && node tools/build-css.mjs && node tools/build-previews.mjs",
+    "check": "node tools/build-tokens.mjs --check && node tools/build-css.mjs --check && node tools/build-previews.mjs --check",
+    "test": "node --test tools/"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
