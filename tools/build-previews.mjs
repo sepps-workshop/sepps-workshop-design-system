@@ -347,7 +347,7 @@ export function renderPages(tokens) {
     "02-terminal.html": page(
       tokens,
       "02-terminal.html",
-      "The sixteen ANSI colours on the terminal background. Magenta is Lightorange: the brand has no magenta.",
+      "The sixteen ANSI colours on the terminal background. Magenta is Bright Orange: the brand has no magenta.",
       terminal,
     ),
     "03-shell.html": page(

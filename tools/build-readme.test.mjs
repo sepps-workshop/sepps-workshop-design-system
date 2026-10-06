@@ -17,7 +17,7 @@ test("a table between markers is replaced, text outside is kept", () => {
     "before\n\n<!-- tokens:palette -->\nstale\n<!-- /tokens -->\n\nafter\n",
   );
   assert.match(out, /^before\n\n<!-- tokens:palette -->\n\n\| Colour/);
-  assert.ok(out.includes("| Darkblue     | `#0d3174` |"));
+  assert.ok(out.includes("| Darkblue      | `#0d3174` |"));
   assert.ok(!out.includes("stale"));
   assert.ok(out.endsWith("|\n\n<!-- /tokens -->\n\nafter\n"));
 });

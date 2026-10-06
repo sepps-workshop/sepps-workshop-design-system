@@ -46,7 +46,7 @@ test("the shipped tokens pass every gate", () => {
 test("gate 1: a syntax slot below 4.5:1 on the canvas fails", () => {
   assertFails((r) => {
     r.syntax.function = "$palette.windblue.100";
-  }, /syntax\.function .* on surface\.bg .*3\.58:1/);
+  }, /syntax\.function .* on surface\.bg .*3\.38:1/);
 });
 
 test("gate 1: fg_muted must stay readable on bg_soft", () => {
@@ -109,7 +109,7 @@ test("gate 7: warning must not look like the accent", () => {
 
 test("gate 7: danger and success must differ in lightness", () => {
   assertFails((r) => {
-    r.semantic.success = "$palette.freegreen.70";
+    r.semantic.success = "$palette.limegreen.70";
   }, /lightness/);
 });
 
@@ -119,10 +119,10 @@ test("gate 8: a hex pasted into a role is named by path", () => {
   }, /syntax\.keyword .*hex literal/);
 });
 
-test("gate 8: a ladder for Signalred is refused", () => {
+test("gate 8: a ladder for Racing Red is refused", () => {
   assertFails((r) => {
     r.ladder.exclude = [];
-  }, /signalred must not have a ladder/);
+  }, /racingred must not have a ladder/);
 });
 
 test("gate 8: bg_sunk must follow its recipe", () => {
@@ -131,10 +131,16 @@ test("gate 8: bg_sunk must follow its recipe", () => {
   }, /derived\.bg_sunk .* mix\(darkblue, darkblack, 0\.8\)/);
 });
 
-test("gate 8: the derived reds must keep the Signalred hue", () => {
+test("gate 8: the danger fill must follow its recipe", () => {
   assertFails((r) => {
-    r.derived.signalred_on_dark = "#ff89c0";
-  }, /derived\.signalred_on_dark .* hue/);
+    r.derived.racingred_fill = "#c81519";
+  }, /derived\.racingred_fill .* mix\(racingred, darkblack, 0\.9\)/);
+});
+
+test("gate 8: the derived reds must keep the Racing Red hue", () => {
+  assertFails((r) => {
+    r.derived.racingred_on_dark = "#ff89c0";
+  }, /derived\.racingred_on_dark .* hue/);
 });
 
 test("gate 9: selection must be visible against the canvas", () => {
@@ -243,7 +249,7 @@ test("a failing build writes nothing", async () => {
   await writeFile(
     join(dir, "tokens.json5"),
     SRC.replace(
-      'function: "$palette.windblue.60"',
+      'function: "$palette.windblue.50"',
       'function: "$palette.windblue.100"',
     ),
   );
@@ -264,7 +270,7 @@ test("a failing build writes nothing", async () => {
 
 test("gate 6: two core slots may share a colour only if listed as aliases", () => {
   assertFails((r) => {
-    r.syntax.keyword = "$palette.windblue.60";
+    r.syntax.keyword = "$palette.windblue.50";
   }, /syntax\.keyword and syntax\.function share .* syntax_tokens\.aliases/);
 });
 
@@ -343,7 +349,7 @@ test("gate 8: floating widgets sit on the sunk surface", () => {
 
 test("gate 8: white has no ladder", () => {
   assertFails((r) => {
-    r.ladder.exclude = ["signalred"];
+    r.ladder.exclude = ["racingred"];
   }, /white must not have a ladder/);
 });
 
@@ -513,7 +519,7 @@ test("gate 2: a surface overlay must darken, however faintly it lightens", () =>
 test("gate 2: a changed span stacked on its diff line keeps code readable", () => {
   assertFails((r) => {
     r.overlay.diff_inserted_text = {
-      color: "$palette.freegreen.100",
+      color: "$palette.limegreen.100",
       alpha: 0.25,
     };
   }, /syntax\.number .* on overlay\.diff_inserted_text over overlay\.diff_inserted_line/);
@@ -531,5 +537,5 @@ test("the shipped diff spans darken their lines and carry code", () => {
   assert.ok(CODE_OVERLAYS.includes("diff_inserted_text"));
   assert.ok(CODE_OVERLAYS.includes("diff_removed_text"));
   assert.ok(LABEL_OVERLAYS.includes("merge_incoming_header"));
-  assert.equal(t.overlay.merge_incoming_header.hex, "#184f64");
+  assert.equal(t.overlay.merge_incoming_header.hex, "#235263");
 });

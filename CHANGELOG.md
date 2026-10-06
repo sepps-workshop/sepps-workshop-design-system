@@ -1,5 +1,15 @@
 # Changelog
 
+## Unreleased
+
+- **⚠️ Three colours are renamed, following the sepp.med Farbtafel 2026:** `lightorange` is now `brightorange` (Bright Orange), `signalred` is now `racingred` (Racing Red), `freegreen` is now `limegreen` (Lime Green). This renames `palette.<name>.*`, `--sw-palette-<name>-*`, and `derived.signalred_on_dark` / `derived.signalred_on_dark_bright` to `derived.racingred_on_dark` / `derived.racingred_on_dark_bright`. There are no aliases.
+- **⚠️ Six base colours change value:** Windblue `#008ecf`, Middleblue `#076eab`, Darkblack `#1d1d1b`, Bright Orange `#f59c00`, Racing Red `#f0191d`, Lime Green `#64b32e`. Every ladder step, overlay and ANSI colour built on them moves with them. The derived reds `#ff897b` and `#ffb4aa` and `bg_sunk` `#102d62` keep their values.
+- **⚠️ The danger fill is no longer Racing Red itself:** white reaches 4.32:1 on the new red. `semantic_fill.danger.fill` is the new `derived.racingred_fill`, Racing Red mixed 90 % with Darkblack (`#db191d`, white text 5.04:1). The build verifies the recipe.
+- `syntax.function` and `semantic.info` move from `windblue.60` to `windblue.50`: on the new Windblue, step 60 sits too close to the comment colour.
+- `semantic.success` and ANSI green move from step 50 to `limegreen.60`, ANSI bright green from step 30 to `limegreen.40`: the lighter step of the new green sits too close to bright yellow.
+- `diff_removed_text` drops from 35 % to 30 %: the brighter red took code text on the stacked span below 4.5:1.
+- The Farbtafel shows no tints for Lime Green. The build still calculates its ladder, because green text on Darkblue needs the lighter steps.
+
 ## 0.2.1 — 2026-10-01
 
 - **⚠️ `diff_inserted_text` changes colour:** from Freegreen at 25 % to Darkblack at 40 %. An editor draws the changed span on top of the inserted line, behind code; the green stack left numbers at 3.37:1. The span now darkens the line (worst code text 5.72:1).

@@ -32,23 +32,23 @@ test("mix weights the first colour", () => {
   assert.equal(mix("#ffffff", "#000000", 1), "#ffffff");
 });
 
-test("tint reproduces the Canva ladders", () => {
+test("tint mixes the base colour towards white", () => {
   assert.equal(tint("#ec6608", 90), "#ee7521");
-  assert.equal(tint("#0093d3", 90), "#199ed7");
-  assert.equal(tint("#3aaa35", 90), "#4eb349");
-  assert.equal(tint("#f59e33", 90), "#f6a847");
+  assert.equal(tint("#008ecf", 90), "#1999d4");
+  assert.equal(tint("#1d1d1b", 90), "#343432");
+  assert.equal(tint("#f59c00", 90), "#f6a619");
   assert.equal(tint("#0d3174", 100), "#0d3174");
 });
 
 test("alphaOver composites over an opaque background", () => {
-  assert.equal(alphaOver("#1b1d1c", "#0d3174", 0.6), "#15253f");
+  assert.equal(alphaOver("#1d1d1b", "#0d3174", 0.6), "#17253f");
 });
 
 test("contrast matches WCAG reference values", () => {
   assert.equal(Math.round(contrast("#ffffff", "#000000")), 21);
   assert.equal(contrast("#0d3174", "#0d3174"), 1);
   assert.equal(contrast("#fbba00", "#0d3174").toFixed(2), "7.10");
-  assert.equal(contrast("#cd1719", "#0d3174").toFixed(2), "2.18");
+  assert.equal(contrast("#f0191d", "#0d3174").toFixed(2), "2.85");
 });
 
 test("contrast is symmetric", () => {
@@ -61,8 +61,8 @@ test("deltaE is zero for identical colours and grows with difference", () => {
   assert.ok(deltaE("#fbba00", "#66bee5") > 20);
 });
 
-test("hueAngle keeps the derived reds on the Signalred hue", () => {
-  const base = hueAngle("#cd1719");
+test("hueAngle keeps the derived reds on the Racing Red hue", () => {
+  const base = hueAngle("#f0191d");
   assert.ok(Math.abs(hueAngle("#ff897b") - base) < 0.03);
   assert.ok(Math.abs(hueAngle("#ffb4aa") - base) < 0.03);
 });

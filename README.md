@@ -55,43 +55,45 @@ The preview pages are generated from the tokens. Clone the repository and open t
 
 ## Palette
 
-The base colours come from the sepp.med brand kit.
+The base colours come from the sepp.med brand kit (Farbtafel 2026).
 
 <!-- tokens:palette -->
 
-| Colour       | Hex       | On Darkblue | Ladder       |
-| ------------ | --------- | ----------- | ------------ |
-| Darkblue     | `#0d3174` | 1.00:1      | 100 % … 10 % |
-| Sunset       | `#fbba00` | 7.10:1      | 100 % … 10 % |
-| Shadowgrey   | `#b2b2b2` | 5.80:1      | 100 % … 10 % |
-| Middleblue   | `#0069a9` | 2.10:1      | 100 % … 10 % |
-| Pumpelorange | `#ec6608` | 3.79:1      | 100 % … 10 % |
-| Windblue     | `#0093d3` | 3.58:1      | 100 % … 10 % |
-| Lightorange  | `#f59e33` | 5.75:1      | 100 % … 10 % |
-| Darkblack    | `#1b1d1c` | 1.38:1      | 100 % … 10 % |
-| Signalred    | `#cd1719` | 2.18:1      | none         |
-| Freegreen    | `#3aaa35` | 4.09:1      | 100 % … 10 % |
-| White        | `#ffffff` | 12.29:1     | none         |
+| Colour        | Hex       | On Darkblue | Ladder       |
+| ------------- | --------- | ----------- | ------------ |
+| Darkblue      | `#0d3174` | 1.00:1      | 100 % … 10 % |
+| Sunset        | `#fbba00` | 7.10:1      | 100 % … 10 % |
+| Shadowgrey    | `#b2b2b2` | 5.80:1      | 100 % … 10 % |
+| Middleblue    | `#076eab` | 2.24:1      | 100 % … 10 % |
+| Pumpelorange  | `#ec6608` | 3.79:1      | 100 % … 10 % |
+| Windblue      | `#008ecf` | 3.38:1      | 100 % … 10 % |
+| Bright Orange | `#f59c00` | 5.64:1      | 100 % … 10 % |
+| Darkblack     | `#1d1d1b` | 1.37:1      | 100 % … 10 % |
+| Racing Red    | `#f0191d` | 2.85:1      | none         |
+| Lime Green    | `#64b32e` | 4.70:1      | 100 % … 10 % |
+| White         | `#ffffff` | 12.29:1     | none         |
 
 <!-- /tokens -->
 
-**Ladders.** Every colour except Signalred and White has a ladder of tints in 10 % steps towards white, as in the brand kit. The build generates them (`palette.<name>.<step>`), so `pumpelorange.70` is 70 % Pumpelorange and 30 % white.
+**Ladders.** Every colour except Racing Red and White has a ladder of tints in 10 % steps towards white, as in the brand kit. The build generates them (`palette.<name>.<step>`), so `pumpelorange.70` is 70 % Pumpelorange and 30 % white. A few generated steps differ from the value printed in the brand kit by one unit in one channel (rounding). The brand kit shows no tints for Lime Green, because there it is a signal colour only. Green text on Darkblue needs lighter steps, so the build calculates a Lime Green ladder the same way.
 
 **Brand rules the foundation follows:**
 
-- Signalred has no tints. Mixed with white it drifts into pink.
-- Signalred and Freegreen are signals (error, success, removed, added). They carry no syntax slot.
-- White is part of the brand without being listed in it. Here it is used only as text on the Signalred fill.
+- Racing Red has no tints. Mixed with white it drifts into pink.
+- Racing Red and Lime Green are signals (error, success, removed, added). They carry no syntax slot.
+- White is part of the brand without being listed in it. Here it is used only as text on the red fill.
 
-### Two departures from the ladder
+### Three departures from the ladder
 
 Everything else resolves to a base colour or a ladder step. The exceptions live under `derived` in `tokens.json5`, with the reason beside each.
 
 **Surfaces below the canvas.** The ladder only goes lighter. `derived.bg_sunk` is Darkblue mixed 80 % with Darkblack: `#102d62`. The build verifies the recipe.
 
-**A readable red.** Signalred reaches 2.18:1 on Darkblue. That is under the 3:1 a squiggle needs and far under the 4.5:1 text needs, and red text cannot be avoided: ANSI red, `git diff` removals, shell error highlighting. `derived.signalred_on_dark` (`#ff897b`, 5.34:1) keeps Signalred's hue in OKLCH, raises the lightness and holds the chroma at the sRGB maximum, which gives a warm coral red and not the pink of a white tint. `derived.signalred_on_dark_bright` (`#ffb4aa`, 7.23:1) is the next step of the same hue, for ANSI bright red. The build checks that both stay on the Signalred hue.
+**A readable red.** Racing Red reaches 2.85:1 on Darkblue. That is under the 3:1 a squiggle needs and far under the 4.5:1 text needs, and red text cannot be avoided: ANSI red, `git diff` removals, shell error highlighting. `derived.racingred_on_dark` (`#ff897b`, 5.34:1) keeps Racing Red's hue in OKLCH, raises the lightness and holds the chroma at the sRGB maximum, which gives a warm coral red and not the pink of a white tint. `derived.racingred_on_dark_bright` (`#ffb4aa`, 7.23:1) is the next step of the same hue, for ANSI bright red. The build checks that both stay on the Racing Red hue.
 
-The rule for ports: **red as text is `semantic.danger`; red as a fill is Signalred** with white text on it (5.63:1).
+**A red fill that carries text.** White reaches 4.32:1 on Racing Red, and no other brand colour does better. `derived.racingred_fill` is Racing Red mixed 90 % with Darkblack: `#db191d`, with white text at 5.04:1. The build verifies the recipe.
+
+The rule for ports: **red as text is `semantic.danger`; red as a fill is `semantic_fill.danger.fill`** with white text on it (5.04:1).
 
 ## Surfaces, text, borders
 
@@ -124,7 +126,7 @@ The rule for ports: **red as text is `semantic.danger`; red as a fill is Signalr
 
 ## Syntax
 
-A traditional theme uses seven to nine hues. The brand offers three that stay apart on Darkblue. Measured in OKLab, Lightorange sits 4 units from the Pumpelorange tints and the Middleblue tints sit 4 units from the Windblue tints, which is too close to tell apart at a glance, so neither carries a syntax slot. The theme makes up for the missing hues with lightness, the dimension the eye separates best: each hue appears at two steps, and italics add a third axis. Warm colours mark data, cool colours mark behaviour.
+A traditional theme uses seven to nine hues. The brand offers three that stay apart on Darkblue. Measured in OKLab, Bright Orange sits 5 units from the Pumpelorange tint used for numbers and the Middleblue tints sit 2 to 5 units from the Windblue tints at the same step, which is too close to tell apart at a glance, so neither carries a syntax slot. The theme makes up for the missing hues with lightness, the dimension the eye separates best: each hue appears at two steps, and italics add a third axis. Warm colours mark data, cool colours mark behaviour.
 
 ### Core slots
 
@@ -136,12 +138,12 @@ A traditional theme uses seven to nine hues. The brand offers three that stay ap
 | `keyword`   | `sunset`          | `#fbba00` |        | 7.10:1  |
 | `string`    | `pumpelorange.40` | `#f7c29c` |        | 7.70:1  |
 | `number`    | `pumpelorange.70` | `#f29452` |        | 5.35:1  |
-| `function`  | `windblue.60`     | `#66bee5` |        | 5.89:1  |
-| `parameter` | `windblue.30`     | `#b3dff2` | italic | 8.63:1  |
+| `function`  | `windblue.50`     | `#80c7e7` |        | 6.58:1  |
+| `parameter` | `windblue.30`     | `#b3ddf1` | italic | 8.50:1  |
 | `type`      | `sunset.40`       | `#fde399` |        | 9.73:1  |
 | `constant`  | `pumpelorange.70` | `#f29452` |        | 5.35:1  |
 | `tag`       | `sunset`          | `#fbba00` |        | 7.10:1  |
-| `attr`      | `windblue.30`     | `#b3dff2` | italic | 8.63:1  |
+| `attr`      | `windblue.30`     | `#b3ddf1` | italic | 8.50:1  |
 | `regex`     | `pumpelorange.70` | `#f29452` |        | 5.35:1  |
 | `punct`     | `text.fg_muted`   | `#b6c1d5` |        | 6.78:1  |
 
@@ -198,16 +200,16 @@ Each resolves to a core slot, a text colour or a semantic role, with an optional
 
 <!-- tokens:semantic -->
 
-| Role      | Foreground on dark                    | On `bg` | Fill                    | Text on fill         |
-| --------- | ------------------------------------- | ------- | ----------------------- | -------------------- |
-| `danger`  | `derived.signalred_on_dark` `#ff897b` | 5.34:1  | `signalred` `#cd1719`   | `white` (5.63:1)     |
-| `success` | `freegreen.50` `#9dd59a`              | 7.27:1  | `freegreen` `#3aaa35`   | `darkblack` (5.63:1) |
-| `warning` | `lightorange` `#f59e33`               | 5.75:1  | `lightorange` `#f59e33` | `darkblack` (7.93:1) |
-| `info`    | `windblue.60` `#66bee5`               | 5.89:1  | —                       | —                    |
+| Role      | Foreground on dark                    | On `bg` | Fill                               | Text on fill         |
+| --------- | ------------------------------------- | ------- | ---------------------------------- | -------------------- |
+| `danger`  | `derived.racingred_on_dark` `#ff897b` | 5.34:1  | `derived.racingred_fill` `#db191d` | `white` (5.04:1)     |
+| `success` | `limegreen.60` `#a2d182`              | 7.01:1  | `limegreen` `#64b32e`              | `darkblack` (6.46:1) |
+| `warning` | `brightorange` `#f59c00`              | 5.64:1  | `brightorange` `#f59c00`           | `darkblack` (7.75:1) |
+| `info`    | `windblue.50` `#80c7e7`               | 6.58:1  | —                                  | —                    |
 
 <!-- /tokens -->
 
-- **Warning is Lightorange.** Yellow is the accent, and Pumpelorange is too close to the derived red. Lightorange is the remaining orange; it sits close to the number colour, so ports pair a warning with a shape (a squiggle, an icon), never with colour alone.
+- **Warning is Bright Orange.** Yellow is the accent, and Pumpelorange is too close to the derived red. Bright Orange is the remaining orange; it sits close to the number colour, so ports pair a warning with a shape (a squiggle, an icon), never with colour alone.
 - **Danger and success differ in lightness as well as hue**, so the pair survives red-green colour blindness. Success is lighter than contrast alone would require.
 - The VS Code debugging status bar uses the danger fill, because the accent is already yellow.
 
@@ -217,18 +219,18 @@ Each resolves to a core slot, a text colour or a semantic role, with an optional
 
 | Slot    | Normal                                | On terminal | Bright                                       | On terminal |
 | ------- | ------------------------------------- | ----------- | -------------------------------------------- | ----------- |
-| black   | `derived.bg_sunk` `#102d62`           | exempt      | `darkblack.40` `#a4a5a4`                     | 4.97:1      |
-| red     | `derived.signalred_on_dark` `#ff897b` | 5.34:1      | `derived.signalred_on_dark_bright` `#ffb4aa` | 7.23:1      |
-| green   | `freegreen.50` `#9dd59a`              | 7.27:1      | `freegreen.30` `#c4e6c2`                     | 9.04:1      |
+| black   | `derived.bg_sunk` `#102d62`           | exempt      | `darkblack.40` `#a5a5a4`                     | 4.99:1      |
+| red     | `derived.racingred_on_dark` `#ff897b` | 5.34:1      | `derived.racingred_on_dark_bright` `#ffb4aa` | 7.23:1      |
+| green   | `limegreen.60` `#a2d182`              | 7.01:1      | `limegreen.40` `#c1e1ab`                     | 8.56:1      |
 | yellow  | `sunset` `#fbba00`                    | 7.10:1      | `sunset.40` `#fde399`                        | 9.73:1      |
-| blue    | `middleblue.60` `#66a5cb`             | 4.57:1      | `middleblue.40` `#99c3dd`                    | 6.56:1      |
-| magenta | `lightorange` `#f59e33`               | 5.75:1      | `lightorange.60` `#f9c585`                   | 7.82:1      |
-| cyan    | `windblue.50` `#80c9e9`               | 6.70:1      | `windblue.30` `#b3dff2`                      | 8.63:1      |
+| blue    | `middleblue.60` `#6aa8cd`             | 4.74:1      | `middleblue.40` `#9cc5dd`                    | 6.70:1      |
+| magenta | `brightorange` `#f59c00`              | 5.64:1      | `brightorange.60` `#f9c466`                  | 7.68:1      |
+| cyan    | `windblue.50` `#80c7e7`               | 6.58:1      | `windblue.30` `#b3ddf1`                      | 8.50:1      |
 | white   | `shadowgrey.60` `#d1d1d1`             | 8.05:1      | `darkblue.10` `#e7eaf1`                      | 10.21:1     |
 
 <!-- /tokens -->
 
-- **Magenta is Lightorange.** The brand has no magenta. This is the one place where the ANSI name and the colour disagree.
+- **Magenta is Bright Orange.** The brand has no magenta. This is the one place where the ANSI name and the colour disagree.
 - **Blue and cyan differ in lightness as well as hue.** Blue on a blue terminal is the hardest slot; it takes Middleblue, and cyan takes a lighter Windblue step.
 - **The neutrals are true greys** (Shadowgrey and a Darkblack tint). A blue-grey from the Darkblue ladder would not stay apart from blue and cyan.
 - `black` is the conventional near-background anchor and is exempt from the contrast gate.
@@ -241,28 +243,28 @@ Recipes for the backgrounds that appear behind text and for a few workbench surf
 
 | Recipe                  | Colour         | Alpha | Composited | Border            | Carries          |
 | ----------------------- | -------------- | ----- | ---------- | ----------------- | ---------------- |
-| `selection`             | `darkblack`    | 60 %  | `#15253f`  |                   | code             |
-| `selection_inactive`    | `darkblack`    | 40 %  | `#132951`  |                   | code             |
-| `line_highlight`        | `darkblack`    | 30 %  | `#112b5a`  |                   | code             |
+| `selection`             | `darkblack`    | 60 %  | `#17253f`  |                   | code             |
+| `selection_inactive`    | `darkblack`    | 40 %  | `#132950`  |                   | code             |
+| `line_highlight`        | `darkblack`    | 30 %  | `#122b59`  |                   | code             |
 | `find_match`            | `pumpelorange` | 15 %  | `#2e3964`  | `pumpelorange.70` | code             |
 | `find_match_other`      | `pumpelorange` | 8 %   | `#1f356b`  | `darkblue.50`     | code             |
 | `word_highlight`        | `sunset`       | 10 %  | `#253f68`  |                   | code             |
 | `word_highlight_strong` | `sunset`       | 10 %  | `#253f68`  | `sunset`          | code             |
 | `selected_item`         | `sunset`       | 18 %  | `#384a5f`  |                   | `fg`, `fg_muted` |
-| `diff_inserted_line`    | `freegreen`    | 12 %  | `#12406c`  |                   | code             |
-| `diff_inserted_text`    | `darkblack`    | 40 %  | `#132951`  |                   | code             |
-| `diff_removed_line`     | `signalred`    | 14 %  | `#282d67`  |                   | code             |
-| `diff_removed_text`     | `signalred`    | 35 %  | `#502854`  |                   | code             |
-| `hover`                 | `darkblack`    | 30 %  | `#112b5a`  |                   | surface          |
-| `active`                | `darkblack`    | 50 %  | `#142748`  |                   | surface          |
-| `scrim`                 | `darkblack`    | 60 %  | `#15253f`  |                   | non-text         |
+| `diff_inserted_line`    | `limegreen`    | 12 %  | `#17416c`  |                   | code             |
+| `diff_inserted_text`    | `darkblack`    | 40 %  | `#132950`  |                   | code             |
+| `diff_removed_line`     | `racingred`    | 14 %  | `#2d2e68`  |                   | code             |
+| `diff_removed_text`     | `racingred`    | 30 %  | `#512a5a`  |                   | code             |
+| `hover`                 | `darkblack`    | 30 %  | `#122b59`  |                   | surface          |
+| `active`                | `darkblack`    | 50 %  | `#152748`  |                   | surface          |
+| `scrim`                 | `darkblack`    | 60 %  | `#17253f`  |                   | non-text         |
 | `slider`                | `darkblue.40`  | 30 %  | `#39568d`  |                   | non-text         |
 | `slider_hover`          | `darkblue.40`  | 50 %  | `#566f9e`  |                   | non-text         |
 | `slider_active`         | `darkblue.40`  | 70 %  | `#7388ae`  |                   | non-text         |
-| `merge_current_content` | `windblue`     | 10 %  | `#0c3b7e`  |                   | code             |
-| `merge_current_header`  | `windblue`     | 25 %  | `#0a4a8c`  |                   | `fg`, `fg_muted` |
-| `merge_incoming_header` | `freegreen`    | 25 %  | `#184f64`  |                   | `fg`, `fg_muted` |
-| `stack_frame`           | `lightorange`  | 10 %  | `#243c6e`  |                   | code             |
+| `merge_current_content` | `windblue`     | 10 %  | `#0c3a7d`  |                   | code             |
+| `merge_current_header`  | `windblue`     | 25 %  | `#0a488b`  |                   | `fg`, `fg_muted` |
+| `merge_incoming_header` | `limegreen`    | 25 %  | `#235263`  |                   | `fg`, `fg_muted` |
+| `stack_frame`           | `brightorange` | 10 %  | `#243c68`  |                   | code             |
 
 <!-- /tokens -->
 
@@ -375,7 +377,7 @@ Themes cannot ship fonts, and this repository contains none. The foundation reco
 5. **Fills.** The text on each semantic fill, and `accent_on` on `accent` and on `accent_hover`, reach 4.5:1.
 6. **Distinctness.** Slots that must not look alike are at least 7 apart in OKLab (×100; about 2 is just noticeable): the listed syntax pairs, every pair within an ANSI row, and each ANSI colour against its bright version. Two core slots may share a colour only if `syntax_tokens.aliases` lists them together.
 7. **Signal separation.** `accent`, `warning` and `danger` are at least 7 apart. `danger` and `success` differ by at least 5 in lightness.
-8. **Palette integrity.** No hex value outside `palette_base` and `derived`, and no value under `derived` beyond the three documented ones. No ladder for Signalred or White. `bg_sunk` matches its recipe. The derived reds stay on the Signalred hue. `bg_terminal` equals `bg`, and `bg_overlay` equals `bg_sunk`.
+8. **Palette integrity.** No hex value outside `palette_base` and `derived`, and no value under `derived` beyond the four documented ones. No ladder for Racing Red or White. `bg_sunk` and `racingred_fill` match their recipes. The derived reds stay on the Racing Red hue. `bg_terminal` equals `bg`, and `bg_overlay` equals `bg_sunk`.
 9. **Overlay visibility.** `selection` is at least 7 from `bg` and from `find_match`. `hover` is at least 3 from `bg` and `bg_sunk`, `active` at least 5, `slider` at least 7. `merge_current_header` is at least 7 from `bg`. `accent_hover` is at least 3 from `accent`. Each `diff_*_text` recipe, stacked, is at least 5 from its line.
 
 Before the gates run, the build checks the shape of the tokens: every colour is a `#rrggbb` value, every overlay has an alpha, every overlay belongs to exactly one class, role objects use only the keys `color`, `style`, `fish` and `psreadline`, every colour target in the role maps resolves, and no scope rule ends in `meta.*`. Each problem is reported with its path. A build that fails writes nothing.
@@ -420,7 +422,7 @@ docs/               design spec and implementation plan
 3. Terminal ports take all sixteen colours from `ansi` and the background from `surface.bg_terminal`.
 4. Shell ports take every colour from `shell_roles`; prompt ports from `prompt_roles`.
 5. Overlays come from `overlay.<name>`: `.hexa` where the target blends, `.hex` where it cannot, `.border` where present. No alpha constants in the port.
-6. Red as text is `semantic.danger`. Red as a fill is `semantic_fill.danger.fill` with `semantic_fill.danger.text` on it. Never Signalred as text on a dark surface.
+6. Red as text is `semantic.danger`. Red as a fill is `semantic_fill.danger.fill` with `semantic_fill.danger.text` on it. Never Racing Red as text on a dark surface.
 7. A value a port needs and cannot find is a gap in the foundation. Fix it here.
 
 The package is not on npm yet. Until it is, depend on the repository or a local checkout:
@@ -441,7 +443,7 @@ import {
 
 resolveTarget(tokens, "keyword"); // "#fbba00"
 resolveTarget(tokens, "semantic.danger"); // "#ff897b"
-resolveTarget(tokens, "overlay.selection"); // "#15253f"
+resolveTarget(tokens, "overlay.selection"); // "#17253f"
 ```
 
 `handoff/SKILL.md` is a Claude Code skill that teaches an assistant in a port repository how to use the foundation. Copy it to `.claude/skills/sepps-workshop/SKILL.md` in the port.

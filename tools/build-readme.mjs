@@ -23,7 +23,13 @@ import {
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const code = (s) => "`" + s + "`";
-const title = (s) => s[0].toUpperCase() + s.slice(1);
+/** The brand writes the three renamed colours as two words. */
+const BRAND_NAMES = {
+  brightorange: "Bright Orange",
+  racingred: "Racing Red",
+  limegreen: "Lime Green",
+};
+const title = (s) => BRAND_NAMES[s] ?? s[0].toUpperCase() + s.slice(1);
 
 /** "$palette.sunset.100" → `sunset`; "$palette.sunset.40" → `sunset.40`. */
 const source = (ref) =>

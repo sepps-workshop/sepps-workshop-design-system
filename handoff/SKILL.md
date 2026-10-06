@@ -41,7 +41,7 @@ Until it is on npm, install it with `npm install github:sepps-workshop/sepps-wor
 ## Hard rules
 
 - Never write a hex value in a port. A value you cannot find is a gap in the foundation: fix it there.
-- Red as text is `semantic.danger`. Signalred itself is for fills only, with `semantic_fill.danger.text` on top.
+- Red as text is `semantic.danger`. Red as a fill is `semantic_fill.danger.fill` (Racing Red, darkened to carry text), with `semantic_fill.danger.text` on top. Never Racing Red itself as text.
 - Overlays come from `tokens.overlay`, with no port-side alpha constants and no string building: read `.hexa` or `.hex`. `overlay.selected_item` and the `merge_*_header` overlays carry `fg` and `fg_muted` only.
 - A VS Code key with no role in the foundation stays at its default. Do not approximate it.
 - Controls are outlined with `border.control`, the focus ring is `accent`.

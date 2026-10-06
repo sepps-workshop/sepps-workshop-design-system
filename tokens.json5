@@ -25,22 +25,24 @@
     darkblue: "#0d3174",
     sunset: "#fbba00",
     shadowgrey: "#b2b2b2",
-    middleblue: "#0069a9",
+    middleblue: "#076eab",
     pumpelorange: "#ec6608",
-    windblue: "#0093d3",
-    lightorange: "#f59e33",
-    darkblack: "#1b1d1c",
-    signalred: "#cd1719", // signal only — no ladder, never text on dark
-    freegreen: "#3aaa35", // signal only — no syntax slot
+    windblue: "#008ecf",
+    brightorange: "#f59c00",
+    darkblack: "#1d1d1b",
+    racingred: "#f0191d", // signal only — no ladder, never text on dark
+    limegreen: "#64b32e", // signal only — no syntax slot; the brand kit shows no tints
     white: "#ffffff", // the brand's unlisted "non-colour"; text on fills only
   },
 
   // The build generates palette.<name>.<step> for every step: the base
-  // colour mixed towards white, as in the brand kit. Signalred has no
-  // tints by brand decision (they drift into pink).
+  // colour mixed towards white, as in the brand kit. Racing Red has no
+  // tints by brand decision (they drift into pink). The brand kit shows
+  // none for Lime Green either; its ladder is calculated here the same
+  // way, because green text on Darkblue needs the lighter steps.
   ladder: {
     steps: [100, 90, 80, 70, 60, 50, 40, 30, 20, 10],
-    exclude: ["signalred", "white"],
+    exclude: ["racingred", "white"],
   },
 
   // ── 2. DERIVED LITERALS ─────────────────────────────────────────
@@ -49,11 +51,15 @@
     // The ladder only goes lighter. Surfaces below the canvas mix
     // Darkblue 80 % with Darkblack. The build verifies the recipe.
     bg_sunk: "#102d62",
-    // Signalred reaches 2.18:1 on Darkblue. These keep its OKLCH hue,
+    // Racing Red reaches 2.85:1 on Darkblue. These keep its OKLCH hue,
     // raise lightness to 5.34:1 / 7.23:1, and hold chroma at the sRGB
-    // maximum. Foreground on dark surfaces only; fills use Signalred.
-    signalred_on_dark: "#ff897b",
-    signalred_on_dark_bright: "#ffb4aa",
+    // maximum. Foreground on dark surfaces only.
+    racingred_on_dark: "#ff897b",
+    racingred_on_dark_bright: "#ffb4aa",
+    // White reaches 4.32:1 on Racing Red and no other brand colour does
+    // better. Fills mix Racing Red 90 % with Darkblack (white: 5.04:1).
+    // The build verifies the recipe.
+    racingred_fill: "#db191d",
   },
 
   // ── 3. SURFACES, TEXT, BORDERS ──────────────────────────────────
@@ -80,20 +86,20 @@
   accent_hover: "$palette.sunset.80", // primary button under the pointer; the ladder only goes lighter
 
   // ── 4. SEMANTIC ROLES ───────────────────────────────────────────
-  // Warning is Lightorange: yellow is the accent, and Pumpelorange is
-  // too close to the derived red. Success sits two steps lighter than
+  // Warning is Bright Orange: yellow is the accent, and Pumpelorange is
+  // too close to the derived red. Success sits lighter than
   // contrast needs so red and green differ in lightness too.
   semantic: {
-    danger: "$derived.signalred_on_dark",
-    success: "$palette.freegreen.50",
-    warning: "$palette.lightorange.100",
-    info: "$palette.windblue.60",
+    danger: "$derived.racingred_on_dark",
+    success: "$palette.limegreen.60",
+    warning: "$palette.brightorange.100",
+    info: "$palette.windblue.50",
   },
   semantic_fill: {
-    danger: { fill: "$palette.signalred.100", text: "$palette.white.100" },
-    success: { fill: "$palette.freegreen.100", text: "$palette.darkblack.100" },
+    danger: { fill: "$derived.racingred_fill", text: "$palette.white.100" },
+    success: { fill: "$palette.limegreen.100", text: "$palette.darkblack.100" },
     warning: {
-      fill: "$palette.lightorange.100",
+      fill: "$palette.brightorange.100",
       text: "$palette.darkblack.100",
     },
   },
@@ -106,7 +112,7 @@
     keyword: "$palette.sunset.100",
     string: "$palette.pumpelorange.40",
     number: "$palette.pumpelorange.70",
-    function: "$palette.windblue.60",
+    function: "$palette.windblue.50",
     parameter: "$palette.windblue.30",
     type: "$palette.sunset.40",
     constant: "$palette.pumpelorange.70",
@@ -324,24 +330,24 @@
   },
 
   // ── 6. ANSI ─────────────────────────────────────────────────────
-  // The brand has no magenta: the slot takes Lightorange. Neutrals are
+  // The brand has no magenta: the slot takes Bright Orange. Neutrals are
   // true greys (Shadowgrey, Darkblack tints) to stay apart from blue
   // and cyan.
   ansi: {
     black: "$derived.bg_sunk", // reverse-video anchor; exempt from the contrast gate
-    red: "$derived.signalred_on_dark",
-    green: "$palette.freegreen.50",
+    red: "$derived.racingred_on_dark",
+    green: "$palette.limegreen.60",
     yellow: "$palette.sunset.100",
     blue: "$palette.middleblue.60",
-    magenta: "$palette.lightorange.100",
+    magenta: "$palette.brightorange.100",
     cyan: "$palette.windblue.50",
     white: "$palette.shadowgrey.60",
     bright_black: "$palette.darkblack.40",
-    bright_red: "$derived.signalred_on_dark_bright",
-    bright_green: "$palette.freegreen.30",
+    bright_red: "$derived.racingred_on_dark_bright",
+    bright_green: "$palette.limegreen.40",
     bright_yellow: "$palette.sunset.40",
     bright_blue: "$palette.middleblue.40",
-    bright_magenta: "$palette.lightorange.60",
+    bright_magenta: "$palette.brightorange.60",
     bright_cyan: "$palette.windblue.30",
     bright_white: "$palette.darkblue.10",
   },
@@ -375,12 +381,12 @@
       border: "$palette.sunset.100",
     },
     selected_item: { color: "$palette.sunset.100", alpha: 0.18 }, // list rows: fg / fg_muted only
-    diff_inserted_line: { color: "$palette.freegreen.100", alpha: 0.12 },
+    diff_inserted_line: { color: "$palette.limegreen.100", alpha: 0.12 },
     // Changed spans are drawn on top of their line, behind code, so they
     // darken it: a stronger green takes numbers and comments below 4.5:1.
     diff_inserted_text: { color: "$palette.darkblack.100", alpha: 0.4 },
-    diff_removed_line: { color: "$palette.signalred.100", alpha: 0.14 },
-    diff_removed_text: { color: "$palette.signalred.100", alpha: 0.35 },
+    diff_removed_line: { color: "$palette.racingred.100", alpha: 0.14 },
+    diff_removed_text: { color: "$palette.racingred.100", alpha: 0.3 },
     // Surface overlays: also drawn over bg_sunk and bg_overlay, and gated there.
     hover: { color: "$palette.darkblack.100", alpha: 0.3 }, // the row under the pointer
     active: { color: "$palette.darkblack.100", alpha: 0.5 }, // drop target, pressed item
@@ -392,9 +398,9 @@
     // Merge editor. "Incoming" content reuses diff_inserted_line.
     merge_current_content: { color: "$palette.windblue.100", alpha: 0.1 },
     merge_current_header: { color: "$palette.windblue.100", alpha: 0.25 }, // fg / fg_muted only
-    merge_incoming_header: { color: "$palette.freegreen.100", alpha: 0.25 }, // fg / fg_muted only
+    merge_incoming_header: { color: "$palette.limegreen.100", alpha: 0.25 }, // fg / fg_muted only
     // One recipe for both debugger frames; the gutter arrow tells them apart.
-    stack_frame: { color: "$palette.lightorange.100", alpha: 0.1 },
+    stack_frame: { color: "$palette.brightorange.100", alpha: 0.1 },
   },
 
   // ── 8. SHELL ROLES ──────────────────────────────────────────────

@@ -22,13 +22,13 @@ test("the stylesheet declares the documented properties with resolved values", (
     "--sw-fg: #e7eaf1;",
     "--sw-accent: #fbba00;",
     "--sw-danger: #ff897b;",
-    "--sw-danger-fill: #cd1719;",
+    "--sw-danger-fill: #db191d;",
     "--sw-syn-keyword: #fbba00;",
     "--sw-ansi-bright-red: #ffb4aa;",
-    "--sw-overlay-selection: #15253f;",
+    "--sw-overlay-selection: #17253f;",
     "--sw-accent-hover: #fcc833;",
-    "--sw-overlay-selection-hexa: #1b1d1c99;",
-    "--sw-overlay-hover: #112b5a;",
+    "--sw-overlay-selection-hexa: #1d1d1b99;",
+    "--sw-overlay-hover: #122b59;",
     "--sw-palette-pumpelorange-90: #ee7521;",
   ]) {
     assert.ok(css.includes(line), `missing: ${line}`);

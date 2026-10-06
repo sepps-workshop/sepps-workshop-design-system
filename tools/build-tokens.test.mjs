@@ -22,7 +22,7 @@ test("ladders are generated for every colour except the excluded ones", () => {
   assert.equal(t.palette.darkblue[100], "#0d3174");
   assert.equal(t.palette.pumpelorange[90], "#ee7521");
   assert.equal(Object.keys(t.palette.windblue).length, 10);
-  assert.deepEqual(Object.keys(t.palette.signalred), ["100"]);
+  assert.deepEqual(Object.keys(t.palette.racingred), ["100"]);
 });
 
 test("references resolve, including chained ones", () => {
@@ -36,10 +36,10 @@ test("references resolve, including chained ones", () => {
 
 test("an unknown reference names itself and where it was used", () => {
   const raw = fresh();
-  raw.syntax.keyword = "$palette.signalred.50";
+  raw.syntax.keyword = "$palette.racingred.50";
   assert.throws(
     () => resolveTokens(raw),
-    /Unknown reference \$palette\.signalred\.50 at syntax\.keyword/,
+    /Unknown reference \$palette\.racingred\.50 at syntax\.keyword/,
   );
 });
 
@@ -52,7 +52,7 @@ test("a reference cycle is reported, not a stack overflow", () => {
 
 test("overlays get a composited hex", () => {
   const t = resolveTokens(fresh());
-  assert.equal(t.overlay.selection.hex, "#15253f");
+  assert.equal(t.overlay.selection.hex, "#17253f");
   assert.equal(t.overlay.find_match.border, t.palette.pumpelorange[70]);
 });
 
@@ -62,7 +62,7 @@ test("resolveTarget understands every kind of target", () => {
   assert.equal(resolveTarget(t, "fg_muted"), t.text.fg_muted);
   assert.equal(resolveTarget(t, "accent"), "#fbba00");
   assert.equal(resolveTarget(t, "semantic.danger"), "#ff897b");
-  assert.equal(resolveTarget(t, "overlay.selection"), "#15253f");
+  assert.equal(resolveTarget(t, "overlay.selection"), "#17253f");
   assert.throws(
     () => resolveTarget(t, "fuction"),
     /Unknown colour target: fuction/,
@@ -95,7 +95,7 @@ test("resolveTarget refuses a target with extra path segments", () => {
 
 test("overlays get a translucent hexa beside the composited hex", () => {
   const t = resolveTokens(fresh());
-  assert.equal(t.overlay.selection.hexa, "#1b1d1c99");
+  assert.equal(t.overlay.selection.hexa, "#1d1d1b99");
   for (const [name, o] of Object.entries(t.overlay)) {
     assert.match(o.hexa, /^#[0-9a-f]{8}$/, `overlay.${name}.hexa`);
     assert.equal(o.hexa.slice(0, 7), o.color, `overlay.${name}.hexa colour`);
@@ -112,15 +112,15 @@ test("a malformed recipe gets neither hex nor hexa", () => {
 
 test("the workbench overlays and accent_hover resolve", () => {
   const t = resolveTokens(fresh());
-  assert.equal(t.overlay.hover.hex, "#112b5a");
-  assert.equal(t.overlay.active.hex, "#142748");
-  assert.equal(t.overlay.scrim.hex, "#15253f");
+  assert.equal(t.overlay.hover.hex, "#122b59");
+  assert.equal(t.overlay.active.hex, "#152748");
+  assert.equal(t.overlay.scrim.hex, "#17253f");
   assert.equal(t.overlay.slider.hex, "#39568d");
   assert.equal(t.overlay.slider_hover.hex, "#566f9e");
   assert.equal(t.overlay.slider_active.hex, "#7388ae");
-  assert.equal(t.overlay.merge_current_content.hex, "#0c3b7e");
-  assert.equal(t.overlay.merge_current_header.hex, "#0a4a8c");
-  assert.equal(t.overlay.stack_frame.hex, "#243c6e");
+  assert.equal(t.overlay.merge_current_content.hex, "#0c3a7d");
+  assert.equal(t.overlay.merge_current_header.hex, "#0a488b");
+  assert.equal(t.overlay.stack_frame.hex, "#243c68");
   assert.equal(t.accent_hover, "#fcc833");
   assert.equal(resolveTarget(t, "accent_hover"), "#fcc833");
 });

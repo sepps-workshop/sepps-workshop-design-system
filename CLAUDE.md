@@ -22,10 +22,10 @@ After cloning, run `git config core.hooksPath .githooks` to enable the gitleaks 
 
 - `tokens.json5` is the only data file edited by hand.
 - A hex literal is allowed only under `palette_base` and `derived`. Everything else is a `$` reference.
-- Every colour is a brand colour, a 10 % ladder step, or one of the three named values in `derived`. Never add a hue.
+- Every colour is a brand colour, a 10 % ladder step, or one of the four named values in `derived`. Never add a hue.
 - When a gate fails: move along the same ladder, then swap roles between brand hues.
-- Signalred has no tints. Signalred and Freegreen are signals, not syntax colours.
-- Red as text on a dark surface is `semantic.danger`; red as a fill is Signalred with white text.
+- Racing Red has no tints. Racing Red and Lime Green are signals, not syntax colours.
+- Red as text on a dark surface is `semantic.danger`; red as a fill is `semantic_fill.danger.fill` (Racing Red darkened with Darkblack) with white text.
 - Overlays darken the canvas. A lighter selection fails gate 2.
 - Docs are English, no emoji. Numbers in docs come from `tokens.json` or the build output.
 

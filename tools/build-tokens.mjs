@@ -200,8 +200,9 @@ const HUE_TOLERANCE = 0.03; // radians
 /** The only values allowed outside the palette and its ladders. */
 const DERIVED_KEYS = [
   "bg_sunk",
-  "signalred_on_dark",
-  "signalred_on_dark_bright",
+  "racingred_on_dark",
+  "racingred_on_dark_bright",
+  "racingred_fill",
 ];
 /** Surfaces the spec defines as equal: terminal = canvas, widgets = sunk. */
 const SAME_SURFACE = [
@@ -749,9 +750,9 @@ export function check(tokens, raw) {
   }
 
   // 8. Palette integrity.
-  if (!raw.ladder.exclude.includes("signalred")) {
+  if (!raw.ladder.exclude.includes("racingred")) {
     fail.push(
-      "✗ signalred must not have a ladder: its tints drift into pink (brand decision)",
+      "✗ racingred must not have a ladder: its tints drift into pink (brand decision)",
     );
   }
   if (!raw.ladder.exclude.includes("white")) {
@@ -777,13 +778,19 @@ export function check(tokens, raw) {
       `✗ derived.bg_sunk is ${derived.bg_sunk}, but mix(darkblue, darkblack, 0.8) is ${sunk}`,
     );
   }
-  for (const name of ["signalred_on_dark", "signalred_on_dark_bright"]) {
+  const fill = mix(palette_base.racingred, palette_base.darkblack, 0.9);
+  if (derived.racingred_fill !== fill) {
+    fail.push(
+      `✗ derived.racingred_fill is ${derived.racingred_fill}, but mix(racingred, darkblack, 0.9) is ${fill}`,
+    );
+  }
+  for (const name of ["racingred_on_dark", "racingred_on_dark_bright"]) {
     const drift = Math.abs(
-      hueAngle(derived[name]) - hueAngle(palette_base.signalred),
+      hueAngle(derived[name]) - hueAngle(palette_base.racingred),
     );
     if (drift > HUE_TOLERANCE) {
       fail.push(
-        `✗ derived.${name} (${derived[name]}) has left the Signalred hue by ${drift.toFixed(3)} rad`,
+        `✗ derived.${name} (${derived[name]}) has left the Racing Red hue by ${drift.toFixed(3)} rad`,
       );
     }
   }
