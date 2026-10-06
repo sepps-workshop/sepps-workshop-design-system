@@ -1,7 +1,7 @@
 {
   "name": "@sepps-workshop/design-system",
   "description": "Token foundation for the Sepp's Workshop themes. One medium-dark theme on sepp.med Darkblue, WCAG AA enforced by the build.",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "license": "MIT",
   "author": "sepp.med GmbH",
   "homepage": "https://github.com/sepps-workshop/sepps-workshop-design-system",
