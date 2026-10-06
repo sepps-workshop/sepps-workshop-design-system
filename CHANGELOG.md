@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.3.0 — 2026-10-06
 
 - **⚠️ Three colours are renamed, following the sepp.med Farbtafel 2026:** `lightorange` is now `brightorange` (Bright Orange), `signalred` is now `racingred` (Racing Red), `freegreen` is now `limegreen` (Lime Green). This renames `palette.<name>.*`, `--sw-palette-<name>-*`, and `derived.signalred_on_dark` / `derived.signalred_on_dark_bright` to `derived.racingred_on_dark` / `derived.racingred_on_dark_bright`. There are no aliases.
 - **⚠️ Six base colours change value:** Windblue `#008ecf`, Middleblue `#076eab`, Darkblack `#1d1d1b`, Bright Orange `#f59c00`, Racing Red `#f0191d`, Lime Green `#64b32e`. Every ladder step, overlay and ANSI colour built on them moves with them. The derived reds `#ff897b` and `#ffb4aa` and `bg_sunk` `#102d62` keep their values.
