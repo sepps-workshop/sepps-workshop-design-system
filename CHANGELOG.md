@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.4.0 — 2026-10-07
+
+- **⚠️ `surface.bg_sunk` is renamed `surface.bg_chrome`** (`--sw-bg-sunk` is now `--sw-bg-chrome`) and is Darkblue (`#0d3174`), no longer a surface below the canvas. There is no alias.
+- **⚠️ `derived.bg_sunk` is replaced by `derived.bg_deep`** (`#14284c`, Darkblue mixed 55 % with Darkblack). The build verifies the recipe.
+- **⚠️ The editor canvas changes value:** `surface.bg` is now `derived.bg_deep` instead of Darkblue. The first check in a running VS Code showed that the editor and the terminal could not be told apart and that code on Darkblue itself was tiring to read. Every overlay `hex` moves with the canvas.
+- `bg_overlay` and `bg_terminal` now equal `bg_chrome`. A standalone terminal stays on Darkblue; one embedded in an editor sits on `bg`.
+- ANSI black is Darkblack (`#1d1d1b`) instead of `bg_sunk`.
+- Higher overlay alphas on the deeper canvas: `selection` 60 % to 80 %, `selection_inactive` 40 % to 55 %, `line_highlight` 30 % to 35 %, `hover` 30 % to 35 %, `active` 50 % to 55 %, `diff_inserted_text` 40 % to 50 %.
+- New gates: `bg` must be at least 7 (OKLab) from `bg_chrome` and `bg_terminal`; ANSI colours are checked on `bg` as well as `bg_terminal`, and on the selection recipes drawn over `bg_terminal`.
+
 ## 0.3.0 — 2026-10-06
 
 - **⚠️ Three colours are renamed, following the sepp.med Farbtafel 2026:** `lightorange` is now `brightorange` (Bright Orange), `signalred` is now `racingred` (Racing Red), `freegreen` is now `limegreen` (Lime Green). This renames `palette.<name>.*`, `--sw-palette-<name>-*`, and `derived.signalred_on_dark` / `derived.signalred_on_dark_bright` to `derived.racingred_on_dark` / `derived.racingred_on_dark_bright`. There are no aliases.
