@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.6.0 — 2026-10-07
 
 - New `iconography` block in `tokens.json5`, a README section and `preview/05-iconography.html`. The theme recommends icon sets and ships none: Material Icon Theme for VS Code file icons, Lucide for app UI glyphs, Papirus for GTK desktops. File icons are never recoloured.
 
