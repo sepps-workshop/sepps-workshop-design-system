@@ -292,6 +292,7 @@ export default {
         ]
       },
       "emphasis": {
+        "color": "type",
         "style": [
           "italic"
         ]
@@ -302,6 +303,8 @@ export default {
           "bold"
         ]
       },
+      "code": "parameter",
+      "key": "function",
       "invalid": {
         "color": "semantic.danger",
         "style": [
@@ -455,6 +458,14 @@ export default {
     ],
     "strong": [
       "markup.bold"
+    ],
+    "code": [
+      "markup.inline.raw",
+      "markup.raw.block"
+    ],
+    "key": [
+      "support.type.property-name.json",
+      "entity.name.tag.yaml"
     ],
     "invalid": [
       "invalid.illegal"

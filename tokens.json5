@@ -170,8 +170,10 @@
       hex: "string",
       shebang: "comment",
       lang_var: { color: "keyword", style: ["italic"] }, // this / self / super
-      emphasis: { style: ["italic"] },
-      strong: { color: "constant", style: ["bold"] }, // bold alone barely shows in a mono font
+      emphasis: { color: "type", style: ["italic"] }, // italic alone barely shows in a mono font
+      strong: { color: "constant", style: ["bold"] }, // so does bold
+      code: "parameter", // Markdown inline code: cool, so it stays apart from the warm bold
+      key: "function", // JSON and YAML keys; JS properties stay fg
       invalid: { color: "semantic.danger", style: ["italic", "underline"] },
       invalid_deprecated: { color: "fg", style: ["italic", "underline"] },
       doc_keyword: "keyword",
@@ -249,6 +251,8 @@
     ],
     emphasis: ["markup.italic"],
     strong: ["markup.bold"],
+    code: ["markup.inline.raw", "markup.raw.block"],
+    key: ["support.type.property-name.json", "entity.name.tag.yaml"],
     invalid: ["invalid.illegal"],
     invalid_deprecated: ["invalid.deprecated"],
     doc_keyword: ["comment.block.documentation keyword"],
