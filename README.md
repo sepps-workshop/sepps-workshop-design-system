@@ -1,16 +1,17 @@
 <p align="center">
-  <img src="assets/icon-128.png" width="128" height="128" alt="Sepp, a blue robot holding a wrench" /><br />
-  <strong>Sepp's Workshop</strong><br />
-  Design System
+  <img src="assets/sepps-workshop-header.jpg" width="100%" alt="Sepp, the blue robot, assembling code blocks with a wrench in his workshop" />
 </p>
-<p align="center">
+# Sepp’s Workshop Design System
+
+<p>
   <img src="https://img.shields.io/badge/WCAG-AA-3aaa35" alt="WCAG AA" />
   <img src="https://img.shields.io/badge/dependencies-none-b2b2b2" alt="No dependencies" />
+  <img src="https://img.shields.io/badge/license-MIT-b2b2b2" alt="MIT license" />
 </p>
 
-Sepp is the robot who keeps things running at [sepp.med](https://www.seppmed.com). This is his workshop: one colour theme for the tools developers stare at all day, built on the company's dark blue.
+Sepp is the robot who keeps things running at [sepp.med](https://www.seppmed.com). This is his workshop: one colour theme for the tools developers stare at all day, built on the company’s Darkblue.
 
-This repository is the foundation, not a theme you can install. It holds the colours, the rules for using them, and a build that refuses to pass if any text drops below WCAG AA. The themes themselves live in their own repositories and read everything from here.
+This repository is the foundation, not a theme you can install. It holds the colours, the rules for using them, and a build that refuses to pass if any text drops below WCAG AA. Think of the build as a very pedantic colleague: no colour gets through unless the maths agrees. The themes themselves live in their own repositories and read everything from here.
 
 ## Contents
 
@@ -28,23 +29,25 @@ This repository is the foundation, not a theme you can install. It holds the col
 - [Build flow and files](#build-flow-and-files)
 - [For ports](#for-ports)
 - [Assets](#assets)
-- [Want to join Sepp's Workshop?](#want-to-join-sepps-workshop)
+- [Contributing](#contributing)
+- [License](#license)
+- [Want to join Sepp’s Workshop?](#want-to-join-sepps-workshop)
 
 ## Ports
 
-| Target           | Repository                        | Status  |
-| ---------------- | --------------------------------- | ------- |
-| VS Code          | `sepps-workshop-vs-code`          | planned |
-| Windows Terminal | `sepps-workshop-windows-terminal` | planned |
-| PowerShell       | `sepps-workshop-powershell`       | planned |
-| fish             | `sepps-workshop-fish`             | planned |
-| Starship         | `sepps-workshop-starship`         | planned |
+| Target           | Repository                                                                           | Status                               |
+| ---------------- | ------------------------------------------------------------------------------------ | ------------------------------------ |
+| VS Code          | [`sepps-workshop-vs-code`](https://github.com/sepps-workshop/sepps-workshop-vs-code) | working, Marketplace listing pending |
+| Windows Terminal | `sepps-workshop-windows-terminal`                                                    | planned                              |
+| PowerShell       | `sepps-workshop-powershell`                                                          | planned                              |
+| fish             | `sepps-workshop-fish`                                                                | planned                              |
+| Starship         | `sepps-workshop-starship`                                                            | planned                              |
 
 One theme per port. There are no variants.
 
 ## The theme at a glance
 
-A dark theme. The editor canvas is a deepened sepp.med Darkblue, the chrome around it is Darkblue itself, the accent is Sunset yellow, and code is coloured with three brand hues (yellow, orange, cyan-blue) at two lightness steps each. Every colour is a brand colour, one of its official tints, or one of three documented derived values.
+A dark theme. The editor canvas is a deepened sepp.med Darkblue, the chrome around it is Darkblue itself, the accent is Sunset yellow, and code is coloured with three brand hues (yellow, orange, cyan-blue) at two lightness steps each. Every colour is a brand colour, one of its official tints, or one of four documented derived values.
 
 The preview pages are generated from the tokens. Clone the repository and open them in a browser:
 
@@ -426,13 +429,11 @@ docs/               release recovery steps
 6. Red as text is `semantic.danger`. Red as a fill is `semantic_fill.danger.fill` with `semantic_fill.danger.text` on it. Never Racing Red as text on a dark surface.
 7. A value a port needs and cannot find is a gap in the foundation. Fix it here.
 
-The package is not on npm yet. Until it is, depend on the repository or a local checkout:
+The package is on npm:
 
 ```bash
-npm install github:sepps-workshop/sepps-workshop-design-system
+npm install @sepps-workshop/design-system
 ```
-
-The imports stay the same once it is published:
 
 ```js
 import tokens from "@sepps-workshop/design-system";
@@ -444,7 +445,7 @@ import {
 
 resolveTarget(tokens, "keyword"); // "#fbba00"
 resolveTarget(tokens, "semantic.danger"); // "#ff897b"
-resolveTarget(tokens, "overlay.selection"); // "#17253f"
+resolveTarget(tokens, "overlay.selection"); // "#1b1f25"
 ```
 
 `handoff/SKILL.md` is a Claude Code skill that teaches an assistant in a port repository how to use the foundation. Copy it to `.claude/skills/sepps-workshop/SKILL.md` in the port.
@@ -453,10 +454,20 @@ resolveTarget(tokens, "overlay.selection"); // "#17253f"
 
 `assets/icon-{16,32,48,128,180,256,512}.png` are renders of the Sepp icon. At 128 px and above, the halftone dots and the wrench are clear. At 16 and 32 px Sepp still reads as a blue robot on yellow, but the dots and the wrench are lost; a simplified mark for those sizes is planned.
 
-No licence has been chosen yet; until one is, all rights are reserved by sepp.med GmbH. You are welcome to read the code and to open issues.
+<img src="assets/icon-128.png" width="128" height="128" alt="Sepp, a blue robot holding a wrench" />
 
-## Want to join Sepp's Workshop?
+## Contributing
 
-sepp.med builds and tests software for places where a bug is more than an inconvenience: medical devices, cars, aircraft. If you would rather get the contrast ratio right than argue about it, you might like it here.
+`tokens.json5` is the only file edited by hand. Run `npm run build` after every change, then make sure `npm run check` and `npm test` pass. Issues are welcome, especially when two colours are hard to tell apart or a value looks wrong in one of the ports.
 
-Have a look at the [open positions](https://www.seppmed.com/career/), or just say hello.
+## License
+
+MIT. See [LICENSE](./LICENSE).
+
+## Want to join Sepp’s Workshop?
+
+<img align="right" width="150" src="assets/sepp-recruiting.png" alt="Sepp, the blue robot, holding a sign that reads Be you – with us!" />
+
+sepp.med builds and tests software for places where a bug is more than an inconvenience: medical devices, cars, aircraft. We have been doing it since 1980, as a family-run company in the Nuremberg metropolitan region. If you would rather get the contrast ratio right than argue about it, you might like it here.
+
+Browse the [open positions](https://www.seppmed.com/career/open-positions/), or send a [speculative application](https://www.seppmed.com/career/speculative-application/) if none of them fits yet. Be you – with us.
