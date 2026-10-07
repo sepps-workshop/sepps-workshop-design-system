@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- New `iconography` block in `tokens.json5`, a README section and `preview/05-iconography.html`. The theme recommends icon sets and ships none: Material Icon Theme for VS Code file icons, Lucide for app UI glyphs, Papirus for GTK desktops. File icons are never recoloured.
+
 ## 0.5.0 — 2026-10-07
 
 - `syntax_tokens.extended.strong` (Markdown bold) is now `constant` plus bold. Bold alone barely shows in a monospace font.

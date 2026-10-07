@@ -48,6 +48,7 @@ Until it is on npm, install it with `npm install github:sepps-workshop/sepps-wor
 - VS Code: the editor and the embedded terminal sit on `surface.bg`, the chrome around them on `surface.bg_chrome`. The status bar stays on `surface.bg_chrome`; the accent appears as a border, not as its background. The debugging status bar uses the danger fill.
 - Never rely on colour alone: pair a state colour with a border, an underline, a position or a font style.
 - Recommend JetBrains Mono, and JetBrainsMono Nerd Font where the port shows icons. Ports cannot ship fonts. One theme per port, no variants.
+- Recommend, never ship, icons: Material Icon Theme for VS Code file icons (see `tokens.iconography`). Do not recolour file icons.
 - Port READMEs are English, exact where technical, relaxed elsewhere, no emoji. Each ends with the "Want to join Sepp’s Workshop?" section linking to https://www.seppmed.com/career/.
 
 ## Feedback

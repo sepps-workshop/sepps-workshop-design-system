@@ -118,6 +118,7 @@ const PAGES = [
   ["02-terminal.html", "Terminal"],
   ["03-shell.html", "Shell and prompt"],
   ["04-contrast.html", "Contrast report"],
+  ["05-iconography.html", "Iconography"],
 ];
 
 function page(tokens, file, intro, body) {
@@ -273,6 +274,26 @@ function contrastPage(tokens) {
   );
 }
 
+/** The icon recommendations, one row per layer. */
+function iconographyPage(tokens) {
+  const { inline_ui, file_icons, desktop } = tokens.iconography;
+  const rows = [
+    ["App UI glyphs", inline_ui],
+    ["Alternative for rarer glyphs", inline_ui.alternative],
+    ...Object.entries(file_icons).map(([k, v]) => [`File icons: ${k}`, v]),
+    ["Desktop (GTK)", desktop],
+  ]
+    .map(
+      ([layer, r]) =>
+        `<tr data-icon><td>${esc(layer)}</td><td>${r.url ? `<a href="${esc(r.url)}">${esc(r.name)}</a>` : esc(r.name)}</td><td>${esc(r.license ?? "")}</td><td>${esc(r.note)}</td></tr>`,
+    )
+    .join("\n");
+  return (
+    `<section><h2>Recommendations</h2><table><tr><th>Layer</th><th>Recommendation</th><th>License</th><th>Note</th></tr>\n${rows}</table></section>\n` +
+    `<section><h2>Rule</h2><p>Do not recolour file icons. They encode the file type. Recolour only folder icons, where the target supports it, and the chrome around them.</p></section>`
+  );
+}
+
 /** Surface and non-text overlays, drawn translucent so they show on any surface. */
 const WORKBENCH = [
   "hover",
@@ -361,6 +382,12 @@ export function renderPages(tokens) {
       "04-contrast.html",
       "Every text pair the build gates on. WCAG 2.x AA (4.5:1) is enforced; APCA Lc is shown for reference.",
       contrastPage(tokens),
+    ),
+    "05-iconography.html": page(
+      tokens,
+      "05-iconography.html",
+      "The theme ships no icons. These are the sets it recommends, per layer.",
+      iconographyPage(tokens),
     ),
   };
 }

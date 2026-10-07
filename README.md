@@ -26,6 +26,7 @@ This repository is the foundation, not a theme you can install. It holds the col
 - [Overlays](#overlays)
 - [Shell and prompt roles](#shell-and-prompt-roles)
 - [Typography](#typography)
+- [Iconography](#iconography)
 - [Build gates](#build-gates)
 - [Build flow and files](#build-flow-and-files)
 - [For ports](#for-ports)
@@ -56,6 +57,7 @@ The preview pages are generated from the tokens. Clone the repository and open t
 - [`preview/02-terminal.html`](preview/02-terminal.html): the sixteen ANSI colours
 - [`preview/03-shell.html`](preview/03-shell.html): shell and prompt roles
 - [`preview/04-contrast.html`](preview/04-contrast.html): every text pair the build checks, with its contrast
+- [`preview/05-iconography.html`](preview/05-iconography.html): the recommended icon sets
 
 ## Palette
 
@@ -372,6 +374,21 @@ Themes cannot ship fonts, and this repository contains none. The foundation reco
 - **JetBrainsMono Nerd Font** where a prompt shows icons, as Starship does ([nerdfonts.com](https://www.nerdfonts.com/font-downloads))
 
 `typography.mono.stack` holds the full fallback stack.
+
+## Iconography
+
+The theme ships no icons. A complete set is thousands of glyphs, and file icons encode the file type, a visual language users learn across apps. The foundation recommends an existing set per layer; ports document the recommendation and leave installing it to the user. `tokens.json5` holds the same list under `iconography`.
+
+| Layer                 | Where it shows                      | Recommendation                                                                                       | License |
+| --------------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------- | ------- |
+| App UI glyphs         | Buttons, menus, toolbars (web, app) | [Lucide](https://lucide.dev/), strokes in `currentColor`                                             | ISC     |
+| File icons: VS Code   | Explorer and tabs                   | [Material Icon Theme](https://marketplace.visualstudio.com/items?itemName=PKief.material-icon-theme) | MIT     |
+| File icons: Neovim    | File trees                          | [nvim-web-devicons](https://github.com/nvim-tree/nvim-web-devicons) with the Nerd Font               | MIT     |
+| File icons: Helix     | File picker                         | The Nerd Font in the terminal                                                                        | OFL-1.1 |
+| File icons: JetBrains | Project view                        | Built-in, not configurable                                                                           |         |
+| Desktop (GTK)         | File manager, taskbar, launcher     | [Papirus](https://github.com/PapirusDevelopmentTeam/papirus-icon-theme) with `papirus-folders`       | GPL-3.0 |
+
+Do not recolour file icons. Recolour only folder icons, where the target supports it, and the chrome around them. If Lucide lacks a glyph, [Tabler Icons](https://tabler.io/icons) (MIT) has more; it mixes outline and filled styles, so plan the choice per icon.
 
 ## Build gates
 

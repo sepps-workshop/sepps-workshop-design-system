@@ -10,13 +10,28 @@ const declared = new Set(
   [...renderCss(tokens).matchAll(/^\s*(--sw-[a-z0-9-]+):/gm)].map((m) => m[1]),
 );
 
-test("the four pages are produced", () => {
+test("the five pages are produced", () => {
   assert.deepEqual(Object.keys(pages), [
     "01-syntax.html",
     "02-terminal.html",
     "03-shell.html",
     "04-contrast.html",
+    "05-iconography.html",
   ]);
+});
+
+test("the iconography page lists every recommendation", () => {
+  const { inline_ui, file_icons, desktop } = tokens.iconography;
+  const html = pages["05-iconography.html"];
+  const rows = html.match(/<tr data-icon/g) ?? [];
+  assert.equal(rows.length, 2 + Object.keys(file_icons).length + 1);
+  for (const r of [
+    inline_ui,
+    inline_ui.alternative,
+    desktop,
+    ...Object.values(file_icons),
+  ])
+    assert.ok(html.includes(r.name), `${r.name} is missing`);
 });
 
 test("no sample markup or broken interpolation leaks into the output", () => {
