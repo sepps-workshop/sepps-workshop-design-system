@@ -14,9 +14,7 @@ After cloning, run `git config core.hooksPath .githooks` to enable the gitleaks 
 
 ## References
 
-`README.md` **Read when:** working on the palette, roles, gates, or the contract with the ports.
-
-`docs/superpowers/specs/2026-10-01-design-system-foundation-design.md` **Read when:** you need the reasoning behind a value or a rule.
+`README.md` **Read when:** working on the palette, roles, gates, or the contract with the ports, or when you need the reasoning behind a value or a rule.
 
 ## Conventions
 

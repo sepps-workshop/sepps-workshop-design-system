@@ -413,7 +413,7 @@ tools/              color.mjs, build-tokens.mjs, build-css.mjs, build-previews.m
 preview/            generated reference pages
 assets/             icon renders
 handoff/            Claude Code skill for port repositories
-docs/               design spec and implementation plan
+docs/               release recovery steps
 ```
 
 ## For ports
