@@ -36,7 +36,7 @@ Add a downstream-ports note at the end of the release body if this release conta
 ## Post-release verification (step 9)
 
 - [ ] Workflow succeeded: https://github.com/sepps-workshop/sepps-workshop-design-system/actions
-- [ ] Package appears on npm: `npm view @sepps-workshop/design-system version`
+- [ ] Package appears on npm: `npm view @sepps-workshop/design-system version --prefer-online`. The registry can show the previous version for a few minutes after a successful publish; retry before treating it as a failure.
 - [ ] Install smoke test:
   ```bash
   dir=$(mktemp -d) && cd "$dir" && npm init -y

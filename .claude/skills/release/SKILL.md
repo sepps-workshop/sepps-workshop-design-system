@@ -41,11 +41,13 @@ If no tags exist yet, use `git log --oneline` (all commits = initial release).
 
 Categorize each commit against the semver rules:
 
-| Bump  | When                                                                        |
-| ----- | --------------------------------------------------------------------------- |
-| Patch | Value tweak, gate fix, doc-only, bug fix                                    |
-| Minor | New token or role — additive and backward compatible                        |
-| Major | ⚠️ Token or role renamed or removed — breaks any port that references it       |
+| Bump  | When                                                                     |
+| ----- | ------------------------------------------------------------------------ |
+| Patch | Value tweak, gate fix, doc-only, bug fix                                 |
+| Minor | New token or role — additive and backward compatible                     |
+| Major | ⚠️ Token or role renamed or removed — breaks any port that references it |
+
+While the package is in 0.x, a breaking change is a **minor** bump (as in 0.3.0 and 0.4.0), flagged with **⚠️** in the changelog. Propose 1.0.0 only when the user wants to declare the token contract stable.
 
 **Present your proposed version to the user with a short rationale** — e.g.:
 
@@ -63,11 +65,19 @@ Add a new `## X.Y.Z — YYYY-MM-DD` section at the top, summarising the commits 
 
 The token tables are generated; `npm run build` already refreshed them. Edit prose only when a role or gate changed.
 
-## 5 — Commit docs
+## 5 — Commit docs and set the token meta version
 
 ```bash
 git add CHANGELOG.md README.md   # and any other modified docs
 git commit -m "📝 docs: update changelog for vX.Y.Z"
+```
+
+`npm version` only touches `package.json`. Set `meta.version` in `tokens.json5` to the confirmed version by hand, then rebuild so the generated files carry it:
+
+```bash
+npm run build && npm run check
+git add tokens.json5 tokens.json dist/tokens.js colors.css
+git commit -m "🔖 chore: set the token meta version to X.Y.Z"
 ```
 
 ## 6 — Bump version and tag

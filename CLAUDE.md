@@ -43,4 +43,4 @@ When the user corrects a mistake or points out a recurring issue, append a one-l
 
 When compacting, preserve: list of modified files, current test status, open TODOs, and key decisions made.
 
-<!-- cc-config: last-optimize-run: 2026-10-01 5c211dd6537fce9070a26d719dde74c04f82cd2e -->
+<!-- cc-config: last-optimize-run: 2026-10-07 f55e26a165a3cc1e205a64a8a760f91fe9ec966c -->
