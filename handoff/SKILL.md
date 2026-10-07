@@ -1,9 +1,9 @@
 ---
 name: sepps-workshop
-description: Use when building or changing a Sepp's Workshop theme port (VS Code, Windows Terminal, PowerShell, fish, Starship) — explains how to read colours and roles from the design-system foundation instead of re-encoding them.
+description: Use when building or changing a Sepp’s Workshop theme port (VS Code, Windows Terminal, PowerShell, fish, Starship) — explains how to read colours and roles from the design-system foundation instead of re-encoding them.
 ---
 
-# Sepp's Workshop — port skill
+# Sepp’s Workshop — port skill
 
 A port turns the foundation's tokens into one native theme file. It decides nothing about colour.
 
@@ -48,7 +48,7 @@ Until it is on npm, install it with `npm install github:sepps-workshop/sepps-wor
 - VS Code: the editor and the embedded terminal sit on `surface.bg`, the chrome around them on `surface.bg_chrome`. The status bar stays on `surface.bg_chrome`; the accent appears as a border, not as its background. The debugging status bar uses the danger fill.
 - Never rely on colour alone: pair a state colour with a border, an underline, a position or a font style.
 - Recommend JetBrains Mono, and JetBrainsMono Nerd Font where the port shows icons. Ports cannot ship fonts. One theme per port, no variants.
-- Port READMEs are English, exact where technical, relaxed elsewhere, no emoji. Each ends with the "Want to join Sepp's Workshop?" section linking to https://www.seppmed.com/career/.
+- Port READMEs are English, exact where technical, relaxed elsewhere, no emoji. Each ends with the "Want to join Sepp’s Workshop?" section linking to https://www.seppmed.com/career/.
 
 ## Feedback
 

@@ -1,5 +1,5 @@
 // ════════════════════════════════════════════════════════════════════
-// Sepp's Workshop — Foundation Tokens
+// Sepp’s Workshop — Foundation Tokens
 // ────────────────────────────────────────────────────────────────────
 // The single source of truth. Every port (VS Code, Windows Terminal,
 // PowerShell, fish, Starship) reads its values from the files generated
@@ -12,7 +12,7 @@
 // ════════════════════════════════════════════════════════════════════
 {
   meta: {
-    name: "Sepp's Workshop",
+    name: "Sepp’s Workshop",
     version: "0.4.0",
     description: "One dark theme on sepp.med Darkblue. WCAG AA enforced by the build.",
     career_url: "https://www.seppmed.com/career/",

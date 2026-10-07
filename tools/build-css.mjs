@@ -87,7 +87,7 @@ export function renderCss(tokens) {
   section("Typography", [["--sw-font-mono", tokens.typography.mono.stack]]);
 
   return (
-    `/* Sepp's Workshop ${tokens.meta.version} — AUTO-GENERATED from tokens.json5. Do not edit. */\n` +
+    `/* Sepp’s Workshop ${tokens.meta.version} — AUTO-GENERATED from tokens.json5. Do not edit. */\n` +
     `:root {${lines.join("\n")}\n}\n`
   );
 }

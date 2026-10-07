@@ -71,7 +71,7 @@ test("resolveTarget understands every kind of target", () => {
 
 test("loadTokens reads the repository's tokens.json5", async () => {
   const t = await loadTokens();
-  assert.equal(t.meta.name, "Sepp's Workshop");
+  assert.equal(t.meta.name, "Sepp’s Workshop");
 });
 
 test("resolving twice gives identical output", () => {

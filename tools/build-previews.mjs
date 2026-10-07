@@ -132,14 +132,14 @@ function page(tokens, file, intro, body) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${title} · Sepp's Workshop</title>
+<title>${title} · Sepp’s Workshop</title>
 <link rel="stylesheet" href="../colors.css">
 <style>${CHROME}${tokenCss(tokens)}
 </style>
 </head>
 <body>
 <main>
-<h1>Sepp's Workshop · ${title}</h1>
+<h1>Sepp’s Workshop · ${title}</h1>
 <p>${intro}</p>
 <nav>${nav}</nav>
 ${body}
@@ -191,7 +191,7 @@ const HTML = `[[punct:<]][[tag:button]] [[attr:class]][[operator:=]][[string:"pr
 
 const JSON_ = `[[punct:{]] [[property:"name"]][[punct::]] [[string:"sepps-workshop"]][[punct:,]] [[property:"wrenches"]][[punct::]] [[number:2]][[punct:,]] [[property:"private"]][[punct::]] [[keyword:true]] [[punct:}]]`;
 
-const MD = `[[heading:# Sepp's Workshop]]
+const MD = `[[heading:# Sepp’s Workshop]]
 Plain text, [[emphasis:emphasis]], [[strong:strong]] and a [[link:[link](https://www.seppmed.com/career/)]].
 [[string:\`inline code\`]]`;
 
