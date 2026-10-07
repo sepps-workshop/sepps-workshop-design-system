@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.0 — 2026-10-07
+
+- `syntax_tokens.extended.strong` (Markdown bold) is now `constant` plus bold. Bold alone barely shows in a monospace font.
+- `syntax_tokens.extended.emphasis` (Markdown italic) is now `type` plus italic, instead of italic only.
+- New role `syntax_tokens.extended.code` (`parameter`) for Markdown inline code, with scopes `markup.inline.raw` and `markup.raw.block`. It is cool, so it stays apart from the warm bold. Ports that tint inline code with `string` should switch to it.
+- New role `syntax_tokens.extended.key` (`function`) for JSON and YAML keys, with scopes `support.type.property-name.json` and `entity.name.tag.yaml`. JS properties stay `fg`. Ports that colour YAML keys with `property` should switch to it.
+
 ## 0.4.0 — 2026-10-07
 
 - **⚠️ `surface.bg_sunk` is renamed `surface.bg_chrome`** (`--sw-bg-sunk` is now `--sw-bg-chrome`) and is Darkblue (`#0d3174`), no longer a surface below the canvas. There is no alias.
