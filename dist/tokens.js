@@ -2,7 +2,7 @@
 export default {
   "meta": {
     "name": "Sepp’s Workshop",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "description": "One dark theme on sepp.med Darkblue. WCAG AA enforced by the build.",
     "career_url": "https://www.seppmed.com/career/"
   },
