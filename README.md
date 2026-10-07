@@ -182,7 +182,7 @@ Each resolves to a core slot, a text colour or a semantic role, with an optional
 | `shebang`            | `comment`         |                   |
 | `lang_var`           | `keyword`         | italic            |
 | `emphasis`           | inherits          | italic            |
-| `strong`             | inherits          | bold              |
+| `strong`             | `constant`        | bold              |
 | `invalid`            | `semantic.danger` | italic, underline |
 | `invalid_deprecated` | `fg`              | italic, underline |
 | `doc_keyword`        | `keyword`         |                   |

@@ -297,6 +297,7 @@ export default {
         ]
       },
       "strong": {
+        "color": "constant",
         "style": [
           "bold"
         ]
