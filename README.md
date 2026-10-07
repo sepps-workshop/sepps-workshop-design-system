@@ -1,6 +1,7 @@
 <p align="center">
   <img src="assets/sepps-workshop-header.jpg" width="100%" alt="Sepp, the blue robot, assembling code blocks with a wrench in his workshop" />
 </p>
+
 # Sepp’s Workshop Design System
 
 <p>
