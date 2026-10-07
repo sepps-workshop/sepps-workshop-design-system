@@ -199,19 +199,21 @@ const LIGHTNESS_GAP = 5;
 const HUE_TOLERANCE = 0.03; // radians
 /** The only values allowed outside the palette and its ladders. */
 const DERIVED_KEYS = [
-  "bg_sunk",
+  "bg_deep",
   "racingred_on_dark",
   "racingred_on_dark_bright",
   "racingred_fill",
 ];
-/** Surfaces the spec defines as equal: terminal = canvas, widgets = sunk. */
+/** Surfaces the spec defines as equal: terminal = chrome, widgets = chrome. */
 const SAME_SURFACE = [
-  ["bg_terminal", "bg"],
-  ["bg_overlay", "bg_sunk"],
+  ["bg_terminal", "bg_chrome"],
+  ["bg_overlay", "bg_chrome"],
 ];
+/** The canvas must read as a different surface from each of these. */
+const APART_FROM_CANVAS = ["bg_chrome", "bg_terminal"];
 
-const CODE_SURFACES = ["bg", "bg_sunk", "bg_overlay"];
-const CONTROL_SURFACES = ["bg", "bg_sunk", "bg_soft", "bg_overlay"];
+const CODE_SURFACES = ["bg", "bg_chrome", "bg_overlay"];
+const CONTROL_SURFACES = ["bg", "bg_chrome", "bg_soft", "bg_overlay"];
 /** Overlays that sit behind whole lines of code, over the canvas. */
 export const CODE_OVERLAYS = [
   "selection",
@@ -261,9 +263,9 @@ const OVERLAY_CLASSES = {
 const TERMINAL_SELECTIONS = ["selection", "selection_inactive"];
 /** [overlay, surfaces, minimum OKLab distance from each surface]. */
 const VISIBLE_OVERLAYS = [
-  ["hover", ["bg", "bg_sunk"], 3],
-  ["active", ["bg", "bg_sunk"], 5],
-  ["slider", ["bg", "bg_sunk"], DISTINCT],
+  ["hover", ["bg", "bg_chrome"], 3],
+  ["active", ["bg", "bg_chrome"], 5],
+  ["slider", ["bg", "bg_chrome"], DISTINCT],
   ["merge_current_header", ["bg"], DISTINCT],
 ];
 /** Overlays a gate reads by name; each must exist before the gates run. */
@@ -635,15 +637,21 @@ export function check(tokens, raw) {
   // 3. ANSI on the terminal background.
   for (const [slot, color] of Object.entries(tokens.ansi)) {
     if (!ANSI_EXEMPT.has(slot)) {
-      need(
-        `ansi.${slot}`,
-        color,
-        "surface.bg_terminal",
-        tokens.surface.bg_terminal,
-        AA,
-      );
-      for (const o of TERMINAL_SELECTIONS)
+      // A terminal embedded in an editor sits on the canvas.
+      for (const s of ["bg_terminal", "bg"])
+        need(`ansi.${slot}`, color, `surface.${s}`, tokens.surface[s], AA);
+      // `hex` is the selection a non-blending port paints; a blending one
+      // draws the recipe over the terminal background.
+      for (const o of TERMINAL_SELECTIONS) {
         need(`ansi.${slot}`, color, `overlay.${o}`, tokens.overlay[o].hex, AA);
+        need(
+          `ansi.${slot}`,
+          color,
+          `overlay.${o} over surface.bg_terminal`,
+          over(tokens, o, "bg_terminal"),
+          AA,
+        );
+      }
     }
   }
 
@@ -668,7 +676,7 @@ export function check(tokens, raw) {
         NON_TEXT,
       );
   }
-  for (const s of ["bg", "bg_sunk"])
+  for (const s of ["bg", "bg_chrome"])
     need(
       "overlay.slider_active",
       over(tokens, "slider_active", s),
@@ -772,10 +780,18 @@ export function check(tokens, raw) {
       );
     }
   }
-  const sunk = mix(palette_base.darkblue, palette_base.darkblack, 0.8);
-  if (derived.bg_sunk !== sunk) {
+  for (const s of APART_FROM_CANVAS)
+    apart(
+      "surface.bg",
+      tokens.surface.bg,
+      `surface.${s}`,
+      tokens.surface[s],
+      DISTINCT,
+    );
+  const deep = mix(palette_base.darkblue, palette_base.darkblack, 0.55);
+  if (derived.bg_deep !== deep) {
     fail.push(
-      `✗ derived.bg_sunk is ${derived.bg_sunk}, but mix(darkblue, darkblack, 0.8) is ${sunk}`,
+      `✗ derived.bg_deep is ${derived.bg_deep}, but mix(darkblue, darkblack, 0.55) is ${deep}`,
     );
   }
   const fill = mix(palette_base.racingred, palette_base.darkblack, 0.9);

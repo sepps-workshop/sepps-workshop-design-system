@@ -46,7 +46,7 @@ test("the shipped tokens pass every gate", () => {
 test("gate 1: a syntax slot below 4.5:1 on the canvas fails", () => {
   assertFails((r) => {
     r.syntax.function = "$palette.windblue.100";
-  }, /syntax\.function .* on surface\.bg .*3\.38:1/);
+  }, /syntax\.function .* on surface\.bg .*4\.01:1/);
 });
 
 test("gate 1: fg_muted must stay readable on bg_soft", () => {
@@ -125,10 +125,10 @@ test("gate 8: a ladder for Racing Red is refused", () => {
   }, /racingred must not have a ladder/);
 });
 
-test("gate 8: bg_sunk must follow its recipe", () => {
+test("gate 8: bg_deep must follow its recipe", () => {
   assertFails((r) => {
-    r.derived.bg_sunk = "#0a2550";
-  }, /derived\.bg_sunk .* mix\(darkblue, darkblack, 0\.8\)/);
+    r.derived.bg_deep = "#0a2550";
+  }, /derived\.bg_deep .* mix\(darkblue, darkblack, 0\.55\)/);
 });
 
 test("gate 8: the danger fill must follow its recipe", () => {
@@ -171,10 +171,10 @@ test("the report covers every surface and overlay the gates name", () => {
   const rows = contrastReport(resolveTokens(parseTokens(SRC)));
   const on = new Set(rows.map((r) => r.on));
   const expected = [
-    ...["bg", "bg_sunk", "bg_overlay", "bg_soft"].map((s) => `surface.${s}`),
+    ...["bg", "bg_chrome", "bg_overlay", "bg_soft"].map((s) => `surface.${s}`),
     ...[...CODE_OVERLAYS, ...LABEL_OVERLAYS].map((o) => `overlay.${o}`),
     ...SURFACE_OVERLAYS.flatMap((o) =>
-      ["bg", "bg_sunk", "bg_overlay"].map(
+      ["bg", "bg_chrome", "bg_overlay"].map(
         (s) => `overlay.${o} over surface.${s}`,
       ),
     ),
@@ -335,16 +335,22 @@ test("scopes: stray whitespace does not hide a meta scope", () => {
   }, /scope_recommendations\.function .*meta\./);
 });
 
-test("gate 8: the terminal background is the canvas", () => {
+test("gate 8: the terminal background is the chrome", () => {
   assertFails((r) => {
-    r.surface.bg_terminal = "$derived.bg_sunk";
-  }, /surface\.bg_terminal must equal surface\.bg\b/);
+    r.surface.bg_terminal = "$palette.darkblue.90";
+  }, /surface\.bg_terminal must equal surface\.bg_chrome/);
 });
 
-test("gate 8: floating widgets sit on the sunk surface", () => {
+test("gate 8: the canvas must stand apart from the chrome and the terminal", () => {
+  assertFails((r) => {
+    r.surface.bg = "$palette.darkblue.100";
+  }, /surface\.bg .* surface\.bg_terminal .* too alike/);
+});
+
+test("gate 8: floating widgets sit on the chrome", () => {
   assertFails((r) => {
     r.surface.bg_overlay = "$palette.darkblue.90";
-  }, /surface\.bg_overlay must equal surface\.bg_sunk/);
+  }, /surface\.bg_overlay must equal surface\.bg_chrome/);
 });
 
 test("gate 8: white has no ladder", () => {
@@ -448,10 +454,10 @@ test("gate 2: the merge header keeps fg_muted readable", () => {
   }, /text\.fg_muted .* on overlay\.merge_current_header/);
 });
 
-test("gate 2: a lightening hover fails on the sunk surface too", () => {
+test("gate 2: a lightening hover fails on the chrome too", () => {
   assertFails((r) => {
     r.overlay.hover = { color: "$palette.windblue.100", alpha: 0.3 };
-  }, /on overlay\.hover over surface\.bg_sunk/);
+  }, /on overlay\.hover over surface\.bg_chrome/);
 });
 
 test("gate 3: ANSI colours stay readable on the terminal selection", () => {
@@ -475,10 +481,10 @@ test("gate 5: text on the hovered accent must be readable", () => {
   }, /accent_on .* on accent_hover/);
 });
 
-test("gate 9: hover must be visible on the canvas and the sunk surface", () => {
+test("gate 9: hover must be visible on the canvas and the chrome", () => {
   assertFails((r) => {
     r.overlay.hover.alpha = 0.05;
-  }, /overlay\.hover over surface\.bg_sunk .* too alike/);
+  }, /overlay\.hover over surface\.bg_chrome .* too alike/);
 });
 
 test("gate 9: the resting slider must be visible", () => {
@@ -537,5 +543,5 @@ test("the shipped diff spans darken their lines and carry code", () => {
   assert.ok(CODE_OVERLAYS.includes("diff_inserted_text"));
   assert.ok(CODE_OVERLAYS.includes("diff_removed_text"));
   assert.ok(LABEL_OVERLAYS.includes("merge_incoming_header"));
-  assert.equal(t.overlay.merge_incoming_header.hex, "#235263");
+  assert.equal(t.overlay.merge_incoming_header.hex, "#284b45");
 });

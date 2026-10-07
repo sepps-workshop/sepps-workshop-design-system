@@ -14,7 +14,7 @@
   meta: {
     name: "Sepp's Workshop",
     version: "0.3.0",
-    description: "One medium-dark theme on sepp.med Darkblue. WCAG AA enforced by the build.",
+    description: "One dark theme on sepp.med Darkblue. WCAG AA enforced by the build.",
     career_url: "https://www.seppmed.com/career/",
   },
 
@@ -48,9 +48,10 @@
   // ── 2. DERIVED LITERALS ─────────────────────────────────────────
   // The only values that are neither a brand colour nor a ladder step.
   derived: {
-    // The ladder only goes lighter. Surfaces below the canvas mix
-    // Darkblue 80 % with Darkblack. The build verifies the recipe.
-    bg_sunk: "#102d62",
+    // The ladder only goes lighter. The editor canvas mixes Darkblue
+    // 55 % with Darkblack: deep enough to read code on for hours and to
+    // stand apart from the Darkblue around it. The build verifies the recipe.
+    bg_deep: "#14284c",
     // Racing Red reaches 2.85:1 on Darkblue. These keep its OKLCH hue,
     // raise lightness to 5.34:1 / 7.23:1, and hold chroma at the sRGB
     // maximum. Foreground on dark surfaces only.
@@ -64,11 +65,11 @@
 
   // ── 3. SURFACES, TEXT, BORDERS ──────────────────────────────────
   surface: {
-    bg: "$palette.darkblue.100", // editor canvas
-    bg_sunk: "$derived.bg_sunk", // sidebar, activity bar, status bar, inactive tabs
+    bg: "$derived.bg_deep", // editor canvas: the dark well the code sits in
+    bg_chrome: "$palette.darkblue.100", // sidebar, activity bar, status bar, inactive tabs
     bg_soft: "$palette.darkblue.90", // hover, inputs — carries fg and fg_muted only
-    bg_overlay: "$derived.bg_sunk", // menus, hover/suggest widgets, quick input
-    bg_terminal: "$palette.darkblue.100", // = bg: a standalone terminal should be Darkblue
+    bg_overlay: "$palette.darkblue.100", // = bg_chrome: menus, hover/suggest widgets, quick input
+    bg_terminal: "$palette.darkblue.100", // = bg_chrome: a standalone terminal should be Darkblue; one embedded in an editor sits on bg
   },
   text: {
     fg: "$palette.darkblue.10",
@@ -334,7 +335,7 @@
   // true greys (Shadowgrey, Darkblack tints) to stay apart from blue
   // and cyan.
   ansi: {
-    black: "$derived.bg_sunk", // reverse-video anchor; exempt from the contrast gate
+    black: "$palette.darkblack.100", // reverse-video anchor; exempt from the contrast gate
     red: "$derived.racingred_on_dark",
     green: "$palette.limegreen.60",
     yellow: "$palette.sunset.100",
@@ -355,15 +356,15 @@
   // ── 7. OVERLAYS ─────────────────────────────────────────────────
   // { color, alpha, border? }. The build adds `hex` (composited over
   // surface.bg, for ports that cannot blend) and `hexa` (the recipe as
-  // #rrggbbaa, for ports that can). Overlays DARKEN: on a medium-dark
+  // #rrggbbaa, for ports that can). Overlays DARKEN: on a dark-blue
   // canvas a lighter selection takes saturated colours below 4.5:1, a
   // darker one adds contrast. Hued highlights stay faint and get a
   // border. Every overlay belongs to exactly one class in
   // tools/build-tokens.mjs: code, label, surface or non-text.
   overlay: {
-    selection: { color: "$palette.darkblack.100", alpha: 0.6 },
-    selection_inactive: { color: "$palette.darkblack.100", alpha: 0.4 },
-    line_highlight: { color: "$palette.darkblack.100", alpha: 0.3 },
+    selection: { color: "$palette.darkblack.100", alpha: 0.8 },
+    selection_inactive: { color: "$palette.darkblack.100", alpha: 0.55 },
+    line_highlight: { color: "$palette.darkblack.100", alpha: 0.35 },
     find_match: {
       color: "$palette.pumpelorange.100",
       alpha: 0.15,
@@ -384,12 +385,12 @@
     diff_inserted_line: { color: "$palette.limegreen.100", alpha: 0.12 },
     // Changed spans are drawn on top of their line, behind code, so they
     // darken it: a stronger green takes numbers and comments below 4.5:1.
-    diff_inserted_text: { color: "$palette.darkblack.100", alpha: 0.4 },
+    diff_inserted_text: { color: "$palette.darkblack.100", alpha: 0.5 },
     diff_removed_line: { color: "$palette.racingred.100", alpha: 0.14 },
     diff_removed_text: { color: "$palette.racingred.100", alpha: 0.3 },
-    // Surface overlays: also drawn over bg_sunk and bg_overlay, and gated there.
-    hover: { color: "$palette.darkblack.100", alpha: 0.3 }, // the row under the pointer
-    active: { color: "$palette.darkblack.100", alpha: 0.5 }, // drop target, pressed item
+    // Surface overlays: also drawn over bg_chrome and bg_overlay, and gated there.
+    hover: { color: "$palette.darkblack.100", alpha: 0.35 }, // the row under the pointer
+    active: { color: "$palette.darkblack.100", alpha: 0.55 }, // drop target, pressed item
     // Non-text: nothing is read through these.
     scrim: { color: "$palette.darkblack.100", alpha: 0.6 }, // widget and scrollbar shadow
     slider: { color: "$palette.darkblue.40", alpha: 0.3 }, // scrollbar and minimap thumb

@@ -1,6 +1,6 @@
 # Sepp's Workshop Design System
 
-Token foundation for five theme ports (VS Code, Windows Terminal, PowerShell, fish, Starship). One medium-dark theme on sepp.med Darkblue. Source of truth is `tokens.json5`; everything else is generated. No npm dependencies — plain Node.
+Token foundation for five theme ports (VS Code, Windows Terminal, PowerShell, fish, Starship). One dark theme on sepp.med Darkblue. Source of truth is `tokens.json5`; everything else is generated. No npm dependencies — plain Node.
 
 ## Commands
 

@@ -103,6 +103,8 @@ Floating widgets sit on the darker `bg_sunk`, not on a lighter panel: hover and 
 
 `bg_terminal` equals the canvas on purpose: a standalone terminal shows no other surface, and it should be the Darkblue people recognise.
 
+**Amendment, 2026-10-07 (0.4.0).** The first check in a running VS Code showed two problems: the editor and the terminal could not be told apart, and code on Darkblue itself was tiring to read. The canvas is now `derived.bg_deep` (Darkblue mixed 55 % with Darkblack, `#14284c`). `bg_sunk` is replaced by `bg_chrome`, which is Darkblue and therefore lighter than the canvas; `bg_overlay` and `bg_terminal` equal it. A terminal embedded in an editor sits on `bg`, separated from the editor by a strip of chrome. A chrome darker than the new canvas was measured and rejected: the darkening overlays have no room left there. A gate keeps `bg` at least 7 (OKLab) from `bg_chrome` and `bg_terminal`. Where this document says the terminal equals the canvas or names `bg_sunk`, the README is authoritative.
+
 Body text is not pure white and no surface is pure black: `fg` is `#e7eaf1`, ANSI black is `bg_sunk`. White itself is part of the brand as an unlisted "non-colour" (`palette.white`, no ladder); the foundation uses it only as text on the Signalred fill.
 
 ## Semantic roles

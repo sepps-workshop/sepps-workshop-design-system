@@ -106,7 +106,7 @@ test("sample lines are block elements with no newline between them", () => {
   }
 });
 
-test("the syntax page shows the workbench overlays on the canvas and the sunk surface", () => {
+test("the syntax page shows the workbench overlays on the canvas and the chrome", () => {
   const html = pages["01-syntax.html"];
   for (const o of [
     "hover",
@@ -119,5 +119,5 @@ test("the syntax page shows the workbench overlays on the canvas and the sunk su
       html.split(`style="background:var(--sw-overlay-${o}-hexa)"`).length - 1;
     assert.equal(uses, 2, `${o} is shown ${uses} times, expected 2`);
   }
-  assert.ok(html.includes('<pre class="sunk">'), "no sunk sample block");
+  assert.ok(html.includes('<pre class="chrome">'), "no chrome sample block");
 });

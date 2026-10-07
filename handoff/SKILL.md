@@ -27,7 +27,7 @@ Until it is on npm, install it with `npm install github:sepps-workshop/sepps-wor
 | Editor syntax colours                 | `tokens.syntax`, `tokens.syntax_tokens`, `tokens.scope_recommendations`                                                                  |
 | LSP semantic tokens                   | `tokens.semantic_token_recommendations`; set `semanticHighlighting: true`                                                                |
 | Errors, warnings, git, brackets       | `tokens.workbench_color_roles`                                                                                                           |
-| The sixteen terminal colours          | `tokens.ansi`, background `tokens.surface.bg_terminal`                                                                                   |
+| The sixteen terminal colours          | `tokens.ansi`, background `tokens.surface.bg_terminal`; an editor's embedded terminal sits on `tokens.surface.bg`                        |
 | Shell highlighting (fish, PSReadLine) | `tokens.shell_roles` — each role lists the variables and keys it feeds                                                                   |
 | Prompt segments (Starship)            | `tokens.prompt_roles`                                                                                                                    |
 | Selection, find, word highlight, diff | `tokens.overlay.<name>`: `.hexa` where the target blends, `.hex` where it cannot, `.border` where present                                |
@@ -45,7 +45,7 @@ Until it is on npm, install it with `npm install github:sepps-workshop/sepps-wor
 - Overlays come from `tokens.overlay`, with no port-side alpha constants and no string building: read `.hexa` or `.hex`. `overlay.selected_item` and the `merge_*_header` overlays carry `fg` and `fg_muted` only.
 - A VS Code key with no role in the foundation stays at its default. Do not approximate it.
 - Controls are outlined with `border.control`, the focus ring is `accent`.
-- VS Code: the status bar stays on `surface.bg_sunk`; the accent appears as a border, not as its background. The debugging status bar uses the danger fill.
+- VS Code: the editor and the embedded terminal sit on `surface.bg`, the chrome around them on `surface.bg_chrome`. The status bar stays on `surface.bg_chrome`; the accent appears as a border, not as its background. The debugging status bar uses the danger fill.
 - Never rely on colour alone: pair a state colour with a border, an underline, a position or a font style.
 - Recommend JetBrains Mono, and JetBrainsMono Nerd Font where the port shows icons. Ports cannot ship fonts. One theme per port, no variants.
 - Port READMEs are English, exact where technical, relaxed elsewhere, no emoji. Each ends with the "Want to join Sepp's Workshop?" section linking to https://www.seppmed.com/career/.

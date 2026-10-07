@@ -17,18 +17,18 @@ test("cssVar maps every kind of colour target", () => {
 
 test("the stylesheet declares the documented properties with resolved values", () => {
   for (const line of [
-    "--sw-bg: #0d3174;",
-    "--sw-bg-sunk: #102d62;",
+    "--sw-bg: #14284c;",
+    "--sw-bg-chrome: #0d3174;",
     "--sw-fg: #e7eaf1;",
     "--sw-accent: #fbba00;",
     "--sw-danger: #ff897b;",
     "--sw-danger-fill: #db191d;",
     "--sw-syn-keyword: #fbba00;",
     "--sw-ansi-bright-red: #ffb4aa;",
-    "--sw-overlay-selection: #17253f;",
+    "--sw-overlay-selection: #1b1f25;",
     "--sw-accent-hover: #fcc833;",
-    "--sw-overlay-selection-hexa: #1d1d1b99;",
-    "--sw-overlay-hover: #122b59;",
+    "--sw-overlay-selection-hexa: #1d1d1bcc;",
+    "--sw-overlay-hover: #17243b;",
     "--sw-palette-pumpelorange-90: #ee7521;",
   ]) {
     assert.ok(css.includes(line), `missing: ${line}`);

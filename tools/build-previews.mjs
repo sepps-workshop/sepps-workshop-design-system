@@ -101,7 +101,7 @@ nav{margin:0 0 24px}
 nav a{color:var(--sw-info);margin-right:16px}
 nav a[aria-current]{color:var(--sw-fg);text-decoration:none;border-bottom:2px solid var(--sw-accent)}
 pre{margin:0;padding:12px 0;background:var(--sw-bg);border:1px solid var(--sw-border-default);overflow-x:auto;font:inherit}
-pre.sunk{background:var(--sw-bg-sunk)}
+pre.chrome{background:var(--sw-bg-chrome)}
 .line{display:block;padding:0 16px;min-height:1.6em}
 table{border-collapse:collapse;width:100%}
 th,td{text-align:left;padding:4px 12px 4px 0;border-bottom:1px solid var(--sw-border-subtle);white-space:nowrap}
@@ -299,7 +299,7 @@ export function renderPages(tokens) {
     block("JSON", JSON_, "t-"),
     block("Markdown", MD, "t-"),
     block("Editor states — the same line on every code overlay", STATES, "t-"),
-    `<section><h2>Workbench overlays — on the canvas, then on the sunk surface</h2>${workbench("")}${workbench("sunk")}</section>`,
+    `<section><h2>Workbench overlays — on the canvas, then on the chrome</h2>${workbench("")}${workbench("chrome")}</section>`,
     `<section><h2>Signals</h2><p>` +
       ["danger", "success", "warning", "info"]
         .map(

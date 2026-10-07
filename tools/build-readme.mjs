@@ -95,7 +95,7 @@ function tables(tokens, raw) {
         Object.entries(tokens.palette_base).map(([name, hex]) => [
           title(name),
           code(hex),
-          ratio(hex),
+          ratio(hex, tokens.palette_base.darkblue),
           tokens.ladder.exclude.includes(name) ? "none" : "100 % … 10 %",
         ]),
       ),
@@ -105,7 +105,7 @@ function tables(tokens, raw) {
         [
           ...group("surface", {
             bg: "Editor canvas",
-            bg_sunk: "Sidebar, activity bar, status bar, inactive tabs",
+            bg_chrome: "Sidebar, activity bar, status bar, inactive tabs",
             bg_soft: "Hover, inputs",
             bg_overlay: "Menus, hover and suggest widgets, quick input",
             bg_terminal: "Terminal background",
