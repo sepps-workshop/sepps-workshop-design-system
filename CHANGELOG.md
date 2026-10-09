@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.7.0 — 2026-10-09
+
+- Every overlay gains `hex_terminal`, the recipe composited over `surface.bg_terminal`, beside `hex` and `hexa`. A shell cannot blend and paints on the terminal background, so a shell role whose colour is `overlay.<name>` reads `overlay.<name>.hex_terminal`. The README overlay table gains an "On terminal" column. `colors.css` is unchanged.
+- Gate 2 now checks the overlays that `shell_roles` uses composited over `bg_terminal`, together with the text roles of the selected pager row. Roles beside a shell overlay that are a style alone or a background are not read as text.
+- A shell role may only use a code or label overlay; any other overlay carries no text and fails the build.
+- The handoff skill installs the package from npm instead of GitHub.
+
 ## 0.6.0 — 2026-10-07
 
 - New `iconography` block in `tokens.json5`, a README section and `preview/05-iconography.html`. The theme recommends icon sets and ships none: Material Icon Theme for VS Code file icons, Lucide for app UI glyphs, Papirus for GTK desktops. File icons are never recoloured.
