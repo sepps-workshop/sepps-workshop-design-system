@@ -124,3 +124,18 @@ test("the workbench overlays and accent_hover resolve", () => {
   assert.equal(t.accent_hover, "#fcc833");
   assert.equal(resolveTarget(t, "accent_hover"), "#fcc833");
 });
+
+test("overlays get a hex composited over the terminal background", () => {
+  const t = resolveTokens(fresh());
+  assert.equal(t.overlay.selection.hex_terminal, "#1a212d");
+  assert.equal(t.overlay.selected_item.hex_terminal, "#384a5f");
+  for (const [name, o] of Object.entries(t.overlay)) {
+    assert.match(o.hex_terminal, /^#[0-9a-f]{6}$/, `overlay.${name}`);
+  }
+});
+
+test("a malformed recipe gets no hex_terminal", () => {
+  const raw = fresh();
+  delete raw.overlay.selection.alpha;
+  assert.equal(resolveTokens(raw).overlay.selection.hex_terminal, null);
+});

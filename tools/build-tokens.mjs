@@ -132,7 +132,8 @@ function resolveRefs(node, root, at) {
  * Raw tree → resolved tokens:
  *   1. palette.<name>.<step> generated from palette_base + ladder
  *   2. every "$a.b.c" reference replaced by its value
- *   3. every overlay given `hex` (composited over surface.bg) and
+ *   3. every overlay given `hex` (composited over surface.bg),
+ *      `hex_terminal` (composited over surface.bg_terminal) and
  *      `hexa` (the recipe as #rrggbbaa)
  * Does not mutate `raw`.
  */
@@ -151,6 +152,11 @@ export function resolveTokens(raw) {
     o.hex =
       ok && isColour(tokens.surface.bg)
         ? alphaOver(o.color, tokens.surface.bg, o.alpha)
+        : null;
+    // The same recipe where a shell paints it: over the terminal background.
+    o.hex_terminal =
+      ok && isColour(tokens.surface.bg_terminal)
+        ? alphaOver(o.color, tokens.surface.bg_terminal, o.alpha)
         : null;
     // The recipe itself as #rrggbbaa, for ports that can blend.
     o.hexa = ok
