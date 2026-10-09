@@ -566,3 +566,22 @@ test("shape: a shell role may only use a code or label overlay", () => {
     r.shell_roles.selection.color = "overlay.scrim";
   }, /shell_roles\.selection uses overlay\.scrim/);
 });
+
+test("gate 2: a colourless role beside a shell overlay is not gated and does not throw", () => {
+  assert.deepEqual(
+    failuresAfter((r) => {
+      r.shell_roles.selection_style = { style: ["bold"] };
+      r.shell_roles.selection_plain = { color: "none" };
+    }),
+    [],
+  );
+});
+
+test("gate 2: an overlay role beside a shell overlay is not read as its text", () => {
+  assert.deepEqual(
+    failuresAfter((r) => {
+      r.shell_roles.pager = { color: "overlay.selection" };
+    }),
+    [],
+  );
+});

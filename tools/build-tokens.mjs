@@ -390,7 +390,12 @@ function shellPairs(tokens) {
     for (const [label, fg] of overlayText(tokens, name) ?? [])
       pairs.push({ label, fg, on, bg });
     for (const [k, role] of Object.entries(tokens.shell_roles)) {
-      if (k.startsWith(`${key}_`))
+      // Only a role that is itself text: not a style alone, not a background.
+      const text =
+        typeof role.color === "string" &&
+        role.color !== "none" &&
+        !role.color.startsWith("overlay.");
+      if (text && k.startsWith(`${key}_`))
         pairs.push({
           label: `shell_roles.${k}`,
           fg: resolveTarget(tokens, role.color),
