@@ -363,6 +363,45 @@ const labelText = (tokens) => [
   ["text.fg_muted", tokens.text.fg_muted],
 ];
 
+/** The text class of an overlay, or null: what may be read on it. */
+const overlayText = (tokens, name) =>
+  CODE_OVERLAYS.includes(name)
+    ? codeText(tokens)
+    : LABEL_OVERLAYS.includes(name)
+      ? labelText(tokens)
+      : null;
+/** [role key, overlay name] for every shell role that paints an overlay. */
+const shellOverlays = (tokens) =>
+  Object.entries(tokens.shell_roles)
+    .map(([key, role]) => [key, String(role.color).split(".")])
+    .filter(([, [group]]) => group === "overlay")
+    .map(([key, [, name]]) => [key, name]);
+
+/**
+ * Text a shell draws on an overlay. A shell cannot blend, and it paints
+ * over the terminal background, so these are checked on `hex_terminal`.
+ * Roles named `<overlay role>_*` restate the text on that row.
+ */
+function shellPairs(tokens) {
+  const pairs = [];
+  for (const [key, name] of shellOverlays(tokens)) {
+    const on = `overlay.${name} over surface.bg_terminal`;
+    const bg = tokens.overlay[name].hex_terminal;
+    for (const [label, fg] of overlayText(tokens, name) ?? [])
+      pairs.push({ label, fg, on, bg });
+    for (const [k, role] of Object.entries(tokens.shell_roles)) {
+      if (k.startsWith(`${key}_`))
+        pairs.push({
+          label: `shell_roles.${k}`,
+          fg: resolveTarget(tokens, role.color),
+          on,
+          bg,
+        });
+    }
+  }
+  return pairs;
+}
+
 /** Every (text, background) pair gates 1 and 2 look at. */
 function textPairs(tokens) {
   const pairs = [];
@@ -389,7 +428,7 @@ function textPairs(tokens) {
       `overlay.${span} over overlay.${line}`,
       stacked(tokens, span, line),
     );
-  return pairs;
+  return [...pairs, ...shellPairs(tokens)];
 }
 
 /** Rows for the console summary and preview/04-contrast.html. */
@@ -578,6 +617,13 @@ export function check(tokens, raw) {
       } catch (err) {
         fail.push(`✗ ${path}: ${err.message}`);
       }
+    }
+  }
+  for (const [key, name] of shellOverlays(tokens)) {
+    if (Object.hasOwn(tokens.overlay, name) && !overlayText(tokens, name)) {
+      fail.push(
+        `✗ shell_roles.${key} uses overlay.${name}, which carries no text: a shell overlay must be a code or label overlay`,
+      );
     }
   }
   const known = new Set([

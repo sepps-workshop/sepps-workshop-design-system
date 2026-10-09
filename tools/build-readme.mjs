@@ -209,12 +209,21 @@ function tables(tokens, raw) {
       ),
     overlay: () =>
       table(
-        ["Recipe", "Colour", "Alpha", "Composited", "Border", "Carries"],
+        [
+          "Recipe",
+          "Colour",
+          "Alpha",
+          "Composited",
+          "On terminal",
+          "Border",
+          "Carries",
+        ],
         Object.entries(tokens.overlay).map(([k, o]) => [
           code(k),
           source(raw.overlay[k].color),
           `${Math.round(o.alpha * 100)} %`,
           code(o.hex),
+          code(o.hex_terminal),
           o.border ? source(raw.overlay[k].border) : "",
           carries(k),
         ]),

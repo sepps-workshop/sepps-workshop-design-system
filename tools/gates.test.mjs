@@ -178,6 +178,9 @@ test("the report covers every surface and overlay the gates name", () => {
         (s) => `overlay.${o} over surface.${s}`,
       ),
     ),
+    ...["selection", "find_match", "selected_item"].map(
+      (o) => `overlay.${o} over surface.bg_terminal`,
+    ),
     "overlay.diff_inserted_text over overlay.diff_inserted_line",
     "overlay.diff_removed_text over overlay.diff_removed_line",
   ];
@@ -544,4 +547,22 @@ test("the shipped diff spans darken their lines and carry code", () => {
   assert.ok(CODE_OVERLAYS.includes("diff_removed_text"));
   assert.ok(LABEL_OVERLAYS.includes("merge_incoming_header"));
   assert.equal(t.overlay.merge_incoming_header.hex, "#284b45");
+});
+
+test("gate 2: label text stays readable on a shell overlay over the terminal", () => {
+  assertFails((r) => {
+    r.overlay.selected_item.alpha = 0.3;
+  }, /text\.fg_muted .* on overlay\.selected_item over surface\.bg_terminal/);
+});
+
+test("gate 2: the selected pager row's own text roles are gated on the terminal", () => {
+  assertFails((r) => {
+    r.shell_roles.pager_selected_prefix.color = "fg_disabled";
+  }, /shell_roles\.pager_selected_prefix .* on overlay\.selected_item over surface\.bg_terminal/);
+});
+
+test("shape: a shell role may only use a code or label overlay", () => {
+  assertFails((r) => {
+    r.shell_roles.selection.color = "overlay.scrim";
+  }, /shell_roles\.selection uses overlay\.scrim/);
 });
