@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.0 — 2026-10-13
+
+- New `shell_roles` for PowerShell's own output, each with a `psstyle` field naming the `$PSStyle` path it colours: `error_accent` (`Formatting.ErrorAccent`), `warning`, `verbose`, `debug`, `format_accent`, `table_header` (`Formatting.TableHeader` and `Formatting.CustomTableHeaderLabel`), `directory`, `symlink` and `executable`. The existing `error` role also gains `Formatting.Error`.
+- New role `shell_roles.selection_text` (`fg`) for the text inside a PSReadLine selection. PSReadLine draws a selection in one colour, so gate 2 now checks this text on the selection overlay. fish keeps its syntax colours and needs no text role.
+- New role `shell_roles.progress` (`accent`, bold) for the PowerShell progress bar, `$PSStyle.Progress.Style`. PowerShell draws the finished part in reverse video, so the terminal background becomes the text on the accent.
+
 ## 0.9.0 — 2026-10-13
 
 - **⚠️ The terminal background changes value:** `surface.bg_terminal` is now `derived.bg_deep` (`#14284c`), equal to `surface.bg`, instead of Darkblue (`#0d3174`). Darkblue is too bright to read on for hours, in a terminal as in an editor. `--sw-bg-terminal` moves with it. The token names are unchanged; terminal and shell ports rebuild.
