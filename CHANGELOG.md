@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.0 — 2026-10-13
+
+- New role `prompt_roles.time` (`fg_muted`) for a clock in the prompt, beside `duration`. The shell preview shows it.
+- The README ports table links the Windows Terminal, fish and Starship ports and updates their status.
+
 ## 0.7.0 — 2026-10-09
 
 - Every overlay gains `hex_terminal`, the recipe composited over `surface.bg_terminal`, beside `hex` and `hexa`. A shell cannot blend and paints on the terminal background, so a shell role whose colour is `overlay.<name>` reads `overlay.<name>.hex_terminal`. The README overlay table gains an "On terminal" column. `colors.css` is unchanged.
