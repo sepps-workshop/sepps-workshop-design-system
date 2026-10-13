@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.11.0 — 2026-10-13
+
+- New role `syntax_tokens.extended.primitive_type` (`type`) for `int`, `bool`, `string` and their kin where a grammar spells them as keywords. Scopes: `keyword.type` (C#), `storage.type.primitive` (Java, Groovy, Dart, Objective-C++), `storage.type.built-in` (C, C++, Objective-C, including `size_t`) and Go's `storage.type.*.go`. Before, C# left them in `fg` and C and C++ painted them Sunset like `if` and `return`.
+- The `keyword` scopes end in a bare `keyword` catch-all, so keyword scopes no rule names, such as Go's `func`, `var` and `struct`, no longer fall through to `fg`. Go's `type` keyword keeps the keyword colour, and F#'s `keyword.symbol` operators join `operator`.
+- More scopes for existing slots: Java class references and base classes (`type`), C++ `std::` scope resolution (`namespace`), C# parameter declarations (`parameter`), C# and C++ enum members (`constant`), Python `self` (`lang_var`).
+- `overlay.selection` is Darkblack at full strength: alpha 0.8 to 1, `#1b1f25` to `#1d1d1b` (`hexa` `#1d1d1bcc` to `#1d1d1bff`). The selection now sits 9.1 from the canvas instead of 7.3. Every port that paints the selection changes with it: VS Code, Windows Terminal, PowerShell and fish.
+- Gate 9 now requires the selection to be at least 9 from `bg`, up from 7.
+
 ## 0.10.2 — 2026-10-13
 
 - The README is now written in Sepp's voice and points readers who want something to install to the ports table. The tokens are unchanged.
