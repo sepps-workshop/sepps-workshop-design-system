@@ -230,13 +230,14 @@ function tables(tokens, raw) {
       ),
     shell: () =>
       table(
-        ["Role", "Colour", "Style", "fish", "PSReadLine"],
+        ["Role", "Colour", "Style", "fish", "PSReadLine", "$PSStyle"],
         Object.entries(tokens.shell_roles).map(([k, r]) => [
           code(k),
           r.color ? code(r.color) : "inherits",
           styles(r.style),
           names(r.fish),
           names(r.psreadline),
+          names(r.psstyle),
         ]),
       ),
     prompt: () =>

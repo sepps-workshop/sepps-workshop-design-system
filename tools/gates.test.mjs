@@ -585,3 +585,41 @@ test("gate 2: an overlay role beside a shell overlay is not read as its text", (
     [],
   );
 });
+
+test("shell roles list the $PSStyle paths PowerShell's output needs", () => {
+  const t = resolveTokens(parseTokens(SRC));
+  const listed = Object.values(t.shell_roles).flatMap((r) => r.psstyle ?? []);
+  assert.deepEqual(listed.sort(), [
+    "FileInfo.Directory",
+    "FileInfo.Executable",
+    "FileInfo.SymbolicLink",
+    "Formatting.CustomTableHeaderLabel",
+    "Formatting.Debug",
+    "Formatting.Error",
+    "Formatting.ErrorAccent",
+    "Formatting.FormatAccent",
+    "Formatting.TableHeader",
+    "Formatting.Verbose",
+    "Formatting.Warning",
+  ]);
+});
+
+test("text a shell role gives PowerShell is readable on the terminal", () => {
+  const t = resolveTokens(parseTokens(SRC));
+  for (const [name, role] of Object.entries(t.shell_roles)) {
+    if (!role.psstyle && !role.psreadline) continue;
+    if (!role.color || role.color.startsWith("overlay.")) continue;
+    assert.ok(
+      contrast(resolveTarget(t, role.color), t.surface.bg_terminal) >= 4.5,
+      `shell_roles.${name} on the terminal background`,
+    );
+  }
+});
+
+test("gate 2: the text of a PSReadLine selection is gated on the selection overlay", () => {
+  const t = resolveTokens(parseTokens(SRC));
+  assert.deepEqual(t.shell_roles.selection_text.psreadline, ["Selection"]);
+  assertFails((r) => {
+    r.shell_roles.selection_text.color = "fg_disabled";
+  }, /shell_roles\.selection_text .* on overlay\.selection over surface\.bg_terminal/);
+});

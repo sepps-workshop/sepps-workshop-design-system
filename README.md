@@ -41,7 +41,7 @@ This repository is the foundation, not a theme you can install. It holds the col
 | ---------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------ |
 | VS Code          | [`sepps-workshop-vs-code`](https://github.com/sepps-workshop/sepps-workshop-vs-code)                   | working, Marketplace listing pending |
 | Windows Terminal | [`sepps-workshop-windows-terminal`](https://github.com/sepps-workshop/sepps-workshop-windows-terminal) | working                              |
-| PowerShell       | `sepps-workshop-powershell`                                                                            | planned                              |
+| PowerShell       | [`sepps-workshop-powershell`](https://github.com/sepps-workshop/sepps-workshop-powershell)             | in development                       |
 | fish             | [`sepps-workshop-fish`](https://github.com/sepps-workshop/sepps-workshop-fish)                         | released                             |
 | Starship         | [`sepps-workshop-starship`](https://github.com/sepps-workshop/sepps-workshop-starship)                 | working                              |
 
@@ -294,47 +294,59 @@ The debugger has two frame highlights and the foundation has one recipe, `stack_
 
 ## Shell and prompt roles
 
-fish and PowerShell both need to know what colour a command, an option or an autosuggestion is. `shell_roles` answers that once, and lists the fish variables and PSReadLine keys each role feeds.
+fish and PowerShell both need to know what colour a command, an option or an autosuggestion is. `shell_roles` answers that once, and lists the fish variables, the PSReadLine keys and the `$PSStyle` paths each role feeds. A `$PSStyle` path is written from below `$PSStyle`: `Formatting.Error` is `$PSStyle.Formatting.Error`.
 
 <!-- tokens:shell -->
 
-| Role                         | Colour                  | Style     | fish                                                          | PSReadLine                                 |
-| ---------------------------- | ----------------------- | --------- | ------------------------------------------------------------- | ------------------------------------------ |
-| `command`                    | `function`              |           | `fish_color_command`                                          | `Command`                                  |
-| `keyword`                    | `keyword`               |           | `fish_color_keyword`                                          | `Keyword`                                  |
-| `option`                     | `attr`                  |           | `fish_color_option`                                           | `Parameter`                                |
-| `argument`                   | `fg`                    |           | `fish_color_normal`<br>`fish_color_param`                     | `Default`                                  |
-| `string`                     | `string`                |           | `fish_color_quote`                                            | `String`                                   |
-| `number`                     | `number`                |           |                                                               | `Number`                                   |
-| `variable`                   | `type`                  |           |                                                               | `Variable`                                 |
-| `type`                       | `type`                  |           |                                                               | `Type`                                     |
-| `member`                     | `fg`                    |           |                                                               | `Member`                                   |
-| `operator`                   | `fg_muted`              |           | `fish_color_operator`<br>`fish_color_end`                     | `Operator`                                 |
-| `redirection`                | `fg_muted`              |           | `fish_color_redirection`                                      |                                            |
-| `escape`                     | `constant`              |           | `fish_color_escape`                                           |                                            |
-| `comment`                    | `comment`               | italic    | `fish_color_comment`                                          | `Comment`                                  |
-| `autosuggestion`             | `fg_subtle`             |           | `fish_color_autosuggestion`                                   | `InlinePrediction`<br>`ContinuationPrompt` |
-| `error`                      | `semantic.danger`       |           | `fish_color_error`<br>`fish_color_status`                     | `Error`                                    |
-| `emphasis`                   | `accent`                |           |                                                               | `Emphasis`                                 |
-| `valid_path`                 | inherits                | underline | `fish_color_valid_path`                                       |                                            |
-| `selection`                  | `overlay.selection`     |           | `fish_color_selection`                                        | `Selection`                                |
-| `search_match`               | `overlay.find_match`    |           | `fish_color_search_match`                                     |                                            |
-| `pager_selected`             | `overlay.selected_item` |           | `fish_pager_color_selected_background`                        | `ListPredictionSelected`                   |
-| `pager_selected_completion`  | `fg`                    |           | `fish_pager_color_selected_completion`                        |                                            |
-| `pager_selected_description` | `fg_muted`              |           | `fish_pager_color_selected_description`                       |                                            |
-| `pager_selected_prefix`      | `accent`                |           | `fish_pager_color_selected_prefix`                            |                                            |
-| `pager_prefix`               | `accent`                |           | `fish_pager_color_prefix`                                     |                                            |
-| `pager_completion`           | `fg`                    |           | `fish_pager_color_completion`                                 | `ListPrediction`                           |
-| `pager_description`          | `fg_subtle`             |           | `fish_pager_color_description`<br>`fish_pager_color_progress` |                                            |
-| `cwd`                        | `accent`                |           | `fish_color_cwd`                                              |                                            |
-| `cwd_root`                   | `semantic.danger`       |           | `fish_color_cwd_root`                                         |                                            |
-| `user`                       | `function`              |           | `fish_color_user`                                             |                                            |
-| `host`                       | `fg_muted`              |           | `fish_color_host`                                             |                                            |
-| `host_remote`                | `semantic.warning`      |           | `fish_color_host_remote`                                      |                                            |
+| Role                         | Colour                  | Style     | fish                                                          | PSReadLine                                 | $PSStyle                                                        |
+| ---------------------------- | ----------------------- | --------- | ------------------------------------------------------------- | ------------------------------------------ | --------------------------------------------------------------- |
+| `command`                    | `function`              |           | `fish_color_command`                                          | `Command`                                  |                                                                 |
+| `keyword`                    | `keyword`               |           | `fish_color_keyword`                                          | `Keyword`                                  |                                                                 |
+| `option`                     | `attr`                  |           | `fish_color_option`                                           | `Parameter`                                |                                                                 |
+| `argument`                   | `fg`                    |           | `fish_color_normal`<br>`fish_color_param`                     | `Default`                                  |                                                                 |
+| `string`                     | `string`                |           | `fish_color_quote`                                            | `String`                                   |                                                                 |
+| `number`                     | `number`                |           |                                                               | `Number`                                   |                                                                 |
+| `variable`                   | `type`                  |           |                                                               | `Variable`                                 |                                                                 |
+| `type`                       | `type`                  |           |                                                               | `Type`                                     |                                                                 |
+| `member`                     | `fg`                    |           |                                                               | `Member`                                   |                                                                 |
+| `operator`                   | `fg_muted`              |           | `fish_color_operator`<br>`fish_color_end`                     | `Operator`                                 |                                                                 |
+| `redirection`                | `fg_muted`              |           | `fish_color_redirection`                                      |                                            |                                                                 |
+| `escape`                     | `constant`              |           | `fish_color_escape`                                           |                                            |                                                                 |
+| `comment`                    | `comment`               | italic    | `fish_color_comment`                                          | `Comment`                                  |                                                                 |
+| `autosuggestion`             | `fg_subtle`             |           | `fish_color_autosuggestion`                                   | `InlinePrediction`<br>`ContinuationPrompt` |                                                                 |
+| `error`                      | `semantic.danger`       |           | `fish_color_error`<br>`fish_color_status`                     | `Error`                                    | `Formatting.Error`                                              |
+| `emphasis`                   | `accent`                |           |                                                               | `Emphasis`                                 |                                                                 |
+| `valid_path`                 | inherits                | underline | `fish_color_valid_path`                                       |                                            |                                                                 |
+| `selection`                  | `overlay.selection`     |           | `fish_color_selection`                                        | `Selection`                                |                                                                 |
+| `selection_text`             | `fg`                    |           |                                                               | `Selection`                                |                                                                 |
+| `search_match`               | `overlay.find_match`    |           | `fish_color_search_match`                                     |                                            |                                                                 |
+| `pager_selected`             | `overlay.selected_item` |           | `fish_pager_color_selected_background`                        | `ListPredictionSelected`                   |                                                                 |
+| `pager_selected_completion`  | `fg`                    |           | `fish_pager_color_selected_completion`                        |                                            |                                                                 |
+| `pager_selected_description` | `fg_muted`              |           | `fish_pager_color_selected_description`                       |                                            |                                                                 |
+| `pager_selected_prefix`      | `accent`                |           | `fish_pager_color_selected_prefix`                            |                                            |                                                                 |
+| `pager_prefix`               | `accent`                |           | `fish_pager_color_prefix`                                     |                                            |                                                                 |
+| `pager_completion`           | `fg`                    |           | `fish_pager_color_completion`                                 | `ListPrediction`                           |                                                                 |
+| `pager_description`          | `fg_subtle`             |           | `fish_pager_color_description`<br>`fish_pager_color_progress` |                                            |                                                                 |
+| `cwd`                        | `accent`                |           | `fish_color_cwd`                                              |                                            |                                                                 |
+| `cwd_root`                   | `semantic.danger`       |           | `fish_color_cwd_root`                                         |                                            |                                                                 |
+| `user`                       | `function`              |           | `fish_color_user`                                             |                                            |                                                                 |
+| `host`                       | `fg_muted`              |           | `fish_color_host`                                             |                                            |                                                                 |
+| `host_remote`                | `semantic.warning`      |           | `fish_color_host_remote`                                      |                                            |                                                                 |
+| `error_accent`               | `semantic.danger`       | bold      |                                                               |                                            | `Formatting.ErrorAccent`                                        |
+| `warning`                    | `semantic.warning`      |           |                                                               |                                            | `Formatting.Warning`                                            |
+| `verbose`                    | `semantic.info`         |           |                                                               |                                            | `Formatting.Verbose`                                            |
+| `debug`                      | `fg_subtle`             |           |                                                               |                                            | `Formatting.Debug`                                              |
+| `format_accent`              | `accent`                |           |                                                               |                                            | `Formatting.FormatAccent`                                       |
+| `table_header`               | `accent`                | bold      |                                                               |                                            | `Formatting.TableHeader`<br>`Formatting.CustomTableHeaderLabel` |
+| `directory`                  | `accent`                | bold      |                                                               |                                            | `FileInfo.Directory`                                            |
+| `symlink`                    | `constant`              |           |                                                               |                                            | `FileInfo.SymbolicLink`                                         |
+| `executable`                 | `semantic.success`      |           |                                                               |                                            | `FileInfo.Executable`                                           |
 
 <!-- /tokens -->
 
 The selected pager row lightens the canvas, so its text is restated in the `pager_selected_*` roles: the description steps up from `fg_subtle` to `fg_muted`.
+
+PSReadLine draws a selection in one colour, so `selection_text` restates the text on it; a port puts both roles under the one `Selection` key. fish keeps the syntax colours on a selection and reads the overlay alone.
 
 Commands take the function colour, not the accent: the cursor is already Sunset, and a typed command is a call.
 
@@ -445,7 +457,7 @@ docs/               release recovery steps
 1. Read `dist/tokens.js` or `tokens.json`. Never re-encode a colour.
 2. Editor ports take syntax from `syntax`, `syntax_tokens` and the recommendation maps.
 3. Terminal ports take all sixteen colours from `ansi` and the background from `surface.bg_terminal`, which equals `surface.bg`. A terminal port that can colour a window frame (a tab row, a title bar) puts it on `surface.bg_chrome`.
-4. Shell ports take every colour from `shell_roles`; prompt ports from `prompt_roles`.
+4. Shell ports take every colour from `shell_roles`; prompt ports from `prompt_roles`. Two roles may list the same key, one as a background and one as its text.
 5. Overlays come from `overlay.<name>`: `.hexa` where the target blends, `.hex` where it cannot, `.hex_terminal` in a shell, `.border` where present. No alpha constants in the port.
 6. Red as text is `semantic.danger`. Red as a fill is `semantic_fill.danger.fill` with `semantic_fill.danger.text` on it. Never Racing Red as text on a dark surface.
 7. A value a port needs and cannot find is a gap in the foundation. Fix it here.

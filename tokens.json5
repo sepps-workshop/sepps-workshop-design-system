@@ -463,6 +463,7 @@
       color: "semantic.danger",
       fish: ["fish_color_error", "fish_color_status"],
       psreadline: ["Error"],
+      psstyle: ["Formatting.Error"],
     },
     emphasis: { color: "accent", psreadline: ["Emphasis"] },
     valid_path: { style: ["underline"], fish: ["fish_color_valid_path"] },
@@ -471,6 +472,9 @@
       fish: ["fish_color_selection"],
       psreadline: ["Selection"],
     },
+    // PSReadLine draws a selection in one colour: it stops emitting token
+    // colours inside it. fish keeps the syntax colours and needs no text role.
+    selection_text: { color: "fg", psreadline: ["Selection"] },
     search_match: {
       color: "overlay.find_match",
       fish: ["fish_color_search_match"],
@@ -512,6 +516,28 @@
       color: "semantic.warning",
       fish: ["fish_color_host_remote"],
     },
+    // PowerShell's own output: paths below $PSStyle.
+    error_accent: {
+      color: "semantic.danger",
+      style: ["bold"],
+      psstyle: ["Formatting.ErrorAccent"],
+    },
+    warning: { color: "semantic.warning", psstyle: ["Formatting.Warning"] },
+    verbose: { color: "semantic.info", psstyle: ["Formatting.Verbose"] },
+    debug: { color: "fg_subtle", psstyle: ["Formatting.Debug"] },
+    format_accent: { color: "accent", psstyle: ["Formatting.FormatAccent"] },
+    table_header: {
+      color: "accent",
+      style: ["bold"],
+      psstyle: ["Formatting.TableHeader", "Formatting.CustomTableHeaderLabel"],
+    },
+    directory: {
+      color: "accent",
+      style: ["bold"],
+      psstyle: ["FileInfo.Directory"],
+    },
+    symlink: { color: "constant", psstyle: ["FileInfo.SymbolicLink"] },
+    executable: { color: "semantic.success", psstyle: ["FileInfo.Executable"] },
   },
 
   // ── 9. PROMPT ROLES ─────────────────────────────────────────────

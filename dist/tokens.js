@@ -898,6 +898,9 @@ export default {
       ],
       "psreadline": [
         "Error"
+      ],
+      "psstyle": [
+        "Formatting.Error"
       ]
     },
     "emphasis": {
@@ -919,6 +922,12 @@ export default {
       "fish": [
         "fish_color_selection"
       ],
+      "psreadline": [
+        "Selection"
+      ]
+    },
+    "selection_text": {
+      "color": "fg",
       "psreadline": [
         "Selection"
       ]
@@ -1006,6 +1015,70 @@ export default {
       "color": "semantic.warning",
       "fish": [
         "fish_color_host_remote"
+      ]
+    },
+    "error_accent": {
+      "color": "semantic.danger",
+      "style": [
+        "bold"
+      ],
+      "psstyle": [
+        "Formatting.ErrorAccent"
+      ]
+    },
+    "warning": {
+      "color": "semantic.warning",
+      "psstyle": [
+        "Formatting.Warning"
+      ]
+    },
+    "verbose": {
+      "color": "semantic.info",
+      "psstyle": [
+        "Formatting.Verbose"
+      ]
+    },
+    "debug": {
+      "color": "fg_subtle",
+      "psstyle": [
+        "Formatting.Debug"
+      ]
+    },
+    "format_accent": {
+      "color": "accent",
+      "psstyle": [
+        "Formatting.FormatAccent"
+      ]
+    },
+    "table_header": {
+      "color": "accent",
+      "style": [
+        "bold"
+      ],
+      "psstyle": [
+        "Formatting.TableHeader",
+        "Formatting.CustomTableHeaderLabel"
+      ]
+    },
+    "directory": {
+      "color": "accent",
+      "style": [
+        "bold"
+      ],
+      "psstyle": [
+        "FileInfo.Directory"
+      ]
+    },
+    "symlink": {
+      "color": "constant",
+      "psstyle": [
+        "FileInfo.SymbolicLink"
+      ]
+    },
+    "executable": {
+      "color": "semantic.success",
+      "psstyle": [
+        "FileInfo.Executable"
       ]
     }
   },

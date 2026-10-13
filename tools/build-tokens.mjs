@@ -329,9 +329,9 @@ const ANSI_SLOTS = [
 const ANSI_EXEMPT = new Set(["black"]);
 
 /** Keys inside role maps that hold metadata, not colour targets. */
-const NOT_A_TARGET = new Set(["style", "fish", "psreadline"]);
+const NOT_A_TARGET = new Set(["style", "fish", "psreadline", "psstyle"]);
 /** The only keys a role object may have, and the font styles it may name. */
-const ROLE_KEYS = new Set(["color", "style", "fish", "psreadline"]);
+const ROLE_KEYS = new Set(["color", "style", "fish", "psreadline", "psstyle"]);
 const STYLES = new Set(["italic", "bold", "underline"]);
 const TARGET_MAPS = [
   "syntax_tokens.extended",
