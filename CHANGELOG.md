@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.10.2 — 2026-10-13
+
+- The README is now written in Sepp's voice and points readers who want something to install to the ports table. The tokens are unchanged.
+- The README ports table marks the Windows Terminal, PowerShell and Starship ports as released and links the VS Code port's Marketplace listing.
+
 ## 0.10.1 — 2026-10-13
 
 - The preview build now escapes double quotes in the text it writes into HTML, so a value containing `"` can no longer break out of an attribute. The tokens are unchanged; the preview pages differ only where text contained a quote.
