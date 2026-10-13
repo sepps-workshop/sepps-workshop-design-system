@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.9.0 — 2026-10-13
+
+- **⚠️ The terminal background changes value:** `surface.bg_terminal` is now `derived.bg_deep` (`#14284c`), equal to `surface.bg`, instead of Darkblue (`#0d3174`). Darkblue is too bright to read on for hours, in a terminal as in an editor. `--sw-bg-terminal` moves with it. The token names are unchanged; terminal and shell ports rebuild.
+- **⚠️ Every overlay `hex_terminal` moves with the terminal background** and now has the value of `hex`. A shell port still reads it under this name.
+- Darkblue stays the frame: a terminal port puts the window frame it can colour, such as the tab row of Windows Terminal, on `surface.bg_chrome`. The handoff skill says so.
+- Gate 8 now requires `bg_terminal` to equal `bg` instead of `bg_chrome`, and the canvas must stand apart from `bg_chrome` only.
+
 ## 0.8.0 — 2026-10-13
 
 - New role `prompt_roles.time` (`fg_muted`) for a clock in the prompt, beside `duration`. The shell preview shows it.
