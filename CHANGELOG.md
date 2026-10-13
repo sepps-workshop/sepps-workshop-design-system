@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.10.1 — 2026-10-13
+
+- The preview build now escapes double quotes in the text it writes into HTML, so a value containing `"` can no longer break out of an attribute. The tokens are unchanged; the preview pages differ only where text contained a quote.
+
 ## 0.10.0 — 2026-10-13
 
 - New `shell_roles` for PowerShell's own output, each with a `psstyle` field naming the `$PSStyle` path it colours: `error_accent` (`Formatting.ErrorAccent`), `warning`, `verbose`, `debug`, `format_accent`, `table_header` (`Formatting.TableHeader` and `Formatting.CustomTableHeaderLabel`), `directory`, `symlink` and `executable`. The existing `error` role also gains `Formatting.Error`.
