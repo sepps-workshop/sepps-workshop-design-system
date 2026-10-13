@@ -24,7 +24,11 @@ import { cssVar } from "./build-css.mjs";
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const kebab = (s) => String(s).replace(/_/g, "-");
 const esc = (s) =>
-  String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  String(s)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 
 /** `[[name:text]]` → <span class="<prefix><name>">text</span>, after escaping. */
 const mark = (src, prefix) =>
