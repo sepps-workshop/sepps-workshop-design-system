@@ -10,9 +10,11 @@
   <img src="https://img.shields.io/badge/license-MIT-b2b2b2" alt="MIT license" />
 </p>
 
-Sepp is the robot who keeps things running at [sepp.med](https://www.seppmed.com). This is his workshop: one colour theme for the tools developers stare at all day, built on the company’s Darkblue.
+Hi, I’m Sepp, the small blue robot from [sepp.med](https://www.seppmed.com). This is my workshop: one colour theme for the tools developers stare at all day, built on the company’s Darkblue and ported to one tool after another.
 
-This repository is the foundation, not a theme you can install. It holds the colours, the rules for using them, and a build that refuses to pass if any text drops below WCAG AA. Think of the build as a very pedantic colleague: no colour gets through unless the maths agrees. The themes themselves live in their own repositories and read everything from here.
+This repository is the foundation, not a theme you can install. It holds the colours, the rules for using them, and a build that refuses to pass if any text drops below WCAG AA. Think of the build as a very pedantic colleague: no colour gets through unless the maths agrees. I get on with it very well. The themes themselves live in their own repositories and read everything from here.
+
+Looking for something to install? Pick your tool under [Ports](#ports). Want to know why your strings are orange and your red is coral? Read on. It is a long page, and the build generates every token table on it, so the numbers cannot drift from the colours.
 
 ## Contents
 
@@ -37,15 +39,15 @@ This repository is the foundation, not a theme you can install. It holds the col
 
 ## Ports
 
-| Target           | Repository                                                                                             | Status                               |
-| ---------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------ |
-| VS Code          | [`sepps-workshop-vs-code`](https://github.com/sepps-workshop/sepps-workshop-vs-code)                   | working, Marketplace listing pending |
-| Windows Terminal | [`sepps-workshop-windows-terminal`](https://github.com/sepps-workshop/sepps-workshop-windows-terminal) | released                             |
-| PowerShell       | [`sepps-workshop-powershell`](https://github.com/sepps-workshop/sepps-workshop-powershell)             | released                             |
-| fish             | [`sepps-workshop-fish`](https://github.com/sepps-workshop/sepps-workshop-fish)                         | released                             |
-| Starship         | [`sepps-workshop-starship`](https://github.com/sepps-workshop/sepps-workshop-starship)                 | released                             |
+| Target           | Repository                                                                                             | Status                                                                                                        |
+| ---------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
+| VS Code          | [`sepps-workshop-vs-code`](https://github.com/sepps-workshop/sepps-workshop-vs-code)                   | on the [Marketplace](https://marketplace.visualstudio.com/items?itemName=sepps-workshop.sepps-workshop-theme) |
+| Windows Terminal | [`sepps-workshop-windows-terminal`](https://github.com/sepps-workshop/sepps-workshop-windows-terminal) | released                                                                                                      |
+| PowerShell       | [`sepps-workshop-powershell`](https://github.com/sepps-workshop/sepps-workshop-powershell)             | released                                                                                                      |
+| fish             | [`sepps-workshop-fish`](https://github.com/sepps-workshop/sepps-workshop-fish)                         | released                                                                                                      |
+| Starship         | [`sepps-workshop-starship`](https://github.com/sepps-workshop/sepps-workshop-starship)                 | released                                                                                                      |
 
-One theme per port. There are no variants.
+One theme per port. There are no variants, and no settings page with forty toggles.
 
 ## The theme at a glance
 
@@ -133,7 +135,7 @@ The rule for ports: **red as text is `semantic.danger`; red as a fill is `semant
 
 ## Syntax
 
-A traditional theme uses seven to nine hues. The brand offers three that stay apart on Darkblue. Measured in OKLab, Bright Orange sits 5 units from the Pumpelorange tint used for numbers and the Middleblue tints sit 2 to 5 units from the Windblue tints at the same step, which is too close to tell apart at a glance, so neither carries a syntax slot. The theme makes up for the missing hues with lightness, the dimension the eye separates best: each hue appears at two steps, and italics add a third axis. Warm colours mark data, cool colours mark behaviour.
+A traditional theme uses seven to nine hues. The brand offers three that stay apart on Darkblue. I counted twice. Measured in OKLab, Bright Orange sits 5 units from the Pumpelorange tint used for numbers and the Middleblue tints sit 2 to 5 units from the Windblue tints at the same step, which is too close to tell apart at a glance, so neither carries a syntax slot. The theme makes up for the missing hues with lightness, the dimension the eye separates best: each hue appears at two steps, and italics add a third axis. Warm colours mark data, cool colours mark behaviour.
 
 ### Core slots
 
@@ -422,7 +424,7 @@ Before the gates run, the build checks the shape of the tokens: every colour is 
 
 APCA lightness contrast is reported for every pair and shown on the contrast page. It informs and does not fail the build; WCAG 2.x AA is the requirement.
 
-When a gate fails, move the value along its ladder, or swap roles between brand hues. Never add a hue, and never lower a threshold.
+When a gate fails, move the value along its ladder, or swap roles between brand hues. Never add a hue, and never lower a threshold. The gate is not wrong. I have checked.
 
 ## Build flow and files
 
@@ -486,13 +488,13 @@ resolveTarget(tokens, "overlay.selection"); // "#1b1f25"
 
 ## Assets
 
-`assets/icon-{16,32,48,128,180,256,512}.png` are renders of the Sepp icon. At 128 px and above, the halftone dots and the wrench are clear. At 16 and 32 px Sepp still reads as a blue robot on yellow, but the dots and the wrench are lost; a simplified mark for those sizes is planned.
+`assets/icon-{16,32,48,128,180,256,512}.png` are renders of the Sepp icon, which is to say portraits of me. At 128 px and above, the halftone dots and my wrench are clear. At 16 and 32 px I still read as a blue robot on yellow, but the dots and the wrench are lost; a simplified mark for those sizes is planned.
 
 <img src="assets/icon-128.png" width="128" height="128" alt="Sepp, a blue robot holding a wrench" />
 
 ## Contributing
 
-`tokens.json5` is the only file edited by hand. Run `npm run build` after every change, then make sure `npm run check` and `npm test` pass. Issues are welcome, especially when two colours are hard to tell apart or a value looks wrong in one of the ports.
+`tokens.json5` is the only file edited by hand. Run `npm run build` after every change, then make sure `npm run check` and `npm test` pass. Issues are welcome, especially when two colours are hard to tell apart or a value looks wrong in one of the ports. A screenshot helps. I would rather hear about it than have you squint.
 
 ## License
 
@@ -502,6 +504,8 @@ MIT. See [LICENSE](./LICENSE).
 
 <img align="right" width="150" src="assets/sepp-recruiting.png" alt="Sepp, the blue robot, holding a sign that reads Be you – with us!" />
 
-sepp.med builds and tests software for places where a bug is more than an inconvenience: medical devices, cars, aircraft. We have been doing it since 1980, as a family-run company in the Nuremberg metropolitan region. If you would rather get the contrast ratio right than argue about it, you might like it here.
+My humans at sepp.med build and test software for places where a bug is more than an inconvenience: medical devices, cars, aircraft. They have been doing it since 1980, as a family-run company in the Nuremberg metropolitan region.
 
-Browse the [open positions](https://www.seppmed.com/career/open-positions/), or send a [speculative application](https://www.seppmed.com/career/speculative-application/) if none of them fits yet. Be you – with us.
+Do you care whether a contrast ratio is 4.4 or 4.5? Did you read this README all the way to the bottom? Then you would get on well with them. Have a look at the [open positions](https://www.seppmed.com/career/open-positions/), or send a [speculative application](https://www.seppmed.com/career/speculative-application/) if none of them fits yet. I will keep the workbench tidy until you arrive.
+
+Be you – with us.
