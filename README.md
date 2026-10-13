@@ -41,7 +41,7 @@ This repository is the foundation, not a theme you can install. It holds the col
 | ---------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------ |
 | VS Code          | [`sepps-workshop-vs-code`](https://github.com/sepps-workshop/sepps-workshop-vs-code)                   | working, Marketplace listing pending |
 | Windows Terminal | [`sepps-workshop-windows-terminal`](https://github.com/sepps-workshop/sepps-workshop-windows-terminal) | working                              |
-| PowerShell       | [`sepps-workshop-powershell`](https://github.com/sepps-workshop/sepps-workshop-powershell)             | in development                       |
+| PowerShell       | [`sepps-workshop-powershell`](https://github.com/sepps-workshop/sepps-workshop-powershell)             | released                             |
 | fish             | [`sepps-workshop-fish`](https://github.com/sepps-workshop/sepps-workshop-fish)                         | released                             |
 | Starship         | [`sepps-workshop-starship`](https://github.com/sepps-workshop/sepps-workshop-starship)                 | working                              |
 
