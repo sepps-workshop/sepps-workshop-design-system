@@ -127,8 +127,8 @@ test("the workbench overlays and accent_hover resolve", () => {
 
 test("overlays get a hex composited over the terminal background", () => {
   const t = resolveTokens(fresh());
-  assert.equal(t.overlay.selection.hex_terminal, "#1a212d");
-  assert.equal(t.overlay.selected_item.hex_terminal, "#384a5f");
+  assert.equal(t.overlay.selection.hex_terminal, "#1b1f25");
+  assert.equal(t.overlay.selected_item.hex_terminal, "#3e423e");
   for (const [name, o] of Object.entries(t.overlay)) {
     assert.match(o.hex_terminal, /^#[0-9a-f]{6}$/, `overlay.${name}`);
   }

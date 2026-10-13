@@ -210,13 +210,13 @@ const DERIVED_KEYS = [
   "racingred_on_dark_bright",
   "racingred_fill",
 ];
-/** Surfaces the spec defines as equal: terminal = chrome, widgets = chrome. */
+/** Surfaces the spec defines as equal: terminal = canvas, widgets = chrome. */
 const SAME_SURFACE = [
-  ["bg_terminal", "bg_chrome"],
+  ["bg_terminal", "bg"],
   ["bg_overlay", "bg_chrome"],
 ];
 /** The canvas must read as a different surface from each of these. */
-const APART_FROM_CANVAS = ["bg_chrome", "bg_terminal"];
+const APART_FROM_CANVAS = ["bg_chrome"];
 
 const CODE_SURFACES = ["bg", "bg_chrome", "bg_overlay"];
 const CONTROL_SURFACES = ["bg", "bg_chrome", "bg_soft", "bg_overlay"];
@@ -694,7 +694,7 @@ export function check(tokens, raw) {
   // 3. ANSI on the terminal background.
   for (const [slot, color] of Object.entries(tokens.ansi)) {
     if (!ANSI_EXEMPT.has(slot)) {
-      // A terminal embedded in an editor sits on the canvas.
+      // The two are equal (gate 8); both names appear in the report.
       for (const s of ["bg_terminal", "bg"])
         need(`ansi.${slot}`, color, `surface.${s}`, tokens.surface[s], AA);
       // `hex` is the selection a non-blending port paints; a blending one

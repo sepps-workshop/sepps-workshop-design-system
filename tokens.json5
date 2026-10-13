@@ -69,7 +69,7 @@
     bg_chrome: "$palette.darkblue.100", // sidebar, activity bar, status bar, inactive tabs
     bg_soft: "$palette.darkblue.90", // hover, inputs — carries fg and fg_muted only
     bg_overlay: "$palette.darkblue.100", // = bg_chrome: menus, hover/suggest widgets, quick input
-    bg_terminal: "$palette.darkblue.100", // = bg_chrome: a standalone terminal should be Darkblue; one embedded in an editor sits on bg
+    bg_terminal: "$derived.bg_deep", // = bg: a terminal is a place to read; its window frame, where it has one, takes bg_chrome
   },
   text: {
     fg: "$palette.darkblue.10",

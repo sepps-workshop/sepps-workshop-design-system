@@ -111,7 +111,7 @@ The rule for ports: **red as text is `semantic.danger`; red as a fill is `semant
 | `surface.bg_chrome`   | `darkblue`        | `#0d3174` |                  | Sidebar, activity bar, status bar, inactive tabs |
 | `surface.bg_soft`     | `darkblue.90`     | `#254682` |                  | Hover, inputs                                    |
 | `surface.bg_overlay`  | `darkblue`        | `#0d3174` |                  | Menus, hover and suggest widgets, quick input    |
-| `surface.bg_terminal` | `darkblue`        | `#0d3174` |                  | Terminal background                              |
+| `surface.bg_terminal` | `derived.bg_deep` | `#14284c` |                  | Terminal background                              |
 | `text.fg`             | `darkblue.10`     | `#e7eaf1` | 12.13:1          | Body text, variables                             |
 | `text.fg_muted`       | `darkblue.30`     | `#b6c1d5` | 8.05:1           | Secondary text, punctuation                      |
 | `text.fg_subtle`      | `darkblue.40`     | `#9eadc7` | 6.44:1           | Comments, autosuggestions                        |
@@ -128,7 +128,7 @@ The rule for ports: **red as text is `semantic.danger`; red as a fill is `semant
 - `bg_soft` is lighter than the canvas and costs contrast. It carries `fg` and `fg_muted` only, never comments or syntax colours.
 - The canvas is the dark well the code sits in. The chrome around it (`bg_chrome`) is Darkblue, lighter than the canvas, so the brand colour frames the code and the two never merge.
 - Floating widgets sit on `bg_chrome`: a lighter panel over the dark canvas reads as raised.
-- `bg_terminal` equals `bg_chrome`. A standalone terminal shows no other surface, and it should be the Darkblue people recognise. A terminal embedded in an editor is content: it sits on `bg`, and the port separates it from the editor with a strip of chrome.
+- `bg_terminal` equals `bg`. A terminal is a place to read, whether it stands alone or sits in an editor, and Darkblue is too bright to read on for hours. Darkblue is the frame: an editor port separates its embedded terminal from the editor with a strip of chrome, and a terminal port puts the window frame it can colour, such as the tab row of Windows Terminal, on `bg_chrome`.
 - Body text is not pure white, and no surface is pure black.
 
 ## Syntax
@@ -228,52 +228,52 @@ Each resolves to a core slot, a text colour or a semantic role, with an optional
 
 | Slot    | Normal                                | On terminal | Bright                                       | On terminal |
 | ------- | ------------------------------------- | ----------- | -------------------------------------------- | ----------- |
-| black   | `darkblack` `#1d1d1b`                 | exempt      | `darkblack.40` `#a5a5a4`                     | 4.99:1      |
-| red     | `derived.racingred_on_dark` `#ff897b` | 5.34:1      | `derived.racingred_on_dark_bright` `#ffb4aa` | 7.23:1      |
-| green   | `limegreen.60` `#a2d182`              | 7.01:1      | `limegreen.40` `#c1e1ab`                     | 8.56:1      |
-| yellow  | `sunset` `#fbba00`                    | 7.10:1      | `sunset.40` `#fde399`                        | 9.73:1      |
-| blue    | `middleblue.60` `#6aa8cd`             | 4.74:1      | `middleblue.40` `#9cc5dd`                    | 6.70:1      |
-| magenta | `brightorange` `#f59c00`              | 5.64:1      | `brightorange.60` `#f9c466`                  | 7.68:1      |
-| cyan    | `windblue.50` `#80c7e7`               | 6.58:1      | `windblue.30` `#b3ddf1`                      | 8.50:1      |
-| white   | `shadowgrey.60` `#d1d1d1`             | 8.05:1      | `darkblue.10` `#e7eaf1`                      | 10.21:1     |
+| black   | `darkblack` `#1d1d1b`                 | exempt      | `darkblack.40` `#a5a5a4`                     | 5.93:1      |
+| red     | `derived.racingred_on_dark` `#ff897b` | 6.34:1      | `derived.racingred_on_dark_bright` `#ffb4aa` | 8.60:1      |
+| green   | `limegreen.60` `#a2d182`              | 8.33:1      | `limegreen.40` `#c1e1ab`                     | 10.17:1     |
+| yellow  | `sunset` `#fbba00`                    | 8.43:1      | `sunset.40` `#fde399`                        | 11.56:1     |
+| blue    | `middleblue.60` `#6aa8cd`             | 5.63:1      | `middleblue.40` `#9cc5dd`                    | 7.96:1      |
+| magenta | `brightorange` `#f59c00`              | 6.70:1      | `brightorange.60` `#f9c466`                  | 9.12:1      |
+| cyan    | `windblue.50` `#80c7e7`               | 7.82:1      | `windblue.30` `#b3ddf1`                      | 10.11:1     |
+| white   | `shadowgrey.60` `#d1d1d1`             | 9.57:1      | `darkblue.10` `#e7eaf1`                      | 12.13:1     |
 
 <!-- /tokens -->
 
 - **Magenta is Bright Orange.** The brand has no magenta. This is the one place where the ANSI name and the colour disagree.
 - **Blue and cyan differ in lightness as well as hue.** Blue on a blue terminal is the hardest slot; it takes Middleblue, and cyan takes a lighter Windblue step.
 - **The neutrals are true greys** (Shadowgrey and a Darkblack tint). A blue-grey from the Darkblue ladder would not stay apart from blue and cyan.
-- `black` is Darkblack, the anchor for reverse video and black fills. It differs from both terminal backgrounds and is exempt from the contrast gate.
+- `black` is Darkblack, the anchor for reverse video and black fills. It differs from the terminal background and is exempt from the contrast gate.
 
 ## Overlays
 
-Recipes for the backgrounds that appear behind text and for a few workbench surfaces: `{ color, alpha, border? }`. The build adds three values to each. `hex` is the recipe composited over `surface.bg`, for a port that cannot blend. `hex_terminal` is the recipe composited over `surface.bg_terminal`, for a shell, which cannot blend and paints on the terminal background. `hexa` is the recipe itself as `#rrggbbaa`, for a port that can. Over the canvas both look the same.
+Recipes for the backgrounds that appear behind text and for a few workbench surfaces: `{ color, alpha, border? }`. The build adds three values to each. `hex` is the recipe composited over `surface.bg`, for a port that cannot blend. `hex_terminal` is the recipe composited over `surface.bg_terminal`, for a shell, which cannot blend and paints on the terminal background. The terminal background is the canvas, so it has the value of `hex`; a shell port reads it under this name all the same. `hexa` is the recipe itself as `#rrggbbaa`, for a port that can. Over the canvas both look the same.
 
 <!-- tokens:overlay -->
 
 | Recipe                  | Colour         | Alpha | Composited | On terminal | Border            | Carries          |
 | ----------------------- | -------------- | ----- | ---------- | ----------- | ----------------- | ---------------- |
-| `selection`             | `darkblack`    | 80 %  | `#1b1f25`  | `#1a212d`   |                   | code             |
-| `selection_inactive`    | `darkblack`    | 55 %  | `#192231`  | `#162643`   |                   | code             |
-| `line_highlight`        | `darkblack`    | 35 %  | `#17243b`  | `#132a55`   |                   | code             |
-| `find_match`            | `pumpelorange` | 15 %  | `#343142`  | `#2e3964`   | `pumpelorange.70` | code             |
-| `find_match_other`      | `pumpelorange` | 8 %   | `#252d47`  | `#1f356b`   | `darkblue.50`     | code             |
-| `word_highlight`        | `sunset`       | 10 %  | `#2b3744`  | `#253f68`   |                   | code             |
-| `word_highlight_strong` | `sunset`       | 10 %  | `#2b3744`  | `#253f68`   | `sunset`          | code             |
-| `selected_item`         | `sunset`       | 18 %  | `#3e423e`  | `#384a5f`   |                   | `fg`, `fg_muted` |
-| `diff_inserted_line`    | `limegreen`    | 12 %  | `#1e3948`  | `#17416c`   |                   | code             |
-| `diff_inserted_text`    | `darkblack`    | 50 %  | `#192334`  | `#152748`   |                   | code             |
-| `diff_removed_line`     | `racingred`    | 14 %  | `#332645`  | `#2d2e68`   |                   | code             |
-| `diff_removed_text`     | `racingred`    | 30 %  | `#56243e`  | `#512a5a`   |                   | code             |
-| `hover`                 | `darkblack`    | 35 %  | `#17243b`  | `#132a55`   |                   | surface          |
-| `active`                | `darkblack`    | 55 %  | `#192231`  | `#162643`   |                   | surface          |
-| `scrim`                 | `darkblack`    | 60 %  | `#19212f`  | `#17253f`   |                   | non-text         |
-| `slider`                | `darkblue.40`  | 30 %  | `#3d5071`  | `#39568d`   |                   | non-text         |
-| `slider_hover`          | `darkblue.40`  | 50 %  | `#596b8a`  | `#566f9e`   |                   | non-text         |
-| `slider_active`         | `darkblue.40`  | 70 %  | `#7585a2`  | `#7388ae`   |                   | non-text         |
-| `merge_current_content` | `windblue`     | 10 %  | `#123259`  | `#0c3a7d`   |                   | code             |
-| `merge_current_header`  | `windblue`     | 25 %  | `#0f426d`  | `#0a488b`   |                   | `fg`, `fg_muted` |
-| `merge_incoming_header` | `limegreen`    | 25 %  | `#284b45`  | `#235263`   |                   | `fg`, `fg_muted` |
-| `stack_frame`           | `brightorange` | 10 %  | `#2b3444`  | `#243c68`   |                   | code             |
+| `selection`             | `darkblack`    | 80 %  | `#1b1f25`  | `#1b1f25`   |                   | code             |
+| `selection_inactive`    | `darkblack`    | 55 %  | `#192231`  | `#192231`   |                   | code             |
+| `line_highlight`        | `darkblack`    | 35 %  | `#17243b`  | `#17243b`   |                   | code             |
+| `find_match`            | `pumpelorange` | 15 %  | `#343142`  | `#343142`   | `pumpelorange.70` | code             |
+| `find_match_other`      | `pumpelorange` | 8 %   | `#252d47`  | `#252d47`   | `darkblue.50`     | code             |
+| `word_highlight`        | `sunset`       | 10 %  | `#2b3744`  | `#2b3744`   |                   | code             |
+| `word_highlight_strong` | `sunset`       | 10 %  | `#2b3744`  | `#2b3744`   | `sunset`          | code             |
+| `selected_item`         | `sunset`       | 18 %  | `#3e423e`  | `#3e423e`   |                   | `fg`, `fg_muted` |
+| `diff_inserted_line`    | `limegreen`    | 12 %  | `#1e3948`  | `#1e3948`   |                   | code             |
+| `diff_inserted_text`    | `darkblack`    | 50 %  | `#192334`  | `#192334`   |                   | code             |
+| `diff_removed_line`     | `racingred`    | 14 %  | `#332645`  | `#332645`   |                   | code             |
+| `diff_removed_text`     | `racingred`    | 30 %  | `#56243e`  | `#56243e`   |                   | code             |
+| `hover`                 | `darkblack`    | 35 %  | `#17243b`  | `#17243b`   |                   | surface          |
+| `active`                | `darkblack`    | 55 %  | `#192231`  | `#192231`   |                   | surface          |
+| `scrim`                 | `darkblack`    | 60 %  | `#19212f`  | `#19212f`   |                   | non-text         |
+| `slider`                | `darkblue.40`  | 30 %  | `#3d5071`  | `#3d5071`   |                   | non-text         |
+| `slider_hover`          | `darkblue.40`  | 50 %  | `#596b8a`  | `#596b8a`   |                   | non-text         |
+| `slider_active`         | `darkblue.40`  | 70 %  | `#7585a2`  | `#7585a2`   |                   | non-text         |
+| `merge_current_content` | `windblue`     | 10 %  | `#123259`  | `#123259`   |                   | code             |
+| `merge_current_header`  | `windblue`     | 25 %  | `#0f426d`  | `#0f426d`   |                   | `fg`, `fg_muted` |
+| `merge_incoming_header` | `limegreen`    | 25 %  | `#284b45`  | `#284b45`   |                   | `fg`, `fg_muted` |
+| `stack_frame`           | `brightorange` | 10 %  | `#2b3444`  | `#2b3444`   |                   | code             |
 
 <!-- /tokens -->
 
@@ -397,12 +397,12 @@ Do not recolour file icons. Recolour only folder icons, where the target support
 
 1. **Text contrast.** `fg`, `fg_muted`, `fg_subtle`, every syntax slot and every semantic foreground reach 4.5:1 on `bg`, `bg_chrome` and `bg_overlay`. `fg` and `fg_muted` reach 4.5:1 on `bg_soft`.
 2. **Text on overlays.** The same colours reach 4.5:1 on every code overlay. `fg` and `fg_muted` reach 4.5:1 on the label overlays. `hover` and `active` are checked the same way on `bg`, `bg_chrome` and `bg_overlay`, and each `diff_*_text` recipe stacked on its `diff_*_line` recipe. Both must also darken each of those surfaces: a faint lightening can pass on contrast alone. The overlays that `shell_roles` uses are checked again composited over `bg_terminal`, together with the text roles of the selected pager row.
-3. **ANSI.** All sixteen colours except `black` reach 4.5:1 on `bg_terminal` and on `bg`, where an embedded terminal sits. The same fifteen reach 4.5:1 on `overlay.selection` and `overlay.selection_inactive`, composited over either background, where a terminal draws selected text.
+3. **ANSI.** All sixteen colours except `black` reach 4.5:1 on `bg_terminal`, which is the canvas. The same fifteen reach 4.5:1 on `overlay.selection` and `overlay.selection_inactive`, composited over it, where a terminal draws selected text.
 4. **Non-text.** `border.control` and `accent` reach 3:1 on every surface. Every overlay border reaches 3:1 on its own fill. `slider_active` reaches 3:1 on `bg` and `bg_chrome`.
 5. **Fills.** The text on each semantic fill, and `accent_on` on `accent` and on `accent_hover`, reach 4.5:1.
 6. **Distinctness.** Slots that must not look alike are at least 7 apart in OKLab (×100; about 2 is just noticeable): the listed syntax pairs, every pair within an ANSI row, and each ANSI colour against its bright version. Two core slots may share a colour only if `syntax_tokens.aliases` lists them together.
 7. **Signal separation.** `accent`, `warning` and `danger` are at least 7 apart. `danger` and `success` differ by at least 5 in lightness.
-8. **Palette integrity.** No hex value outside `palette_base` and `derived`, and no value under `derived` beyond the four documented ones. No ladder for Racing Red or White. `bg_deep` and `racingred_fill` match their recipes. The derived reds stay on the Racing Red hue. `bg_terminal` and `bg_overlay` equal `bg_chrome`, and `bg` is at least 7 from `bg_chrome` and `bg_terminal` in OKLab.
+8. **Palette integrity.** No hex value outside `palette_base` and `derived`, and no value under `derived` beyond the four documented ones. No ladder for Racing Red or White. `bg_deep` and `racingred_fill` match their recipes. The derived reds stay on the Racing Red hue. `bg_terminal` equals `bg`, `bg_overlay` equals `bg_chrome`, and `bg` is at least 7 from `bg_chrome` in OKLab.
 9. **Overlay visibility.** `selection` is at least 7 from `bg` and from `find_match`. `hover` is at least 3 from `bg` and `bg_chrome`, `active` at least 5, `slider` at least 7. `merge_current_header` is at least 7 from `bg`. `accent_hover` is at least 3 from `accent`. Each `diff_*_text` recipe, stacked, is at least 5 from its line.
 
 Before the gates run, the build checks the shape of the tokens: every colour is a `#rrggbb` value, every overlay has an alpha, every overlay belongs to exactly one class, role objects use only the keys `color`, `style`, `fish` and `psreadline`, every colour target in the role maps resolves, and no scope rule ends in `meta.*`. Each problem is reported with its path. A build that fails writes nothing.
@@ -444,7 +444,7 @@ docs/               release recovery steps
 
 1. Read `dist/tokens.js` or `tokens.json`. Never re-encode a colour.
 2. Editor ports take syntax from `syntax`, `syntax_tokens` and the recommendation maps.
-3. Terminal ports take all sixteen colours from `ansi` and the background from `surface.bg_terminal`. An editor port puts its embedded terminal on `surface.bg`.
+3. Terminal ports take all sixteen colours from `ansi` and the background from `surface.bg_terminal`, which equals `surface.bg`. A terminal port that can colour a window frame (a tab row, a title bar) puts it on `surface.bg_chrome`.
 4. Shell ports take every colour from `shell_roles`; prompt ports from `prompt_roles`.
 5. Overlays come from `overlay.<name>`: `.hexa` where the target blends, `.hex` where it cannot, `.hex_terminal` in a shell, `.border` where present. No alpha constants in the port.
 6. Red as text is `semantic.danger`. Red as a fill is `semantic_fill.danger.fill` with `semantic_fill.danger.text` on it. Never Racing Red as text on a dark surface.

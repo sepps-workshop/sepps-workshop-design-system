@@ -46,6 +46,7 @@ Install it with `npm install --save-dev @sepps-workshop/design-system`. Then rea
 - A VS Code key with no role in the foundation stays at its default. Do not approximate it.
 - Controls are outlined with `border.control`, the focus ring is `accent`.
 - VS Code: the editor and the embedded terminal sit on `surface.bg`, the chrome around them on `surface.bg_chrome`. The status bar stays on `surface.bg_chrome`; the accent appears as a border, not as its background. The debugging status bar uses the danger fill.
+- Terminal: the pane sits on `surface.bg_terminal`, which equals `surface.bg`. A window frame the port can colour, such as the tab row of Windows Terminal, takes `surface.bg_chrome`.
 - Never rely on colour alone: pair a state colour with a border, an underline, a position or a font style.
 - Recommend JetBrains Mono, and JetBrainsMono Nerd Font where the port shows icons. Ports cannot ship fonts. One theme per port, no variants.
 - Recommend, never ship, icons: Material Icon Theme for VS Code file icons (see `tokens.iconography`). Do not recolour file icons.

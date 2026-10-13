@@ -338,16 +338,16 @@ test("scopes: stray whitespace does not hide a meta scope", () => {
   }, /scope_recommendations\.function .*meta\./);
 });
 
-test("gate 8: the terminal background is the chrome", () => {
+test("gate 8: the terminal background is the canvas", () => {
   assertFails((r) => {
-    r.surface.bg_terminal = "$palette.darkblue.90";
-  }, /surface\.bg_terminal must equal surface\.bg_chrome/);
+    r.surface.bg_terminal = "$palette.darkblue.100";
+  }, /surface\.bg_terminal must equal surface\.bg \(/);
 });
 
-test("gate 8: the canvas must stand apart from the chrome and the terminal", () => {
+test("gate 8: the canvas must stand apart from the chrome", () => {
   assertFails((r) => {
     r.surface.bg = "$palette.darkblue.100";
-  }, /surface\.bg .* surface\.bg_terminal .* too alike/);
+  }, /surface\.bg .* surface\.bg_chrome .* too alike/);
 });
 
 test("gate 8: floating widgets sit on the chrome", () => {
