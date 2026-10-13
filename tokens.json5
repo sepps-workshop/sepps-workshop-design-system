@@ -538,6 +538,9 @@
     },
     symlink: { color: "constant", psstyle: ["FileInfo.SymbolicLink"] },
     executable: { color: "semantic.success", psstyle: ["FileInfo.Executable"] },
+    // The progress bar. PowerShell draws the finished part in reverse video,
+    // so the terminal background becomes the text on the accent.
+    progress: { color: "accent", style: ["bold"], psstyle: ["Progress.Style"] },
   },
 
   // ── 9. PROMPT ROLES ─────────────────────────────────────────────

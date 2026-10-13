@@ -601,6 +601,7 @@ test("shell roles list the $PSStyle paths PowerShell's output needs", () => {
     "Formatting.TableHeader",
     "Formatting.Verbose",
     "Formatting.Warning",
+    "Progress.Style",
   ]);
 });
 

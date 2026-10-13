@@ -1080,6 +1080,15 @@ export default {
       "psstyle": [
         "FileInfo.Executable"
       ]
+    },
+    "progress": {
+      "color": "accent",
+      "style": [
+        "bold"
+      ],
+      "psstyle": [
+        "Progress.Style"
+      ]
     }
   },
   "prompt_roles": {

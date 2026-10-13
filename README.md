@@ -341,6 +341,7 @@ fish and PowerShell both need to know what colour a command, an option or an aut
 | `directory`                  | `accent`                | bold      |                                                               |                                            | `FileInfo.Directory`                                            |
 | `symlink`                    | `constant`              |           |                                                               |                                            | `FileInfo.SymbolicLink`                                         |
 | `executable`                 | `semantic.success`      |           |                                                               |                                            | `FileInfo.Executable`                                           |
+| `progress`                   | `accent`                | bold      |                                                               |                                            | `Progress.Style`                                                |
 
 <!-- /tokens -->
 
