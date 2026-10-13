@@ -149,6 +149,12 @@ test("gate 9: selection must be visible against the canvas", () => {
   }, /overlay\.selection .* surface\.bg .* too alike/);
 });
 
+test("gate 9: a selection that is merely distinct is not enough", () => {
+  assertFails((r) => {
+    r.overlay.selection.alpha = 0.8;
+  }, /overlay\.selection .* surface\.bg .* too alike/);
+});
+
 test("targets: a misspelt colour target names the role", () => {
   assertFails((r) => {
     r.shell_roles.command.color = "fuction";

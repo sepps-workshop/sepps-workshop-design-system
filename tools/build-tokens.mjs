@@ -201,6 +201,8 @@ export function resolveTarget(tokens, target) {
 const AA = 4.5;
 const NON_TEXT = 3;
 const DISTINCT = 7;
+/** The selection is the overlay users look for: more than just distinct. */
+const SELECTION_STEP = 9;
 const LIGHTNESS_GAP = 5;
 const HUE_TOLERANCE = 0.03; // radians
 /** The only values allowed outside the palette and its ladders. */
@@ -875,7 +877,7 @@ export function check(tokens, raw) {
     selection.hex,
     "surface.bg",
     tokens.surface.bg,
-    DISTINCT,
+    SELECTION_STEP,
   );
   apart(
     "overlay.selection",

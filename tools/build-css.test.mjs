@@ -25,9 +25,9 @@ test("the stylesheet declares the documented properties with resolved values", (
     "--sw-danger-fill: #db191d;",
     "--sw-syn-keyword: #fbba00;",
     "--sw-ansi-bright-red: #ffb4aa;",
-    "--sw-overlay-selection: #1b1f25;",
+    "--sw-overlay-selection: #1d1d1b;",
     "--sw-accent-hover: #fcc833;",
-    "--sw-overlay-selection-hexa: #1d1d1bcc;",
+    "--sw-overlay-selection-hexa: #1d1d1bff;",
     "--sw-overlay-hover: #17243b;",
     "--sw-palette-pumpelorange-90: #ee7521;",
   ]) {

@@ -162,8 +162,8 @@
   --sw-ansi-bright-white: #e7eaf1;
 
   /* Overlays — composited over --sw-bg; -hexa is the translucent recipe */
-  --sw-overlay-selection: #1b1f25;
-  --sw-overlay-selection-hexa: #1d1d1bcc;
+  --sw-overlay-selection: #1d1d1b;
+  --sw-overlay-selection-hexa: #1d1d1bff;
   --sw-overlay-selection-inactive: #192231;
   --sw-overlay-selection-inactive-hexa: #1d1d1b8c;
   --sw-overlay-line-highlight: #17243b;

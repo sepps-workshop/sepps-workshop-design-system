@@ -176,6 +176,7 @@ Each resolves to a core slot, a text colour or a semantic role, with an optional
 | `decorator`          | `function`        | italic            |
 | `builtin`            | `function`        | italic            |
 | `namespace`          | `type`            |                   |
+| `primitive_type`     | `type`            |                   |
 | `macro`              | `function`        |                   |
 | `lifetime`           | `constant`        |                   |
 | `heading`            | `keyword`         | bold              |
@@ -200,6 +201,8 @@ Each resolves to a core slot, a text colour or a semantic role, with an optional
 <!-- /tokens -->
 
 `operator` is `fg_muted` and not the keyword colour: Sunset is the loudest hue, and spending it on every `=` would dilute it.
+
+`primitive_type` covers `int`, `bool`, `string` and their kin where a language spells them as keywords: C# (`keyword.type`), C and C++ (`storage.type.built-in`), Java (`storage.type.primitive`) and Go. They take the type colour, as TypeScript, Python and Rust primitives already do, so `int count` and `List<int> items` colour their types alike. The keywords around them (`if`, `return`, `static`, `class`) keep Sunset. The keyword scopes end in a bare `keyword` catch-all, so a grammar's own keyword scopes, such as Go's `func`, `var` and `struct`, are never left in plain `fg`; F#'s symbolic operators (`keyword.symbol`) stay with `operator`.
 
 ### Recommendation maps
 
@@ -254,7 +257,7 @@ Recipes for the backgrounds that appear behind text and for a few workbench surf
 
 | Recipe                  | Colour         | Alpha | Composited | On terminal | Border            | Carries          |
 | ----------------------- | -------------- | ----- | ---------- | ----------- | ----------------- | ---------------- |
-| `selection`             | `darkblack`    | 80 %  | `#1b1f25`  | `#1b1f25`   |                   | code             |
+| `selection`             | `darkblack`    | 100 % | `#1d1d1b`  | `#1d1d1b`   |                   | code             |
 | `selection_inactive`    | `darkblack`    | 55 %  | `#192231`  | `#192231`   |                   | code             |
 | `line_highlight`        | `darkblack`    | 35 %  | `#17243b`  | `#17243b`   |                   | code             |
 | `find_match`            | `pumpelorange` | 15 %  | `#343142`  | `#343142`   | `pumpelorange.70` | code             |
@@ -279,7 +282,7 @@ Recipes for the backgrounds that appear behind text and for a few workbench surf
 
 <!-- /tokens -->
 
-**Overlays darken.** Neither the canvas nor Darkblue is dark enough to lighten. A selection that lightens them by a visible amount pushes every saturated brand colour below 4.5:1; a selection that darkens it adds contrast. So selection and line highlight mix towards Darkblack. The canvas is already close to Darkblack, which is why the alphas are high.
+**Overlays darken.** Neither the canvas nor Darkblue is dark enough to lighten. A selection that lightens them by a visible amount pushes every saturated brand colour below 4.5:1; a selection that darkens it adds contrast. So selection and line highlight mix towards Darkblack. The canvas is already close to Darkblack, which is why the alphas are high. The selection is Darkblack at full strength: it is the overlay people look for, and no other recipe moves further from the canvas while every syntax and ANSI colour stays at 4.5:1. A lighter selection in a brand hue would gain little distance and take ANSI blue, the number orange or the danger red below AA.
 
 Highlights that have to carry a hue stay faint and get a border, which also means they do not rely on colour alone. Read and write word highlights share a fill; the write highlight adds the border.
 
@@ -418,7 +421,7 @@ Do not recolour file icons. Recolour only folder icons, where the target support
 6. **Distinctness.** Slots that must not look alike are at least 7 apart in OKLab (×100; about 2 is just noticeable): the listed syntax pairs, every pair within an ANSI row, and each ANSI colour against its bright version. Two core slots may share a colour only if `syntax_tokens.aliases` lists them together.
 7. **Signal separation.** `accent`, `warning` and `danger` are at least 7 apart. `danger` and `success` differ by at least 5 in lightness.
 8. **Palette integrity.** No hex value outside `palette_base` and `derived`, and no value under `derived` beyond the four documented ones. No ladder for Racing Red or White. `bg_deep` and `racingred_fill` match their recipes. The derived reds stay on the Racing Red hue. `bg_terminal` equals `bg`, `bg_overlay` equals `bg_chrome`, and `bg` is at least 7 from `bg_chrome` in OKLab.
-9. **Overlay visibility.** `selection` is at least 7 from `bg` and from `find_match`. `hover` is at least 3 from `bg` and `bg_chrome`, `active` at least 5, `slider` at least 7. `merge_current_header` is at least 7 from `bg`. `accent_hover` is at least 3 from `accent`. Each `diff_*_text` recipe, stacked, is at least 5 from its line.
+9. **Overlay visibility.** `selection` is at least 9 from `bg` and at least 7 from `find_match`. `hover` is at least 3 from `bg` and `bg_chrome`, `active` at least 5, `slider` at least 7. `merge_current_header` is at least 7 from `bg`. `accent_hover` is at least 3 from `accent`. Each `diff_*_text` recipe, stacked, is at least 5 from its line.
 
 Before the gates run, the build checks the shape of the tokens: every colour is a `#rrggbb` value, every overlay has an alpha, every overlay belongs to exactly one class, role objects use only the keys `color`, `style`, `fish` and `psreadline`, every colour target in the role maps resolves, and no scope rule ends in `meta.*`. Each problem is reported with its path. A build that fails writes nothing.
 
@@ -481,7 +484,7 @@ import {
 
 resolveTarget(tokens, "keyword"); // "#fbba00"
 resolveTarget(tokens, "semantic.danger"); // "#ff897b"
-resolveTarget(tokens, "overlay.selection"); // "#1b1f25"
+resolveTarget(tokens, "overlay.selection"); // "#1d1d1b"
 ```
 
 `handoff/SKILL.md` is a Claude Code skill that teaches an assistant in a port repository how to use the foundation. Copy it to `.claude/skills/sepps-workshop/SKILL.md` in the port.
