@@ -37,13 +37,13 @@ This repository is the foundation, not a theme you can install. It holds the col
 
 ## Ports
 
-| Target           | Repository                                                                           | Status                               |
-| ---------------- | ------------------------------------------------------------------------------------ | ------------------------------------ |
-| VS Code          | [`sepps-workshop-vs-code`](https://github.com/sepps-workshop/sepps-workshop-vs-code) | working, Marketplace listing pending |
-| Windows Terminal | `sepps-workshop-windows-terminal`                                                    | planned                              |
-| PowerShell       | `sepps-workshop-powershell`                                                          | planned                              |
-| fish             | `sepps-workshop-fish`                                                                | planned                              |
-| Starship         | `sepps-workshop-starship`                                                            | planned                              |
+| Target           | Repository                                                                                             | Status                               |
+| ---------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------ |
+| VS Code          | [`sepps-workshop-vs-code`](https://github.com/sepps-workshop/sepps-workshop-vs-code)                   | working, Marketplace listing pending |
+| Windows Terminal | [`sepps-workshop-windows-terminal`](https://github.com/sepps-workshop/sepps-workshop-windows-terminal) | working                              |
+| PowerShell       | `sepps-workshop-powershell`                                                                            | planned                              |
+| fish             | [`sepps-workshop-fish`](https://github.com/sepps-workshop/sepps-workshop-fish)                         | released                             |
+| Starship         | [`sepps-workshop-starship`](https://github.com/sepps-workshop/sepps-workshop-starship)                 | working                              |
 
 One theme per port. There are no variants.
 
