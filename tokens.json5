@@ -536,6 +536,7 @@
     character_success: { color: "semantic.success" },
     character_error: { color: "semantic.danger" },
     duration: { color: "fg_muted" },
+    time: { color: "fg_muted" },
     language_module: { color: "fg_muted" },
   },
 

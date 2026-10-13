@@ -349,6 +349,7 @@ Commands take the function colour, not the accent: the cursor is already Sunset,
 | `character_success`     | `semantic.success` |       |
 | `character_error`       | `semantic.danger`  |       |
 | `duration`              | `fg_muted`         |       |
+| `time`                  | `fg_muted`         |       |
 | `language_module`       | `fg_muted`         |       |
 | `git_status.added`      | `semantic.success` |       |
 | `git_status.untracked`  | `semantic.success` |       |

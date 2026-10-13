@@ -1041,6 +1041,9 @@ export default {
     "duration": {
       "color": "fg_muted"
     },
+    "time": {
+      "color": "fg_muted"
+    },
     "language_module": {
       "color": "fg_muted"
     }

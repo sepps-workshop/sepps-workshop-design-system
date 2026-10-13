@@ -233,7 +233,7 @@ const SHELL = `[[command:git]] [[argument:commit]] [[option:--message]] [[string
 [[pager_selected:--message       (Commit message)]]
 [[pager_prefix:--mes]][[pager_completion:sage-file]]  [[pager_description:(Read message from file)]]`;
 
-const PROMPT = `[[directory:~/themes/sepps-workshop-fish]] [[git_branch: main]] [[git_added:+2]] [[git_modified:!1]] [[git_deleted:✘1]] [[git_untracked:?3]] [[git_conflicted:=1]] [[git_ahead:⇡1]] [[language_module: v26.10.0]] [[duration:took 3s]]
+const PROMPT = `[[directory:~/themes/sepps-workshop-fish]] [[git_branch: main]] [[git_added:+2]] [[git_modified:!1]] [[git_deleted:✘1]] [[git_untracked:?3]] [[git_conflicted:=1]] [[git_ahead:⇡1]] [[language_module: v26.10.0]] [[duration:took 3s]] [[time:14:32:07]]
 [[character_success:❯]] npm run build
 [[character_error:❯]] npm run biuld`;
 
