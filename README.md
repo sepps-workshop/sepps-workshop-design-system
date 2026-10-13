@@ -43,7 +43,7 @@ This repository is the foundation, not a theme you can install. It holds the col
 | Windows Terminal | [`sepps-workshop-windows-terminal`](https://github.com/sepps-workshop/sepps-workshop-windows-terminal) | released                             |
 | PowerShell       | [`sepps-workshop-powershell`](https://github.com/sepps-workshop/sepps-workshop-powershell)             | released                             |
 | fish             | [`sepps-workshop-fish`](https://github.com/sepps-workshop/sepps-workshop-fish)                         | released                             |
-| Starship         | [`sepps-workshop-starship`](https://github.com/sepps-workshop/sepps-workshop-starship)                 | working                              |
+| Starship         | [`sepps-workshop-starship`](https://github.com/sepps-workshop/sepps-workshop-starship)                 | released                             |
 
 One theme per port. There are no variants.
 
