@@ -39,6 +39,8 @@ If no tags exist yet, use `git log --oneline` (all commits = initial release).
 
 **If no commits appear since the last tag, stop.** There is nothing to release — tell the user and exit the skill.
 
+**If the log already ends in a version commit** (a commit named `X.Y.Z` with the changelog and meta-version commits before it) but the tag `vX.Y.Z` does not exist, a previous session did steps 3–6 without tagging. Check that the bump fits the commits, confirm the version with the user, then skip steps 3–5 and follow [Tag missing](#tag-missing) instead of step 6.
+
 Categorize each commit against the semver rules:
 
 | Bump  | When                                                                     |
@@ -89,6 +91,17 @@ npm version minor   # patch | minor | major — must match what was confirmed in
 ```
 
 This updates package.json, creates a commit (`v0.3.0`), and creates the git tag `vX.Y.Z`.
+
+### Tag missing
+
+When the version commit exists but its tag does not, `npm version` cannot be rerun. Confirm that `package.json`, `meta.version` in `tokens.json5` and the top CHANGELOG section all carry the version and that `HEAD` equals `origin/main`, then create the tag by hand on the version commit, signed and annotated like the ones `npm version` makes:
+
+```bash
+git tag -s vX.Y.Z <version-commit-sha> -m "X.Y.Z"
+git push origin vX.Y.Z   # replaces step 7; triggers the publish
+```
+
+Continue with step 8.
 
 ## 7 — Push to GitHub (triggers CI publish)
 
