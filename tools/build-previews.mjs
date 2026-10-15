@@ -384,7 +384,7 @@ export function renderPages(tokens) {
     "04-contrast.html": page(
       tokens,
       "04-contrast.html",
-      "Every text pair the build gates on. WCAG 2.x AA (4.5:1) is enforced; APCA Lc is shown for reference.",
+      "Every text pair the build gates on. WCAG 2.x AA (4.5:1) is enforced, 3:1 on a selection; APCA Lc is shown for reference.",
       contrastPage(tokens),
     ),
     "05-iconography.html": page(

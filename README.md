@@ -257,13 +257,13 @@ Recipes for the backgrounds that appear behind text and for a few workbench surf
 
 | Recipe                  | Colour         | Alpha | Composited | On terminal | Border            | Carries          |
 | ----------------------- | -------------- | ----- | ---------- | ----------- | ----------------- | ---------------- |
-| `selection`             | `darkblack`    | 100 % | `#1d1d1b`  | `#1d1d1b`   |                   | code             |
-| `selection_inactive`    | `darkblack`    | 55 %  | `#192231`  | `#192231`   |                   | code             |
+| `selection`             | `sunset`       | 25 %  | `#4e4d39`  | `#4e4d39`   |                   | code             |
+| `selection_inactive`    | `sunset`       | 20 %  | `#42453d`  | `#42453d`   |                   | code             |
 | `line_highlight`        | `darkblack`    | 35 %  | `#17243b`  | `#17243b`   |                   | code             |
 | `find_match`            | `pumpelorange` | 15 %  | `#343142`  | `#343142`   | `pumpelorange.70` | code             |
 | `find_match_other`      | `pumpelorange` | 8 %   | `#252d47`  | `#252d47`   | `darkblue.50`     | code             |
-| `word_highlight`        | `sunset`       | 10 %  | `#2b3744`  | `#2b3744`   |                   | code             |
-| `word_highlight_strong` | `sunset`       | 10 %  | `#2b3744`  | `#2b3744`   | `sunset`          | code             |
+| `word_highlight`        | `sunset`       | 8 %   | `#263446`  | `#263446`   |                   | code             |
+| `word_highlight_strong` | `sunset`       | 8 %   | `#263446`  | `#263446`   | `sunset`          | code             |
 | `selected_item`         | `sunset`       | 18 %  | `#3e423e`  | `#3e423e`   |                   | `fg`, `fg_muted` |
 | `diff_inserted_line`    | `limegreen`    | 12 %  | `#1e3948`  | `#1e3948`   |                   | code             |
 | `diff_inserted_text`    | `darkblack`    | 50 %  | `#192334`  | `#192334`   |                   | code             |
@@ -282,7 +282,9 @@ Recipes for the backgrounds that appear behind text and for a few workbench surf
 
 <!-- /tokens -->
 
-**Overlays darken.** Neither the canvas nor Darkblue is dark enough to lighten. A selection that lightens them by a visible amount pushes every saturated brand colour below 4.5:1; a selection that darkens it adds contrast. So selection and line highlight mix towards Darkblack. The canvas is already close to Darkblack, which is why the alphas are high. The selection is Darkblack at full strength: it is the overlay people look for, and no other recipe moves further from the canvas while every syntax and ANSI colour stays at 4.5:1. A lighter selection in a brand hue would gain little distance and take ANSI blue, the number orange or the danger red below AA.
+**Overlays darken.** Neither the canvas nor Darkblue is dark enough to lighten. An overlay that lightens them by a visible amount pushes every saturated brand colour below 4.5:1; one that darkens them adds contrast. So line highlight, hover and the diff spans mix towards Darkblack. The canvas is already close to Darkblack, which is why the alphas are high.
+
+**The selection lightens.** It is the one overlay people look for, and it only lives until the next click. A darker selection cannot stand out: Darkblack at full strength is 9.1 from the canvas in OKLab, but almost all of that is hue, and it is only 5.2 darker. So the selection is Sunset, the highlight hue, at 25 % (`#4e4d39`, 13.4 lighter than the canvas), and 20 % when its editor has no focus (`#42453d`, 10.3 lighter). Text on a selection needs 3:1 instead of 4.5:1: `fg` keeps 7.13:1, the number orange and the danger red drop to 3.7:1, ANSI blue to 3.31:1. The word highlight is Sunset too, but at 8 %, so it stays apart from the unfocused selection.
 
 Highlights that have to carry a hue stay faint and get a border, which also means they do not rely on colour alone. Read and write word highlights share a fill; the write highlight adds the border.
 
@@ -414,20 +416,20 @@ Do not recolour file icons. Recolour only folder icons, where the target support
 `npm run build` fails when any of these does not hold.
 
 1. **Text contrast.** `fg`, `fg_muted`, `fg_subtle`, every syntax slot and every semantic foreground reach 4.5:1 on `bg`, `bg_chrome` and `bg_overlay`. `fg` and `fg_muted` reach 4.5:1 on `bg_soft`.
-2. **Text on overlays.** The same colours reach 4.5:1 on every code overlay. `fg` and `fg_muted` reach 4.5:1 on the label overlays. `hover` and `active` are checked the same way on `bg`, `bg_chrome` and `bg_overlay`, and each `diff_*_text` recipe stacked on its `diff_*_line` recipe. Both must also darken each of those surfaces: a faint lightening can pass on contrast alone. The overlays that `shell_roles` uses are checked again composited over `bg_terminal`, together with the text roles of the selected pager row.
-3. **ANSI.** All sixteen colours except `black` reach 4.5:1 on `bg_terminal`, which is the canvas. The same fifteen reach 4.5:1 on `overlay.selection` and `overlay.selection_inactive`, composited over it, where a terminal draws selected text.
+2. **Text on overlays.** The same colours reach 4.5:1 on every code overlay, and 3:1 on `selection` and `selection_inactive`. `fg` and `fg_muted` reach 4.5:1 on the label overlays. `hover` and `active` are checked the same way on `bg`, `bg_chrome` and `bg_overlay`, and each `diff_*_text` recipe stacked on its `diff_*_line` recipe. Both must also darken each of those surfaces: a faint lightening can pass on contrast alone. The overlays that `shell_roles` uses are checked again composited over `bg_terminal`, together with the text roles of the selected pager row.
+3. **ANSI.** All sixteen colours except `black` reach 4.5:1 on `bg_terminal`, which is the canvas. The same fifteen reach 3:1 on `overlay.selection` and `overlay.selection_inactive`, composited over it, where a terminal draws selected text.
 4. **Non-text.** `border.control` and `accent` reach 3:1 on every surface. Every overlay border reaches 3:1 on its own fill. `slider_active` reaches 3:1 on `bg` and `bg_chrome`.
 5. **Fills.** The text on each semantic fill, and `accent_on` on `accent` and on `accent_hover`, reach 4.5:1.
 6. **Distinctness.** Slots that must not look alike are at least 7 apart in OKLab (×100; about 2 is just noticeable): the listed syntax pairs, every pair within an ANSI row, and each ANSI colour against its bright version. Two core slots may share a colour only if `syntax_tokens.aliases` lists them together.
 7. **Signal separation.** `accent`, `warning` and `danger` are at least 7 apart. `danger` and `success` differ by at least 5 in lightness.
 8. **Palette integrity.** No hex value outside `palette_base` and `derived`, and no value under `derived` beyond the four documented ones. No ladder for Racing Red or White. `bg_deep` and `racingred_fill` match their recipes. The derived reds stay on the Racing Red hue. `bg_terminal` equals `bg`, `bg_overlay` equals `bg_chrome`, and `bg` is at least 7 from `bg_chrome` in OKLab.
-9. **Overlay visibility.** `selection` is at least 9 from `bg` and at least 7 from `find_match`. `hover` is at least 3 from `bg` and `bg_chrome`, `active` at least 5, `slider` at least 7. `merge_current_header` is at least 7 from `bg`. `accent_hover` is at least 3 from `accent`. Each `diff_*_text` recipe, stacked, is at least 5 from its line.
+9. **Overlay visibility.** `selection` is at least 9 from `bg` and at least 7 from `find_match`. `selection` and `selection_inactive` are each at least 10 lighter than `bg` in OKLab lightness, and `selection_inactive` is at least 7 from `word_highlight`. `hover` is at least 3 from `bg` and `bg_chrome`, `active` at least 5, `slider` at least 7. `merge_current_header` is at least 7 from `bg`. `accent_hover` is at least 3 from `accent`. Each `diff_*_text` recipe, stacked, is at least 5 from its line.
 
 Before the gates run, the build checks the shape of the tokens: every colour is a `#rrggbb` value, every overlay has an alpha, every overlay belongs to exactly one class, role objects use only the keys `color`, `style`, `fish` and `psreadline`, every colour target in the role maps resolves, and no scope rule ends in `meta.*`. Each problem is reported with its path. A build that fails writes nothing.
 
 APCA lightness contrast is reported for every pair and shown on the contrast page. It informs and does not fail the build; WCAG 2.x AA is the requirement.
 
-When a gate fails, move the value along its ladder, or swap roles between brand hues. Never add a hue, and never lower a threshold. The gate is not wrong. I have checked.
+When a gate fails, move the value along its ladder, or swap roles between brand hues. Never add a hue, and never lower a threshold. The gate is not wrong. I have checked. (The 3:1 for text on a selection is not a lowered threshold. It is a design decision of its own: a selection is a signal to find, not a surface to read on.)
 
 ## Build flow and files
 

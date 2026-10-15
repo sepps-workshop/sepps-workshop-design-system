@@ -55,10 +55,16 @@ test("gate 1: fg_muted must stay readable on bg_soft", () => {
   }, /text\.fg_muted .* on surface\.bg_soft/);
 });
 
-test("gate 2: a lightening selection fails and names slot and overlay", () => {
+test("gate 2: text on the selection needs 3:1 and names slot and overlay", () => {
   assertFails((r) => {
-    r.overlay.selection = { color: "$palette.windblue.100", alpha: 0.3 };
-  }, /syntax\.number .* on overlay\.selection/);
+    r.overlay.selection.alpha = 0.4;
+  }, /syntax\.\w+ .* on overlay\.selection .*needs 3:1/);
+});
+
+test("gate 2: text on other code overlays still needs 4.5:1", () => {
+  assertFails((r) => {
+    r.overlay.line_highlight = { color: "$palette.sunset.100", alpha: 0.25 };
+  }, /on overlay\.line_highlight .*needs 4\.5:1/);
 });
 
 test("gate 3: an ANSI colour below 4.5:1 on the terminal fails", () => {
@@ -151,8 +157,26 @@ test("gate 9: selection must be visible against the canvas", () => {
 
 test("gate 9: a selection that is merely distinct is not enough", () => {
   assertFails((r) => {
-    r.overlay.selection.alpha = 0.8;
+    r.overlay.selection.alpha = 0.12;
   }, /overlay\.selection .* surface\.bg .* too alike/);
+});
+
+test("gate 9: a selection must lighten the canvas, not only change its hue", () => {
+  assertFails((r) => {
+    r.overlay.selection = { color: "$palette.darkblack.100", alpha: 1 };
+  }, /overlay\.selection .* lightens surface\.bg .* by -5\.2, needs 10/);
+});
+
+test("gate 9: the inactive selection must lighten the canvas too", () => {
+  assertFails((r) => {
+    r.overlay.selection_inactive.alpha = 0.15;
+  }, /overlay\.selection_inactive .* lightens surface\.bg .* needs 10/);
+});
+
+test("gate 9: the inactive selection and the word highlight must not look alike", () => {
+  assertFails((r) => {
+    r.overlay.word_highlight.alpha = 0.2;
+  }, /overlay\.selection_inactive .* overlay\.word_highlight .* too alike/);
 });
 
 test("targets: a misspelt colour target names the role", () => {
@@ -192,8 +216,12 @@ test("the report covers every surface and overlay the gates name", () => {
   ];
   assert.deepEqual([...on].sort(), expected.sort());
   assert.ok(
-    rows.every((r) => r.ratio >= 4.5),
-    "every reported text pair clears AA",
+    rows.every((r) => r.ratio >= r.min),
+    "every reported text pair clears its minimum",
+  );
+  assert.ok(
+    rows.every((r) => r.min === (/^overlay\.selection/.test(r.on) ? 3 : 4.5)),
+    "selections need 3:1, everything else AA",
   );
   const body = rows.find((r) => r.label === "text.fg" && r.on === "surface.bg");
   assert.ok(Math.abs(body.lc) >= 75, "body text reaches APCA Lc 75");
@@ -318,8 +346,8 @@ test("gate 7: danger must not look like the accent or the warning", () => {
 
 test("gate 9: selection and find match must not look alike", () => {
   assertFails((r) => {
-    r.overlay.find_match.color = "$palette.darkblack.100";
-    r.overlay.find_match.alpha = 0.6;
+    r.overlay.find_match.color = "$palette.sunset.100";
+    r.overlay.find_match.alpha = 0.25;
   }, /overlay\.selection .* overlay\.find_match .* too alike/);
 });
 
@@ -471,11 +499,8 @@ test("gate 2: a lightening hover fails on the chrome too", () => {
 
 test("gate 3: ANSI colours stay readable on the terminal selection", () => {
   assertFails((r) => {
-    r.overlay.selection_inactive = {
-      color: "$palette.middleblue.100",
-      alpha: 0.4,
-    };
-  }, /ansi\.blue .* on overlay\.selection_inactive/);
+    r.overlay.selection_inactive.alpha = 0.4;
+  }, /ansi\.blue .* on overlay\.selection_inactive .*needs 3:1/);
 });
 
 test("gate 4: the dragged slider reaches 3:1", () => {

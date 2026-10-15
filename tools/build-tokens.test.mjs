@@ -52,7 +52,7 @@ test("a reference cycle is reported, not a stack overflow", () => {
 
 test("overlays get a composited hex", () => {
   const t = resolveTokens(fresh());
-  assert.equal(t.overlay.selection_inactive.hex, "#192231");
+  assert.equal(t.overlay.selection_inactive.hex, "#42453d");
   assert.equal(t.overlay.find_match.border, t.palette.pumpelorange[70]);
 });
 
@@ -62,7 +62,7 @@ test("resolveTarget understands every kind of target", () => {
   assert.equal(resolveTarget(t, "fg_muted"), t.text.fg_muted);
   assert.equal(resolveTarget(t, "accent"), "#fbba00");
   assert.equal(resolveTarget(t, "semantic.danger"), "#ff897b");
-  assert.equal(resolveTarget(t, "overlay.selection"), "#1d1d1b");
+  assert.equal(resolveTarget(t, "overlay.selection"), "#4e4d39");
   assert.throws(
     () => resolveTarget(t, "fuction"),
     /Unknown colour target: fuction/,
@@ -95,8 +95,8 @@ test("resolveTarget refuses a target with extra path segments", () => {
 
 test("overlays get a translucent hexa beside the composited hex", () => {
   const t = resolveTokens(fresh());
-  assert.equal(t.overlay.selection_inactive.hexa, "#1d1d1b8c");
-  assert.equal(t.overlay.selection.hexa, "#1d1d1bff");
+  assert.equal(t.overlay.selection_inactive.hexa, "#fbba0033");
+  assert.equal(t.overlay.selection.hexa, "#fbba0040");
   for (const [name, o] of Object.entries(t.overlay)) {
     assert.match(o.hexa, /^#[0-9a-f]{8}$/, `overlay.${name}.hexa`);
     assert.equal(o.hexa.slice(0, 7), o.color, `overlay.${name}.hexa colour`);
@@ -128,7 +128,7 @@ test("the workbench overlays and accent_hover resolve", () => {
 
 test("overlays get a hex composited over the terminal background", () => {
   const t = resolveTokens(fresh());
-  assert.equal(t.overlay.selection_inactive.hex_terminal, "#192231");
+  assert.equal(t.overlay.selection_inactive.hex_terminal, "#42453d");
   assert.equal(t.overlay.selected_item.hex_terminal, "#3e423e");
   for (const [name, o] of Object.entries(t.overlay)) {
     assert.match(o.hex_terminal, /^#[0-9a-f]{6}$/, `overlay.${name}`);

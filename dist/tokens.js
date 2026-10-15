@@ -643,18 +643,18 @@ export default {
   },
   "overlay": {
     "selection": {
-      "color": "#1d1d1b",
-      "alpha": 1,
-      "hex": "#1d1d1b",
-      "hex_terminal": "#1d1d1b",
-      "hexa": "#1d1d1bff"
+      "color": "#fbba00",
+      "alpha": 0.25,
+      "hex": "#4e4d39",
+      "hex_terminal": "#4e4d39",
+      "hexa": "#fbba0040"
     },
     "selection_inactive": {
-      "color": "#1d1d1b",
-      "alpha": 0.55,
-      "hex": "#192231",
-      "hex_terminal": "#192231",
-      "hexa": "#1d1d1b8c"
+      "color": "#fbba00",
+      "alpha": 0.2,
+      "hex": "#42453d",
+      "hex_terminal": "#42453d",
+      "hexa": "#fbba0033"
     },
     "line_highlight": {
       "color": "#1d1d1b",
@@ -681,18 +681,18 @@ export default {
     },
     "word_highlight": {
       "color": "#fbba00",
-      "alpha": 0.1,
-      "hex": "#2b3744",
-      "hex_terminal": "#2b3744",
-      "hexa": "#fbba001a"
+      "alpha": 0.08,
+      "hex": "#263446",
+      "hex_terminal": "#263446",
+      "hexa": "#fbba0014"
     },
     "word_highlight_strong": {
       "color": "#fbba00",
-      "alpha": 0.1,
+      "alpha": 0.08,
       "border": "#fbba00",
-      "hex": "#2b3744",
-      "hex_terminal": "#2b3744",
-      "hexa": "#fbba001a"
+      "hex": "#263446",
+      "hex_terminal": "#263446",
+      "hexa": "#fbba0014"
     },
     "selected_item": {
       "color": "#fbba00",

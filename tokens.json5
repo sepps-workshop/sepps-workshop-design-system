@@ -392,15 +392,17 @@
   // { color, alpha, border? }. The build adds `hex` (composited over
   // surface.bg, for ports that cannot blend) and `hexa` (the recipe as
   // #rrggbbaa, for ports that can). Overlays DARKEN: on a dark-blue
-  // canvas a lighter selection takes saturated colours below 4.5:1, a
-  // darker one adds contrast. Hued highlights stay faint and get a
-  // border. Every overlay belongs to exactly one class in
-  // tools/build-tokens.mjs: code, label, surface or non-text.
+  // canvas a lighter overlay takes saturated colours below 4.5:1, a
+  // darker one adds contrast. The selections are the exception. Hued
+  // highlights stay faint and get a border. Every overlay belongs to
+  // exactly one class in tools/build-tokens.mjs: code, label, surface
+  // or non-text.
   overlay: {
-    // Full strength: the canvas has no other way to go that keeps every
-    // syntax and ANSI colour at 4.5:1. Gate 9 holds it 9 from the canvas.
-    selection: { color: "$palette.darkblack.100", alpha: 1 },
-    selection_inactive: { color: "$palette.darkblack.100", alpha: 0.55 },
+    // A selection is a short-lived signal: it lightens the canvas in the
+    // highlight hue, and text on it needs 3:1, not 4.5:1. Gate 9 holds
+    // both at least 10 lighter than the canvas.
+    selection: { color: "$palette.sunset.100", alpha: 0.25 },
+    selection_inactive: { color: "$palette.sunset.100", alpha: 0.2 },
     line_highlight: { color: "$palette.darkblack.100", alpha: 0.35 },
     find_match: {
       color: "$palette.pumpelorange.100",
@@ -412,10 +414,11 @@
       alpha: 0.08,
       border: "$palette.darkblue.50",
     },
-    word_highlight: { color: "$palette.sunset.100", alpha: 0.1 },
+    // Fainter than the selections, so gate 9 can tell it from the inactive one.
+    word_highlight: { color: "$palette.sunset.100", alpha: 0.08 },
     word_highlight_strong: {
       color: "$palette.sunset.100",
-      alpha: 0.1,
+      alpha: 0.08,
       border: "$palette.sunset.100",
     },
     selected_item: { color: "$palette.sunset.100", alpha: 0.18 }, // list rows: fg / fg_muted only

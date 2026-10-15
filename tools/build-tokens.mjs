@@ -203,6 +203,10 @@ const NON_TEXT = 3;
 const DISTINCT = 7;
 /** The selection is the overlay users look for: more than just distinct. */
 const SELECTION_STEP = 9;
+/** A selection is a short-lived signal: text on it needs the non-text minimum. */
+const SELECTION_TEXT = NON_TEXT;
+/** Both selections lighten the canvas by at least this (OKLab L × 100). */
+const SELECTION_LIFT = 10;
 const LIGHTNESS_GAP = 5;
 const HUE_TOLERANCE = 0.03; // radians
 /** The only values allowed outside the palette and its ladders. */
@@ -267,8 +271,8 @@ const OVERLAY_CLASSES = {
   surface: SURFACE_OVERLAYS,
   "non-text": NON_TEXT_OVERLAYS,
 };
-/** The terminal draws selected text in its ANSI colour on these. */
-const TERMINAL_SELECTIONS = ["selection", "selection_inactive"];
+/** Selections: text on them, ANSI included, needs SELECTION_TEXT, not AA. */
+const SELECTIONS = ["selection", "selection_inactive"];
 /** [overlay, surfaces, minimum OKLab distance from each surface]. */
 const VISIBLE_OVERLAYS = [
   ["hover", ["bg", "bg_chrome"], 3],
@@ -278,11 +282,12 @@ const VISIBLE_OVERLAYS = [
 ];
 /** Overlays a gate reads by name; each must exist before the gates run. */
 const GATED_BY_NAME = [
-  ...TERMINAL_SELECTIONS,
+  ...SELECTIONS,
   ...VISIBLE_OVERLAYS.map(([name]) => name),
   ...DIFF_STACKS.flat(),
   "slider_active",
   "find_match",
+  "word_highlight",
 ];
 /** accent_hover is seen only in succession to accent on the same button. */
 const HOVER_STEP = 3;
@@ -365,6 +370,9 @@ const labelText = (tokens) => [
   ["text.fg_muted", tokens.text.fg_muted],
 ];
 
+/** The contrast text needs on an overlay. */
+const textMin = (name) => (SELECTIONS.includes(name) ? SELECTION_TEXT : AA);
+
 /** The text class of an overlay, or null: what may be read on it. */
 const overlayText = (tokens, name) =>
   CODE_OVERLAYS.includes(name)
@@ -389,8 +397,9 @@ function shellPairs(tokens) {
   for (const [key, name] of shellOverlays(tokens)) {
     const on = `overlay.${name} over surface.bg_terminal`;
     const bg = tokens.overlay[name].hex_terminal;
+    const min = textMin(name);
     for (const [label, fg] of overlayText(tokens, name) ?? [])
-      pairs.push({ label, fg, on, bg });
+      pairs.push({ label, fg, on, bg, min });
     for (const [k, role] of Object.entries(tokens.shell_roles)) {
       // Only a role that is itself text: not a style alone, not a background.
       const text =
@@ -403,6 +412,7 @@ function shellPairs(tokens) {
           fg: resolveTarget(tokens, role.color),
           on,
           bg,
+          min,
         });
     }
   }
@@ -412,14 +422,14 @@ function shellPairs(tokens) {
 /** Every (text, background) pair gates 1 and 2 look at. */
 function textPairs(tokens) {
   const pairs = [];
-  const add = (texts, on, bg) => {
-    for (const [label, fg] of texts) pairs.push({ label, fg, on, bg });
+  const add = (texts, on, bg, min = AA) => {
+    for (const [label, fg] of texts) pairs.push({ label, fg, on, bg, min });
   };
   for (const s of CODE_SURFACES)
     add(codeText(tokens), `surface.${s}`, tokens.surface[s]);
   add(labelText(tokens), "surface.bg_soft", tokens.surface.bg_soft);
   for (const o of CODE_OVERLAYS)
-    add(codeText(tokens), `overlay.${o}`, tokens.overlay[o].hex);
+    add(codeText(tokens), `overlay.${o}`, tokens.overlay[o].hex, textMin(o));
   for (const o of LABEL_OVERLAYS)
     add(labelText(tokens), `overlay.${o}`, tokens.overlay[o].hex);
   for (const o of SURFACE_OVERLAYS)
@@ -680,7 +690,7 @@ export function check(tokens, raw) {
   if (fail.length) return fail;
 
   // 1 + 2. Text contrast on surfaces and overlays.
-  for (const p of textPairs(tokens)) need(p.label, p.fg, p.on, p.bg, AA);
+  for (const p of textPairs(tokens)) need(p.label, p.fg, p.on, p.bg, p.min);
   // Contrast does not see direction: a faint lightening can still pass.
   for (const o of SURFACE_OVERLAYS) {
     for (const s of CODE_SURFACES) {
@@ -701,14 +711,20 @@ export function check(tokens, raw) {
         need(`ansi.${slot}`, color, `surface.${s}`, tokens.surface[s], AA);
       // `hex` is the selection a non-blending port paints; a blending one
       // draws the recipe over the terminal background.
-      for (const o of TERMINAL_SELECTIONS) {
-        need(`ansi.${slot}`, color, `overlay.${o}`, tokens.overlay[o].hex, AA);
+      for (const o of SELECTIONS) {
+        need(
+          `ansi.${slot}`,
+          color,
+          `overlay.${o}`,
+          tokens.overlay[o].hex,
+          SELECTION_TEXT,
+        );
         need(
           `ansi.${slot}`,
           color,
           `overlay.${o} over surface.bg_terminal`,
           over(tokens, o, "bg_terminal"),
-          AA,
+          SELECTION_TEXT,
         );
       }
     }
@@ -871,7 +887,19 @@ export function check(tokens, raw) {
   }
 
   // 9. Overlays are visible and distinct.
-  const { selection, find_match } = tokens.overlay;
+  const { selection, selection_inactive, find_match, word_highlight } =
+    tokens.overlay;
+  // ΔE alone passes a selection that only changes hue, and the eye looks
+  // for lightness.
+  for (const name of SELECTIONS) {
+    const { hex } = tokens.overlay[name];
+    const lift = 100 * (oklab(hex)[0] - oklab(tokens.surface.bg)[0]);
+    if (lift < SELECTION_LIFT) {
+      fail.push(
+        `✗ overlay.${name} (${hex}) lightens surface.bg (${tokens.surface.bg}) by ${lift.toFixed(1)}, needs ${SELECTION_LIFT}`,
+      );
+    }
+  }
   apart(
     "overlay.selection",
     selection.hex,
@@ -884,6 +912,13 @@ export function check(tokens, raw) {
     selection.hex,
     "overlay.find_match",
     find_match.hex,
+    DISTINCT,
+  );
+  apart(
+    "overlay.selection_inactive",
+    selection_inactive.hex,
+    "overlay.word_highlight",
+    word_highlight.hex,
     DISTINCT,
   );
   for (const [name, surfaces, min] of VISIBLE_OVERLAYS)
@@ -961,14 +996,18 @@ async function main() {
     console.log("✓ tokens.json and dist/tokens.js match tokens.json5");
 
   const rows = contrastReport(tokens);
-  const tightest = rows.reduce((a, b) => (a.ratio < b.ratio ? a : b));
+  const tightest = rows.reduce((a, b) =>
+    a.ratio / a.min < b.ratio / b.min ? a : b,
+  );
   const body = rows.find((r) => r.label === "text.fg" && r.on === "surface.bg");
   const comment = rows.find(
     (r) => r.label === "syntax.comment" && r.on === "surface.bg",
   );
-  console.log(`\n✓ All gates pass (${rows.length} text pairs at ≥ ${AA}:1).`);
   console.log(
-    `  Tightest: ${tightest.label} on ${tightest.on}, ${tightest.ratio.toFixed(2)}:1`,
+    `\n✓ All gates pass (${rows.length} text pairs at ≥ ${AA}:1, ≥ ${SELECTION_TEXT}:1 on a selection).`,
+  );
+  console.log(
+    `  Tightest: ${tightest.label} on ${tightest.on}, ${tightest.ratio.toFixed(2)}:1 (needs ${tightest.min}:1)`,
   );
   console.log(
     `  APCA (report only): body Lc ${Math.abs(body.lc).toFixed(0)} (target 75), comments Lc ${Math.abs(comment.lc).toFixed(0)} (target 45)`,

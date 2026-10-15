@@ -162,10 +162,10 @@
   --sw-ansi-bright-white: #e7eaf1;
 
   /* Overlays — composited over --sw-bg; -hexa is the translucent recipe */
-  --sw-overlay-selection: #1d1d1b;
-  --sw-overlay-selection-hexa: #1d1d1bff;
-  --sw-overlay-selection-inactive: #192231;
-  --sw-overlay-selection-inactive-hexa: #1d1d1b8c;
+  --sw-overlay-selection: #4e4d39;
+  --sw-overlay-selection-hexa: #fbba0040;
+  --sw-overlay-selection-inactive: #42453d;
+  --sw-overlay-selection-inactive-hexa: #fbba0033;
   --sw-overlay-line-highlight: #17243b;
   --sw-overlay-line-highlight-hexa: #1d1d1b59;
   --sw-overlay-find-match: #343142;
@@ -174,10 +174,10 @@
   --sw-overlay-find-match-other: #252d47;
   --sw-overlay-find-match-other-hexa: #ec660814;
   --sw-overlay-find-match-other-border: #8698ba;
-  --sw-overlay-word-highlight: #2b3744;
-  --sw-overlay-word-highlight-hexa: #fbba001a;
-  --sw-overlay-word-highlight-strong: #2b3744;
-  --sw-overlay-word-highlight-strong-hexa: #fbba001a;
+  --sw-overlay-word-highlight: #263446;
+  --sw-overlay-word-highlight-hexa: #fbba0014;
+  --sw-overlay-word-highlight-strong: #263446;
+  --sw-overlay-word-highlight-strong-hexa: #fbba0014;
   --sw-overlay-word-highlight-strong-border: #fbba00;
   --sw-overlay-selected-item: #3e423e;
   --sw-overlay-selected-item-hexa: #fbba002e;
