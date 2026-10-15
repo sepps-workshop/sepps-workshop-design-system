@@ -486,7 +486,7 @@ import {
 
 resolveTarget(tokens, "keyword"); // "#fbba00"
 resolveTarget(tokens, "semantic.danger"); // "#ff897b"
-resolveTarget(tokens, "overlay.selection"); // "#1d1d1b"
+resolveTarget(tokens, "overlay.selection"); // "#4e4d39"
 ```
 
 `handoff/SKILL.md` is a Claude Code skill that teaches an assistant in a port repository how to use the foundation. Copy it to `.claude/skills/sepps-workshop/SKILL.md` in the port.

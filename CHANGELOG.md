@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.12.0 — 2026-10-15
+
+- **⚠️ The selections lighten the canvas instead of darkening it:** `overlay.selection` is Sunset at 25 % instead of Darkblack at full strength (`hex` `#1d1d1b` to `#4e4d39`, `hexa` `#1d1d1bff` to `#fbba0040`), and `overlay.selection_inactive` is Sunset at 20 % instead of Darkblack at 55 % (`#192231` to `#42453d`, `hexa` `#1d1d1b8c` to `#fbba0033`). Darkblack at full strength stood 9.1 from the canvas, but almost all of that was hue; it was only 5.2 darker. The selection now sits 13.4 lighter than the canvas, the inactive one 10.3. Every port that paints the selection changes with it: VS Code, Windows Terminal, PowerShell and fish.
+- **⚠️ Text on a selection needs 3:1 instead of 4.5:1.** A selection is a signal to find, not a surface to read on. Gate 2 checks code text on both selections at 3:1, and gate 3 checks the fifteen ANSI colours on them at 3:1. `fg` keeps 7.13:1; the number orange and the danger red drop to 3.7:1, ANSI blue to 3.31:1. A port that relied on AA contrast for selected text no longer gets it.
+- `overlay.word_highlight` and `overlay.word_highlight_strong` drop from 10 % to 8 % (`#2b3744` to `#263446`), so the word highlight stays apart from the unfocused selection.
+- Gate 9 now requires `selection` and `selection_inactive` each to be at least 10 lighter than `bg` in OKLab lightness, and `selection_inactive` to be at least 7 from `word_highlight`.
+
 ## 0.11.0 — 2026-10-13
 
 - New role `syntax_tokens.extended.primitive_type` (`type`) for `int`, `bool`, `string` and their kin where a grammar spells them as keywords. Scopes: `keyword.type` (C#), `storage.type.primitive` (Java, Groovy, Dart, Objective-C++), `storage.type.built-in` (C, C++, Objective-C, including `size_t`) and Go's `storage.type.*.go`. Before, C# left them in `fg` and C and C++ painted them Sunset like `if` and `return`.
